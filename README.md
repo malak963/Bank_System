@@ -1,58 +1,152 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Bank System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+نظام مصرفي مبني بـ Laravel لإدارة العملاء، المستخدمين، وملفات التحقق من الهوية KYC ضمن بنية Modules واضحة وقابلة للتوسع.
 
-## About Laravel
+## الرؤية التقنية
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+المشروع لا يتعامل مع العميل كسجل عادي فقط، بل كملف مصرفي له هوية، مستخدم مرتبط، حالة تشغيلية، حالة تحقق KYC، وتصنيف مخاطر. لذلك تم تنظيم الكود حول حدود واضحة:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- `Customers Module`: إدارة ملفات العملاء، بيانات الهوية، KYC، البحث والفلترة.
+- `Users Module`: إدارة مستخدمي النظام وصلاحيات الإدارة.
+- `Service + Repository`: فصل منطق التطبيق عن الاستعلامات وقواعد التخزين.
+- `Enums`: تثبيت الحالات الحساسة مثل حالة العميل، حالة KYC، مستوى المخاطر، ونوع وثيقة الهوية.
+- `Form Requests`: حماية المدخلات بقواعد تحقق دقيقة قبل الوصول إلى طبقة الخدمة.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ما تم إنجازه حتى الآن
 
-## Learning Laravel
+### إدارة العملاء
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- إنشاء CRUD كامل للعملاء: عرض، إنشاء، تعديل، حذف ناعم `Soft Delete`.
+- ربط كل عميل بمستخدم واحد داخل النظام عبر `user_id` مع منع التكرار.
+- توليد وحفظ رقم عميل فريد `customer_number`.
+- حفظ بيانات الهوية الأساسية: الاسم، تاريخ الميلاد، الرقم الوطني، الهاتف، العنوان.
+- تحويل قيم `customer_number` و `national_id` تلقائياً إلى uppercase قبل الحفظ.
+- استخدام `CustomerFactory` لاختبارات وبيانات تجريبية قابلة للتكرار.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### نظام KYC للتحقق من الهوية
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+تم توسيع ملف العميل ليصبح ملف تحقق هوية عملي، وليس مجرد حقل حالة:
 
-## Agentic Development
+- نوع وثيقة الهوية:
+  - National ID
+  - Passport
+  - Driver License
+  - Residence Permit
+- رقم وثيقة الهوية.
+- بلد إصدار الوثيقة بصيغة ISO من حرفين.
+- تاريخ انتهاء الوثيقة.
+- حالة KYC: Pending, Approved, Rejected.
+- مرجع KYC فريد `kyc_reference`.
+- المستخدم الذي راجع الملف `kyc_reviewed_by`.
+- تاريخ المراجعة `kyc_reviewed_at`.
+- سبب الرفض `kyc_rejection_reason`.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### قواعد الامتثال والتحقق
+
+- لا يمكن اعتماد نوع وثيقة بدون رقم وثيقة.
+- سبب الرفض مطلوب عند اختيار حالة `Rejected`.
+- تاريخ انتهاء الوثيقة يجب أن يكون في المستقبل.
+- مرجع KYC يقبل صيغة منظمة فقط ويتحقق من التفرد.
+- عند اعتماد أو رفض KYC، يتم تعيين المراجع الحالي وتاريخ المراجعة تلقائياً إذا لم يتم إدخالهما يدوياً.
+- عند إعادة الحالة إلى `Pending`، يتم تنظيف بيانات المراجعة والرفض للحفاظ على وضوح دورة العمل.
+
+### البحث والفلترة الاحترافية
+
+تم بناء شاشة KYC تشغيلية داخل فهرس العملاء مع:
+
+- بحث موحد عبر:
+  - رقم العميل
+  - الاسم الأول
+  - الاسم الأخير
+  - الرقم الوطني
+  - رقم وثيقة الهوية
+  - مرجع KYC
+  - الهاتف
+  - اسم وإيميل المستخدم المرتبط
+- فلترة حسب:
+  - حالة العميل
+  - حالة KYC
+  - مستوى المخاطر
+  - نوع الوثيقة
+  - بلد إصدار الوثيقة
+  - تاريخ المراجعة من/إلى
+- فرز حسب:
+  - الأحدث
+  - الاسم
+  - أولوية المخاطر
+  - أقدم مراجعة KYC
+  - أحدث مراجعة KYC
+  - أقرب انتهاء وثيقة
+- الحفاظ على الفلاتر أثناء التنقل بين صفحات pagination.
+
+### لوحة مؤشرات KYC
+
+أضيفت مؤشرات مختصرة أعلى شاشة العملاء:
+
+- عدد السجلات المطابقة للفلاتر.
+- ملفات KYC المعتمدة.
+- ملفات KYC قيد الانتظار.
+- العملاء عاليي المخاطر.
+- الوثائق التي تنتهي خلال 30 يوماً.
+
+### واجهات المستخدم
+
+- تحديث شاشة فهرس العملاء لتصبح شاشة عمليات KYC.
+- إضافة نموذج فلاتر واضح وسريع.
+- عرض الوثيقة ومرجع KYC والمراجع وتاريخ المراجعة في الجدول.
+- توسيع نموذج إنشاء/تعديل العميل ليشمل بيانات الوثيقة وقرار KYC.
+- توسيع صفحة عرض العميل لعرض سجل التحقق من الهوية بشكل مستقل وواضح.
+- استخدام شارات بصرية للحالات والمخاطر لتسهيل القراءة السريعة.
+
+### الاختبارات
+
+تمت إضافة وتحديث اختبارات Feature للتأكد من:
+
+- حماية routes العملاء بالمصادقة.
+- قدرة المستخدم المصادق على فتح الفهرس.
+- إنشاء عميل مع بيانات KYC وحفظ القيم normalized.
+- منع التكرار في الهوية ورقم العميل.
+- رفض enums غير صحيحة.
+- فرض سبب الرفض عند حالة KYC مرفوضة.
+- فرض رقم الوثيقة عند اختيار نوع الوثيقة.
+- عمل البحث والفلترة والفرز على سجلات KYC.
+
+## أهم الملفات
+
+- `app/Modules/Customers/Models/Customer.php`
+- `app/Modules/Customers/Controllers/CustomerController.php`
+- `app/Modules/Customers/Repositories/CustomerRepository.php`
+- `app/Modules/Customers/Services/CustomerService.php`
+- `app/Modules/Customers/Requests/IndexCustomerRequest.php`
+- `app/Modules/Customers/Requests/StoreCustomerRequest.php`
+- `app/Modules/Customers/Requests/UpdateCustomerRequest.php`
+- `app/Modules/Customers/Enums/IdentityDocumentType.php`
+- `app/Modules/Customers/Views/index.blade.php`
+- `app/Modules/Customers/Views/show.blade.php`
+- `app/Modules/Customers/Views/partials/_form.blade.php`
+- `tests/Feature/Modules/Customers/CustomerModuleTest.php`
+
+## تشغيل المشروع
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+npm run dev
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## تشغيل الاختبارات
 
-## Contributing
+```bash
+php artisan test
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## ملاحظات هندسية
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- تم الحفاظ على بنية Modules الموجودة بدل نقل المنطق إلى Controllers عامة.
+- البحث والفلترة موجودان في Repository حتى يبقى Controller مسؤولاً عن التنسيق فقط.
+- المدخلات تمر عبر Form Requests مخصصة، بما فيها فلاتر الفهرس.
+- حقول KYC صممت لتدعم توسعات لاحقة مثل رفع المستندات، تدقيق العقوبات، قوائم PEP، أو مراحل مراجعة متعددة.
