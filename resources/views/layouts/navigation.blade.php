@@ -1,3 +1,9 @@
+@php
+    $navigationItems = config('nav.primary', []);
+    $profileRoute = config('nav.profile_route', 'profile.edit');
+    $logoutRoute = config('nav.logout_route', 'logout');
+@endphp
+
 <nav x-data="{ open: false }" class="bg-slate-950 border-b border-slate-800 shadow-lg shadow-slate-950/10">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -7,31 +13,24 @@
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-3">
                         <span class="flex h-10 w-10 items-center justify-center rounded-lg border border-emerald-300/30 bg-emerald-400/10 text-emerald-200">
-                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5 12 5l9 5.5" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 10.5h14M6.5 10.5v7M10 10.5v7M14 10.5v7M17.5 10.5v7M4.5 18h15" />
-                            </svg>
+                            <span class="text-sm font-bold tracking-widest">{{ config('bank.short_name') }}</span>
                         </span>
                         <span class="hidden sm:block">
-                            <span class="block text-sm font-semibold text-white leading-5">Bank System</span>
-                            <span class="block text-[11px] font-medium text-slate-400 leading-4">Operations Console</span>
+                            <span class="block text-sm font-semibold text-white leading-5">{{ config('bank.name') }}</span>
+                            <span class="block text-[11px] font-medium text-slate-400 leading-4">{{ config('bank.tagline') }}</span>
                         </span>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.*')">
-                        {{ __('Customers') }}
-                    </x-nav-link>
-                    @if (Auth::user()?->canManageUsers())
-                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
-                            {{ __('Users') }}
-                        </x-nav-link>
-                    @endif
+                    @foreach ($navigationItems as $item)
+                        @if (empty($item['ability']) || (Auth::check() && call_user_func([Auth::user(), $item['ability']])))
+                            <x-nav-link :href="route($item['route'])" :active="request()->routeIs($item['active'])" @click.stop>
+                                {{ __($item['label']) }}
+                            </x-nav-link>
+                        @endif
+                    @endforeach
                 </div>
             </div>
 
@@ -57,17 +56,16 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
+                        <x-dropdown-link :href="route($profileRoute)">
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
+                        <form method="POST" action="{{ route($logoutRoute) }}">
                             @csrf
 
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
+                            <x-dropdown-link :href="route($logoutRoute)"
+                                    onclick="event.preventDefault(); this.closest('form').submit();">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
@@ -90,17 +88,13 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden border-t border-slate-800 bg-slate-950">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.*')">
-                {{ __('Customers') }}
-            </x-responsive-nav-link>
-            @if (Auth::user()?->canManageUsers())
-                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
-                    {{ __('Users') }}
-                </x-responsive-nav-link>
-            @endif
+            @foreach ($navigationItems as $item)
+                @if (empty($item['ability']) || (Auth::check() && call_user_func([Auth::user(), $item['ability']])))
+                    <x-responsive-nav-link :href="route($item['route'])" :active="request()->routeIs($item['active'])" @click.stop="open = false">
+                        {{ __($item['label']) }}
+                    </x-responsive-nav-link>
+                @endif
+            @endforeach
         </div>
 
         <!-- Responsive Settings Options -->
@@ -111,17 +105,16 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
+                <x-responsive-nav-link :href="route($profileRoute)">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
+                <form method="POST" action="{{ route($logoutRoute) }}">
                     @csrf
 
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
+                    <x-responsive-nav-link :href="route($logoutRoute)"
+                            onclick="event.preventDefault(); this.closest('form').submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
                 </form>

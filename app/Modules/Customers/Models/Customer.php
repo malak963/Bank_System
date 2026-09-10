@@ -3,6 +3,8 @@
 namespace App\Modules\Customers\Models;
 
 use App\Models\User;
+use App\Modules\Accounts\Models\Account;
+use App\Modules\Loans\Models\Loan;
 use App\Modules\Customers\Database\Factories\CustomerFactory;
 use App\Modules\Customers\Enums\CustomerStatus;
 use App\Modules\Customers\Enums\IdentityDocumentType;
@@ -12,6 +14,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model
@@ -64,6 +67,16 @@ class Customer extends Model
     public function kycReviewer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'kyc_reviewed_by');
+    }
+
+    public function accounts(): HasMany
+    {
+        return $this->hasMany(Account::class);
+    }
+
+    public function loans(): HasMany
+    {
+        return $this->hasMany(Loan::class);
     }
 
     protected function fullName(): Attribute

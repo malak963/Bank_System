@@ -1,4 +1,10 @@
 <x-guest-layout>
+    <div class="mb-8">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">{{ config('bank.dashboard.eyebrow') }}</p>
+        <h1 class="mt-3 text-3xl font-semibold tracking-tight text-slate-950">{{ __('Create operator account') }}</h1>
+        <p class="mt-2 text-sm leading-6 text-slate-500">{{ __('Set up secure access to the banking operations console.') }}</p>
+    </div>
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
