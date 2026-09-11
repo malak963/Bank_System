@@ -1,4 +1,9 @@
 <x-guest-layout>
+    <div class="mb-8">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">{{ config('bank.name') }}</p>
+        <h1 class="mt-3 text-3xl font-semibold tracking-tight text-slate-950">{{ __('Reset access') }}</h1>
+    </div>
+
     <div class="mb-4 text-sm text-gray-600">
         {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
     </div>

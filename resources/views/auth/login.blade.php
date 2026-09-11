@@ -1,4 +1,10 @@
 <x-guest-layout>
+    <div class="mb-8">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">{{ config('bank.dashboard.eyebrow') }}</p>
+        <h1 class="mt-3 text-3xl font-semibold tracking-tight text-slate-950">{{ __('Welcome back') }}</h1>
+        <p class="mt-2 text-sm leading-6 text-slate-500">{{ __('Sign in to continue managing your banking operations.') }}</p>
+    </div>
+
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 

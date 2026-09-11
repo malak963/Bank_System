@@ -1,3 +1,187 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    :root {
+        --bank-ink: #10243d;
+        --bank-ink-soft: #29415d;
+        --bank-mint: #0f9f8f;
+        --bank-mint-dark: #08776f;
+        --bank-surface: #ffffff;
+        --bank-canvas: #f4f7f8;
+        --bank-line: #dfe7ec;
+        --bank-muted: #6b7b8d;
+    }
+
+    html {
+        background: var(--bank-canvas);
+    }
+
+    body {
+        color: var(--bank-ink);
+        background: var(--bank-canvas);
+        font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+
+    ::selection {
+        color: #ffffff;
+        background: var(--bank-mint);
+    }
+}
+
+@layer components {
+    .bank-shell {
+        min-height: 100vh;
+        background:
+            linear-gradient(180deg, #eef4f5 0, var(--bank-canvas) 18rem, var(--bank-canvas) 100%);
+    }
+
+    .bank-main {
+        min-height: calc(100vh - 4rem);
+        background: transparent;
+    }
+
+    .bank-page-header {
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid rgba(209, 221, 229, 0.9);
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 8px 30px rgba(16, 36, 61, 0.04);
+        backdrop-filter: blur(14px);
+    }
+
+    .bank-page-header::after {
+        position: absolute;
+        right: 2rem;
+        bottom: 0;
+        width: 7rem;
+        height: 2px;
+        content: "";
+        background: var(--bank-mint);
+    }
+
+    .bank-page-header__inner {
+        position: relative;
+        z-index: 1;
+    }
+
+    .bank-page-header h1,
+    .bank-page-header h2 {
+        color: var(--bank-ink);
+        letter-spacing: -0.025em;
+    }
+
+    .bank-main .rounded-lg {
+        border-radius: 0.5rem;
+    }
+
+    .bank-main .border-slate-200.bg-white,
+    .bank-main .border-slate-200.bg-slate-50 {
+        border-color: var(--bank-line);
+        box-shadow: 0 12px 30px rgba(16, 36, 61, 0.055);
+    }
+
+    .bank-main table {
+        color: var(--bank-ink-soft);
+    }
+
+    .bank-main table thead {
+        background: #f7fafb;
+    }
+
+    .bank-main table thead th {
+        color: #687b8e;
+        letter-spacing: 0.08em;
+    }
+
+    .bank-main table tbody tr {
+        transition: background-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .bank-main table tbody tr:hover {
+        box-shadow: inset 3px 0 0 var(--bank-mint);
+    }
+
+    .bank-main input:not([type="checkbox"]):not([type="radio"]),
+    .bank-main select,
+    .bank-main textarea {
+        border-color: #cbd8e1;
+        border-radius: 0.5rem;
+        color: var(--bank-ink);
+        background-color: #ffffff;
+        box-shadow: 0 2px 5px rgba(16, 36, 61, 0.035);
+        transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .bank-main input:not([type="checkbox"]):not([type="radio"]):focus,
+    .bank-main select:focus,
+    .bank-main textarea:focus {
+        border-color: var(--bank-mint);
+        box-shadow: 0 0 0 3px rgba(15, 159, 143, 0.13);
+        outline: none;
+    }
+
+    .bank-main button,
+    .bank-main a.inline-flex {
+        transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease, border-color 160ms ease;
+    }
+
+    .bank-main button:hover,
+    .bank-main a.inline-flex:hover {
+        transform: translateY(-1px);
+    }
+
+    .bank-main .bg-slate-950 {
+        background-color: var(--bank-ink);
+    }
+
+    .bank-main .text-emerald-700 {
+        color: var(--bank-mint-dark);
+    }
+
+    .bank-main .bg-emerald-700 {
+        background-color: var(--bank-mint-dark);
+    }
+
+    .bank-main .bg-emerald-400 {
+        background-color: #43cbb5;
+    }
+
+    .bank-main nav[aria-label="Pagination Navigation"] {
+        border-color: var(--bank-line);
+    }
+
+    .bank-main .rounded-full {
+        letter-spacing: 0.01em;
+    }
+
+    .guest-shell {
+        min-height: 100vh;
+        background: var(--bank-canvas);
+    }
+
+    .guest-brand-panel {
+        background: var(--bank-ink);
+        color: #ffffff;
+    }
+
+    .guest-card {
+        border: 1px solid var(--bank-line);
+        border-radius: 0.5rem;
+        background: #ffffff;
+        box-shadow: 0 24px 60px rgba(16, 36, 61, 0.1);
+    }
+
+    .guest-card input:not([type="checkbox"]):not([type="radio"]) {
+        border-color: #cbd8e1;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 5px rgba(16, 36, 61, 0.035);
+    }
+
+    .guest-card input:not([type="checkbox"]):not([type="radio"]):focus {
+        border-color: var(--bank-mint);
+        box-shadow: 0 0 0 3px rgba(15, 159, 143, 0.13);
+        outline: none;
+    }
+}
