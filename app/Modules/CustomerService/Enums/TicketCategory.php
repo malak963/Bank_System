@@ -19,17 +19,17 @@ enum TicketCategory: string
     public function label(): string
     {
         return match ($this) {
-            self::Account => 'Account Issues',
-            self::Transaction => 'Transaction Issues',
-            self::Card => 'Card Issues',
-            self::Loan => 'Loan Issues',
-            self::Technical => 'Technical Support',
-            self::Billing => 'Billing Issues',
-            self::Fraud => 'Fraud Report',
-            self::General => 'General Inquiry',
-            self::Complaint => 'Complaint',
-            self::Feedback => 'Feedback',
-            self::FeatureRequest => 'Feature Request',
+            self::Account => __('Account Issues'),
+            self::Transaction => __('Transaction Issues'),
+            self::Card => __('Card Issues'),
+            self::Loan => __('Loan Issues'),
+            self::Technical => __('Technical Support'),
+            self::Billing => __('Billing Issues'),
+            self::Fraud => __('Fraud Report'),
+            self::General => __('General Inquiry'),
+            self::Complaint => __('Complaint'),
+            self::Feedback => __('Feedback'),
+            self::FeatureRequest => __('Feature Request'),
         };
     }
 

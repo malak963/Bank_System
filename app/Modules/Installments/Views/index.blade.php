@@ -1,14 +1,127 @@
 <x-app-layout>
-    <x-slot name="header"><div><p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Loan Operations') }}</p><h2 class="mt-1 text-2xl font-semibold text-slate-950">{{ __('Installments') }}</h2></div></x-slot>
+    <x-slot name="header">
+        <div>
+            <p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Loan Operations') }}</p>
+            <h2 class="mt-1 text-2xl font-semibold text-slate-950">{{ __('Installments') }}</h2>
+        </div>
+    </x-slot>
+
     @php $filterValue = fn (string $key): string => (string) ($filters[$key] ?? ''); @endphp
+
     <div class="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 gap-4 lg:grid-cols-4"><div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"><p class="text-xs font-semibold uppercase text-slate-500">{{ __('Total') }}</p><p class="mt-2 text-3xl font-semibold text-slate-950">{{ number_format($summary['total']) }}</p></div><div class="rounded-lg border border-emerald-200 bg-emerald-50 p-5 shadow-sm"><p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Paid') }}</p><p class="mt-2 text-3xl font-semibold text-emerald-950">{{ number_format($summary['paid']) }}</p></div><div class="rounded-lg border border-red-200 bg-red-50 p-5 shadow-sm"><p class="text-xs font-semibold uppercase text-red-700">{{ __('Overdue') }}</p><p class="mt-2 text-3xl font-semibold text-red-950">{{ number_format($summary['overdue']) }}</p></div><div class="rounded-lg border border-amber-200 bg-amber-50 p-5 shadow-sm"><p class="text-xs font-semibold uppercase text-amber-700">{{ __('Due Today') }}</p><p class="mt-2 text-3xl font-semibold text-amber-950">{{ number_format($summary['due_today']) }}</p></div></div>
-        <form method="GET" action="{{ route('installments.index') }}" class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"><div class="grid grid-cols-1 gap-4 lg:grid-cols-12"><div class="lg:col-span-5"><x-input-label for="search" :value="__('Search')" /><x-text-input id="search" name="search" type="search" class="mt-1 block w-full" :value="$filterValue('search')" placeholder="{{ __('Loan reference or customer') }}" /></div><div class="lg:col-span-2"><x-input-label for="status" :value="__('Status')" /><select id="status" name="status" class="mt-1 block w-full rounded-lg border-slate-300 bg-white text-sm shadow-sm"><option value="">{{ __('Any') }}</option><option value="pending" @selected($filterValue('status') === 'pending')>{{ __('Pending') }}</option><option value="partially_paid" @selected($filterValue('status') === 'partially_paid')>{{ __('Partially Paid') }}</option><option value="paid" @selected($filterValue('status') === 'paid')>{{ __('Paid') }}</option><option value="overdue" @selected($filterValue('status') === 'overdue')>{{ __('Overdue') }}</option></select></div><div class="lg:col-span-2"><x-input-label for="due_from" :value="__('Due From')" /><x-text-input id="due_from" name="due_from" type="date" class="mt-1 block w-full" :value="$filterValue('due_from')" /></div><div class="lg:col-span-2"><x-input-label for="due_to" :value="__('Due To')" /><x-text-input id="due_to" name="due_to" type="date" class="mt-1 block w-full" :value="$filterValue('due_to')" /></div><div class="flex items-end gap-2 lg:col-span-1"><button type="submit" class="inline-flex min-h-10 w-full items-center justify-center rounded-lg bg-slate-950 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800" title="{{ __('Filter') }}">{{ __('Go') }}</button></div></div></form>
-        <div class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm"><div class="overflow-x-auto"><table class="min-w-full divide-y divide-slate-200"><thead class="bg-slate-50"><tr><th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Loan') }}</th><th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Customer') }}</th><th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Due Date') }}</th><th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Amount') }}</th><th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Paid') }}</th><th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Status') }}</th><th class="px-5 py-3 text-right text-xs font-semibold uppercase text-slate-500">{{ __('Actions') }}</th></tr></thead><tbody class="divide-y divide-slate-100">
-            @forelse ($installments as $installment)
-                @php $status = $installment->displayStatus(); $statusClass = match ($status->value) { 'paid' => 'bg-emerald-50 text-emerald-700 ring-emerald-200', 'overdue' => 'bg-red-50 text-red-700 ring-red-200', 'partially_paid' => 'bg-amber-50 text-amber-700 ring-amber-200', default => 'bg-slate-100 text-slate-700 ring-slate-200' }; @endphp
-                <tr class="hover:bg-slate-50"><td class="px-5 py-4 text-sm"><a href="{{ route('loans.show', $installment->loan) }}" class="font-semibold text-slate-950 hover:text-emerald-700">{{ $installment->loan?->loan_reference }}</a><p class="text-xs text-slate-500">#{{ $installment->installment_number }}</p></td><td class="px-5 py-4 text-sm text-slate-700">{{ $installment->loan?->customer?->full_name }}</td><td class="px-5 py-4 text-sm {{ $status->value === 'overdue' ? 'font-semibold text-red-700' : 'text-slate-700' }}">{{ $installment->due_date?->toDateString() }}</td><td class="px-5 py-4 text-sm font-semibold text-slate-900">{{ number_format((float) $installment->amount_due, 2) }}</td><td class="px-5 py-4 text-sm text-slate-700">{{ number_format((float) $installment->amount_paid, 2) }}</td><td class="px-5 py-4 text-sm"><span class="rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset {{ $statusClass }}">{{ $status->label() }}</span></td><td class="px-5 py-4 text-right text-sm"><a href="{{ route('loans.show', $installment->loan) }}" class="font-semibold text-emerald-700 hover:text-emerald-900">{{ __('View Loan') }}</a></td></tr>
-            @empty<tr><td colspan="7" class="px-6 py-14 text-center text-sm text-slate-500">{{ __('No installments found.') }}</td></tr>@endforelse
-        </tbody></table></div></div>{{ $installments->links() }}
+        <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                <p class="text-xs font-semibold uppercase text-slate-500">{{ __('Total') }}</p>
+                <p class="mt-2 text-3xl font-semibold text-slate-950 font-mono" dir="ltr">{{ number_format($summary['total']) }}</p>
+            </div>
+            <div class="rounded-xl border border-emerald-200 bg-emerald-50 p-5 shadow-sm">
+                <p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Paid') }}</p>
+                <p class="mt-2 text-3xl font-semibold text-emerald-950 font-mono" dir="ltr">{{ number_format($summary['paid']) }}</p>
+            </div>
+            <div class="rounded-xl border border-red-200 bg-red-50 p-5 shadow-sm">
+                <p class="text-xs font-semibold uppercase text-red-700">{{ __('Overdue') }}</p>
+                <p class="mt-2 text-3xl font-semibold text-red-950 font-mono" dir="ltr">{{ number_format($summary['overdue']) }}</p>
+            </div>
+            <div class="rounded-xl border border-amber-200 bg-amber-50 p-5 shadow-sm">
+                <p class="text-xs font-semibold uppercase text-amber-700">{{ __('Due Today') }}</p>
+                <p class="mt-2 text-3xl font-semibold text-amber-950 font-mono" dir="ltr">{{ number_format($summary['due_today']) }}</p>
+            </div>
+        </div>
+
+        <form method="GET" action="{{ route('installments.index') }}" class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
+                <div class="lg:col-span-5">
+                    <x-input-label for="search" :value="__('Search')" />
+                    <x-text-input id="search" name="search" type="search" class="mt-1 block w-full" :value="$filterValue('search')" placeholder="{{ __('Loan reference or customer') }}" />
+                </div>
+                <div class="lg:col-span-2">
+                    <x-input-label for="status" :value="__('Status')" />
+                    <select id="status" name="status" class="mt-1 block w-full rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                        <option value="">{{ __('Any') }}</option>
+                        <option value="pending" @selected($filterValue('status') === 'pending')>{{ __('Pending') }}</option>
+                        <option value="partially_paid" @selected($filterValue('status') === 'partially_paid')>{{ __('Partially Paid') }}</option>
+                        <option value="paid" @selected($filterValue('status') === 'paid')>{{ __('Paid') }}</option>
+                        <option value="overdue" @selected($filterValue('status') === 'overdue')>{{ __('Overdue') }}</option>
+                    </select>
+                </div>
+                <div class="lg:col-span-2">
+                    <x-input-label for="due_from" :value="__('Due From')" />
+                    <x-text-input id="due_from" name="due_from" type="date" class="mt-1 block w-full" :value="$filterValue('due_from')" />
+                </div>
+                <div class="lg:col-span-2">
+                    <x-input-label for="due_to" :value="__('Due To')" />
+                    <x-text-input id="due_to" name="due_to" type="date" class="mt-1 block w-full" :value="$filterValue('due_to')" />
+                </div>
+                <div class="flex items-end gap-2 lg:col-span-1">
+                    <button type="submit" class="inline-flex min-h-10 w-full items-center justify-center rounded-lg bg-slate-950 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition" title="{{ __('Filter') }}">{{ __('Go') }}</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-200">
+                    <thead class="bg-slate-50">
+                        <tr>
+                            <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Loan') }}</th>
+                            <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Customer') }}</th>
+                            <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Due Date') }}</th>
+                            <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Amount') }}</th>
+                            <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Paid') }}</th>
+                            <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Status') }}</th>
+                            <th class="px-5 py-3 text-end text-xs font-semibold uppercase text-slate-500">{{ __('Actions') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @forelse ($installments as $installment)
+                            @php
+                                $status = $installment->displayStatus();
+                                $statusClass = match ($status->value) {
+                                    'paid' => 'bg-emerald-50 text-emerald-700 ring-emerald-200',
+                                    'overdue' => 'bg-red-50 text-red-700 ring-red-200',
+                                    'partially_paid' => 'bg-amber-50 text-amber-700 ring-amber-200',
+                                    default => 'bg-slate-100 text-slate-700 ring-slate-200'
+                                };
+                            @endphp
+                            <tr class="hover:bg-slate-50/80 transition">
+                                <td class="px-5 py-4 text-sm">
+                                    <a href="{{ route('loans.show', $installment->loan) }}" class="font-mono font-semibold text-slate-950 hover:text-emerald-700" dir="ltr">
+                                        {{ $installment->loan?->loan_reference }}
+                                    </a>
+                                    <p class="text-xs text-slate-500 font-mono" dir="ltr">#{{ $installment->installment_number }}</p>
+                                </td>
+                                <td class="px-5 py-4 text-sm font-medium text-slate-900">
+                                    {{ $installment->loan?->customer?->full_name }}
+                                </td>
+                                <td class="px-5 py-4 text-sm font-mono {{ $status->value === 'overdue' ? 'font-semibold text-red-700' : 'text-slate-700' }}" dir="ltr">
+                                    {{ $installment->due_date?->toDateString() }}
+                                </td>
+                                <td class="px-5 py-4 text-sm font-semibold text-slate-900 font-mono" dir="ltr">
+                                    {{ number_format((float) $installment->amount_due, 2) }}
+                                </td>
+                                <td class="px-5 py-4 text-sm text-slate-700 font-mono" dir="ltr">
+                                    {{ number_format((float) $installment->amount_paid, 2) }}
+                                </td>
+                                <td class="px-5 py-4 text-sm">
+                                    <span class="rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset {{ $statusClass }}">
+                                        {{ $status->label() }}
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4 text-end text-sm">
+                                    <a href="{{ route('loans.show', $installment->loan) }}" class="font-semibold text-emerald-700 hover:text-emerald-900">{{ __('View Loan') }}</a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="px-6 py-14 text-center text-sm text-slate-500">
+                                    <p class="font-medium">{{ __('No installments found.') }}</p>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {{ $installments->links() }}
     </div>
 </x-app-layout>

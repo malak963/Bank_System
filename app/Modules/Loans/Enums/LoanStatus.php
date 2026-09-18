@@ -17,15 +17,15 @@ enum LoanStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::Pending => 'Pending',
-            self::UnderReview => 'Under Review',
-            self::Approved => 'Approved',
-            self::Rejected => 'Rejected',
-            self::Disbursed => 'Disbursed',
-            self::Active => 'Active',
-            self::PaidOff => 'Paid Off',
-            self::Defaulted => 'Defaulted',
-            self::Cancelled => 'Cancelled',
+            self::Pending => __('Pending'),
+            self::UnderReview => __('Under Review'),
+            self::Approved => __('Approved'),
+            self::Rejected => __('Rejected'),
+            self::Disbursed => __('Disbursed'),
+            self::Active => __('Active'),
+            self::PaidOff => __('Paid Off'),
+            self::Defaulted => __('Defaulted'),
+            self::Cancelled => __('Cancelled'),
         };
     }
 }

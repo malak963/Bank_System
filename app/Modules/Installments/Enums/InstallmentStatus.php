@@ -12,10 +12,10 @@ enum InstallmentStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::Pending => 'Pending',
-            self::PartiallyPaid => 'Partially Paid',
-            self::Paid => 'Paid',
-            self::Overdue => 'Overdue',
+            self::Pending => __('Pending'),
+            self::PartiallyPaid => __('Partially Paid'),
+            self::Paid => __('Paid'),
+            self::Overdue => __('Overdue'),
         };
     }
 }

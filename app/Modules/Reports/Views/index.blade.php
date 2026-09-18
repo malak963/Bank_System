@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">Reports</h1>
+        <h1 class="text-3xl font-bold text-gray-900">{{ __('Reports') }}</h1>
         <div class="flex gap-3">
             <form action="{{ route('reports.process-scheduled') }}" method="POST" class="inline">
                 @csrf
@@ -49,12 +49,12 @@
             <thead class="bg-gray-50">
                 <tr>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Type') }}</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Format</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Branch</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Generated</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Status') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Branch') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Generated') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Actions') }}</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -73,19 +73,19 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             @switch($report->status->value)
                                 @case('pending')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{{ __('Pending') }}</span>
                                     @break
                                 @case('generating')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Generating</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{{ __('Generating') }}</span>
                                     @break
                                 @case('completed')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">Completed</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">{{ __('Completed') }}</span>
                                     @break
                                 @case('failed')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Failed</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ __('Failed') }}</span>
                                     @break
                                 @case('scheduled')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">Scheduled</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">{{ __('Scheduled') }}</span>
                                     @break
                                 @default
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ $report->status->label() }}</span>
@@ -98,21 +98,21 @@
                             {{ $report->generated_at?->format('M d, Y H:i') ?? $report->scheduled_at?->format('M d, Y H:i') ?? 'N/A' }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="{{ route('reports.show', $report) }}" class="text-emerald-600 hover:text-emerald-900">View</a>
+                            <a href="{{ route('reports.show', $report) }}" class="text-emerald-600 hover:text-emerald-900">{{ __('View') }}</a>
                             @if($report->canBeDownloaded())
-                                <a href="{{ route('reports.download', $report) }}" class="text-blue-600 hover:text-blue-900 ml-2">Download</a>
+                                <a href="{{ route('reports.download', $report) }}" class="text-blue-600 hover:text-blue-900 ml-2">{{ __('Download') }}</a>
                             @endif
                             @if($report->canBeRegenerated())
                                 <form action="{{ route('reports.regenerate', $report) }}" method="POST" class="inline ml-2">
                                     @csrf
-                                    <button type="submit" class="text-yellow-600 hover:text-yellow-900">Regenerate</button>
+                                    <button type="submit" class="text-yellow-600 hover:text-yellow-900">{{ __('Regenerate') }}</button>
                                 </form>
                             @endif
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="px-6 py-4 text-center text-gray-500">No reports found</td>
+                        <td colspan="7" class="px-6 py-4 text-center text-gray-500">{{ __('No reports found') }}</td>
                     </tr>
                 @endforelse
             </tbody>

@@ -14,12 +14,12 @@ enum CardBrand: string
     public function label(): string
     {
         return match ($this) {
-            self::Visa => 'Visa',
-            self::Mastercard => 'Mastercard',
-            self::AmericanExpress => 'American Express',
-            self::Discover => 'Discover',
-            self::Maestro => 'Maestro',
-            self::UnionPay => 'UnionPay',
+            self::Visa => __('Visa'),
+            self::Mastercard => __('Mastercard'),
+            self::AmericanExpress => __('American Express'),
+            self::Discover => __('Discover'),
+            self::Maestro => __('Maestro'),
+            self::UnionPay => __('UnionPay'),
         };
     }
 

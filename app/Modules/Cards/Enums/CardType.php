@@ -12,10 +12,10 @@ enum CardType: string
     public function label(): string
     {
         return match ($this) {
-            self::Debit => 'Debit Card',
-            self::Credit => 'Credit Card',
-            self::Prepaid => 'Prepaid Card',
-            self::Virtual => 'Virtual Card',
+            self::Debit => __('Debit Card'),
+            self::Credit => __('Credit Card'),
+            self::Prepaid => __('Prepaid Card'),
+            self::Virtual => __('Virtual Card'),
         };
     }
 

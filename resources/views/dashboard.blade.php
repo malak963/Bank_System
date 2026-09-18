@@ -2,18 +2,22 @@
     <x-slot name="header">
         <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div>
-                <p class="text-xs font-semibold uppercase tracking-widest text-emerald-700">{{ config('bank.dashboard.eyebrow') }}</p>
-                <h1 class="mt-2 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">{{ __('Good morning') }}, {{ Auth::user()->name }}</h1>
-                <p class="mt-2 max-w-2xl text-sm text-slate-500">{{ config('bank.descriptor') }}. {{ __('A clear view of your customers, liquidity and credit portfolio.') }}</p>
+                <p class="text-xs font-semibold uppercase tracking-widest text-emerald-700">{{ __(config('bank.dashboard.eyebrow')) }}</p>
+                @php
+                    $hour = now()->hour;
+                    $greeting = $hour < 12 ? __('Good morning') : ($hour < 17 ? __('Good afternoon') : __('Good evening'));
+                @endphp
+                <h1 class="mt-2 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">{{ $greeting }}, {{ Auth::user()->name }}</h1>
+                <p class="mt-2 max-w-2xl text-sm text-slate-500">{{ __(config('bank.descriptor')) }}. {{ __('A clear view of your customers, liquidity and credit portfolio.') }}</p>
             </div>
             <div class="flex flex-wrap items-center gap-3">
-                <span class="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600">
+                <span class="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 shadow-sm">
                     <svg class="h-4 w-4 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v3M17.25 3v3M4.5 9.25h15M5.25 5h13.5A1.75 1.75 0 0 1 20.5 6.75v12A1.75 1.75 0 0 1 18.75 20.5H5.25a1.75 1.75 0 0 1-1.75-1.75v-12A1.75 1.75 0 0 1 5.25 5Z" /></svg>
-                    {{ now()->format('D, d M Y') }}
+                    <span>{{ now()->translatedFormat('l, j F Y') }}</span>
                 </span>
                 <a href="{{ route('loans.create') }}" class="inline-flex items-center gap-2 rounded-lg bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
                     <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14" /></svg>
-                    {{ __('New Loan') }}
+                    <span>{{ __('New Loan') }}</span>
                 </a>
             </div>
         </div>
@@ -28,33 +32,278 @@
                 </div>
             @endif
 
-            <section class="overflow-hidden rounded-lg bg-slate-950 shadow-xl shadow-slate-900/10">
+            <!-- Hero Pulse Section -->
+            <section class="overflow-hidden rounded-xl bg-slate-950 shadow-xl shadow-slate-900/10">
                 <div class="grid gap-8 px-6 py-7 sm:px-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
                     <div>
-                        <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-emerald-300"><span class="h-2 w-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-300"></span>{{ config('bank.dashboard.pulse_label') }}</div>
-                        <h2 class="mt-4 max-w-xl text-2xl font-semibold tracking-tight text-white sm:text-3xl">{{ config('bank.dashboard.title') }}</h2>
-                        <p class="mt-3 max-w-xl text-sm leading-6 text-slate-400">{{ config('bank.dashboard.description') }}</p>
-                        <div class="mt-6 flex flex-wrap gap-3"><a href="{{ route('accounts.index') }}" class="inline-flex items-center gap-2 rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-semibold text-slate-100 transition hover:border-emerald-400 hover:text-emerald-300"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5 12 5l9 5.5M5 10.5h14M6.5 10.5v7M10 10.5v7M14 10.5v7M17.5 10.5v7M4.5 18h15" /></svg>{{ __('View accounts') }}</a><a href="{{ route('installments.index') }}" class="inline-flex items-center gap-2 rounded-lg bg-emerald-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-emerald-300"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3.75h10A1.25 1.25 0 0 1 18.25 5v14A1.25 1.25 0 0 1 17 20.25H7A1.25 1.25 0 0 1 5.75 19V5A1.25 1.25 0 0 1 7 3.75ZM9 8h6M9 12h6M9 16h3" /></svg>{{ __('Review collections') }}</a></div>
+                        <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-emerald-300">
+                            <span class="h-2 w-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-300 animate-pulse"></span>
+                            {{ __(config('bank.dashboard.pulse_label')) }}
+                        </div>
+                        <h2 class="mt-4 max-w-xl text-2xl font-semibold tracking-tight text-white sm:text-3xl">{{ __(config('bank.dashboard.title')) }}</h2>
+                        <p class="mt-3 max-w-xl text-sm leading-6 text-slate-400">{{ __(config('bank.dashboard.description')) }}</p>
+                        <div class="mt-6 flex flex-wrap gap-3">
+                            <a href="{{ route('accounts.index') }}" class="inline-flex items-center gap-2 rounded-lg border border-slate-700 px-4 py-2.5 text-sm font-semibold text-slate-100 transition hover:border-emerald-400 hover:text-emerald-300">
+                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5 12 5l9 5.5M5 10.5h14M6.5 10.5v7M10 10.5v7M14 10.5v7M17.5 10.5v7M4.5 18h15" /></svg>
+                                {{ __('View accounts') }}
+                            </a>
+                            <a href="{{ route('installments.index') }}" class="inline-flex items-center gap-2 rounded-lg bg-emerald-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-emerald-300">
+                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 3.75h10A1.25 1.25 0 0 1 18.25 5v14A1.25 1.25 0 0 1 17 20.25H7A1.25 1.25 0 0 1 5.75 19V5A1.25 1.25 0 0 1 7 3.75ZM9 8h6M9 12h6M9 16h3" /></svg>
+                                {{ __('Review collections') }}
+                            </a>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-3 lg:pl-8"><div class="rounded-lg border border-white/10 bg-white/5 p-4"><p class="text-xs font-medium text-slate-400">{{ __('Collected this month') }}</p><p class="mt-2 text-xl font-semibold text-white">{{ number_format($metrics['collected_this_month'], 2) }} <span class="text-xs font-medium text-slate-400">{{ config('bank.currency') }}</span></p><p class="mt-1 text-xs text-emerald-300">{{ __('Confirmed payments') }}</p></div><div class="rounded-lg border border-white/10 bg-white/5 p-4"><p class="text-xs font-medium text-slate-400">{{ __('Due this month') }}</p><p class="mt-2 text-xl font-semibold text-white">{{ number_format($metrics['due_this_month'], 2) }} <span class="text-xs font-medium text-slate-400">{{ config('bank.currency') }}</span></p><p class="mt-1 text-xs text-amber-300">{{ __('Expected collections') }}</p></div></div>
+                    <div class="grid grid-cols-2 gap-3 lg:ps-8">
+                        <div class="rounded-lg border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+                            <p class="text-xs font-medium text-slate-400">{{ __('Collected this month') }}</p>
+                            <p class="mt-2 text-xl font-semibold text-white">
+                                <span dir="ltr" class="font-mono">{{ number_format($metrics['collected_this_month'], 2) }}</span>
+                                <span class="text-xs font-medium text-slate-400">{{ __(config('bank.currency')) }}</span>
+                            </p>
+                            <p class="mt-1 text-xs text-emerald-300">{{ __('Confirmed payments') }}</p>
+                        </div>
+                        <div class="rounded-lg border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+                            <p class="text-xs font-medium text-slate-400">{{ __('Due this month') }}</p>
+                            <p class="mt-2 text-xl font-semibold text-white">
+                                <span dir="ltr" class="font-mono">{{ number_format($metrics['due_this_month'], 2) }}</span>
+                                <span class="text-xs font-medium text-slate-400">{{ __(config('bank.currency')) }}</span>
+                            </p>
+                            <p class="mt-1 text-xs text-amber-300">{{ __('Expected collections') }}</p>
+                        </div>
+                    </div>
                 </div>
             </section>
 
+            <!-- Metrics Grid -->
             <section class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"><div class="flex items-start justify-between"><div class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16 20v-1.75A3.25 3.25 0 0 0 12.75 15h-5.5A3.25 3.25 0 0 0 4 18.25V20M10 11.25a3.25 3.25 0 1 0 0-6.5 3.25 3.25 0 0 0 0 6.5ZM16 5.1a3.2 3.2 0 0 1 0 6.2M19.5 20v-1.55A3.2 3.2 0 0 0 17 15.4" /></svg></div><span class="text-xs font-semibold text-emerald-700">{{ __('Customer base') }}</span></div><p class="mt-5 text-3xl font-semibold tracking-tight text-slate-950">{{ number_format($metrics['customers']) }}</p><p class="mt-1 text-sm text-slate-500">{{ __('Customers on file') }}</p></div>
-                <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"><div class="flex items-start justify-between"><div class="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-50 text-sky-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5 12 5l9 5.5M5 10.5h14M6.5 10.5v7M10 10.5v7M14 10.5v7M17.5 10.5v7M4.5 18h15" /></svg></div><span class="text-xs font-semibold text-sky-700">{{ __('Liquidity') }}</span></div><p class="mt-5 text-3xl font-semibold tracking-tight text-slate-950">{{ number_format($metrics['available_balance'], 2) }} <span class="text-xs font-medium text-slate-500">{{ config('bank.currency') }}</span></p><p class="mt-1 text-sm text-slate-500">{{ number_format($metrics['open_accounts']) }} {{ __('open accounts') }}</p></div>
-                <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"><div class="flex items-start justify-between"><div class="flex h-10 w-10 items-center justify-center rounded-lg bg-violet-50 text-violet-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 4.75h12A1.25 1.25 0 0 1 19.25 6v12A1.25 1.25 0 0 1 18 19.25H6A1.25 1.25 0 0 1 4.75 18V6A1.25 1.25 0 0 1 6 4.75ZM8 9h8M8 13h5M8 17h3" /></svg></div><span class="text-xs font-semibold text-violet-700">{{ __('Credit pipeline') }}</span></div><p class="mt-5 text-3xl font-semibold tracking-tight text-slate-950">{{ number_format($metrics['pending_loans']) }}</p><p class="mt-1 text-sm text-slate-500">{{ __('Applications waiting for review') }}</p></div>
-                <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"><div class="flex items-start justify-between"><div class="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50 text-amber-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.75 5.75h14.5v12.5H4.75zM8 3.75v4M16 3.75v4M8 11h3M13 11h3M8 15h3" /></svg></div><span class="text-xs font-semibold text-amber-700">{{ __('Exposure') }}</span></div><p class="mt-5 text-3xl font-semibold tracking-tight text-slate-950">{{ number_format($metrics['outstanding_principal'], 2) }} <span class="text-xs font-medium text-slate-500">{{ config('bank.currency') }}</span></p><p class="mt-1 text-sm text-slate-500">{{ number_format($metrics['active_loans']) }} {{ __('active loans') }}</p></div>
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+                    <div class="flex items-start justify-between">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16 20v-1.75A3.25 3.25 0 0 0 12.75 15h-5.5A3.25 3.25 0 0 0 4 18.25V20M10 11.25a3.25 3.25 0 1 0 0-6.5 3.25 3.25 0 0 0 0 6.5ZM16 5.1a3.2 3.2 0 0 1 0 6.2M19.5 20v-1.55A3.2 3.2 0 0 0 17 15.4" /></svg>
+                        </div>
+                        <span class="text-xs font-semibold text-emerald-700">{{ __('Customer base') }}</span>
+                    </div>
+                    <p class="mt-5 text-3xl font-semibold tracking-tight text-slate-950 font-mono" dir="ltr">{{ number_format($metrics['customers']) }}</p>
+                    <p class="mt-1 text-sm text-slate-500">{{ __('Customers on file') }}</p>
+                </div>
+
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+                    <div class="flex items-start justify-between">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-50 text-sky-700">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5 12 5l9 5.5M5 10.5h14M6.5 10.5v7M10 10.5v7M14 10.5v7M17.5 10.5v7M4.5 18h15" /></svg>
+                        </div>
+                        <span class="text-xs font-semibold text-sky-700">{{ __('Liquidity') }}</span>
+                    </div>
+                    <p class="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
+                        <span dir="ltr" class="font-mono">{{ number_format($metrics['available_balance'], 2) }}</span>
+                        <span class="text-xs font-medium text-slate-500">{{ __(config('bank.currency')) }}</span>
+                    </p>
+                    <p class="mt-1 text-sm text-slate-500"><span dir="ltr" class="font-mono">{{ number_format($metrics['open_accounts']) }}</span> {{ __('open accounts') }}</p>
+                </div>
+
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+                    <div class="flex items-start justify-between">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-violet-50 text-violet-700">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 4.75h12A1.25 1.25 0 0 1 19.25 6v12A1.25 1.25 0 0 1 18 19.25H6A1.25 1.25 0 0 1 4.75 18V6A1.25 1.25 0 0 1 6 4.75ZM8 9h8M8 13h5M8 17h3" /></svg>
+                        </div>
+                        <span class="text-xs font-semibold text-violet-700">{{ __('Credit pipeline') }}</span>
+                    </div>
+                    <p class="mt-5 text-3xl font-semibold tracking-tight text-slate-950 font-mono" dir="ltr">{{ number_format($metrics['pending_loans']) }}</p>
+                    <p class="mt-1 text-sm text-slate-500">{{ __('Applications waiting for review') }}</p>
+                </div>
+
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+                    <div class="flex items-start justify-between">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-50 text-amber-700">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.75 5.75h14.5v12.5H4.75zM8 3.75v4M16 3.75v4M8 11h3M13 11h3M8 15h3" /></svg>
+                        </div>
+                        <span class="text-xs font-semibold text-amber-700">{{ __('Exposure') }}</span>
+                    </div>
+                    <p class="mt-5 text-3xl font-semibold tracking-tight text-slate-950">
+                        <span dir="ltr" class="font-mono">{{ number_format($metrics['outstanding_principal'], 2) }}</span>
+                        <span class="text-xs font-medium text-slate-500">{{ __(config('bank.currency')) }}</span>
+                    </p>
+                    <p class="mt-1 text-sm text-slate-500"><span dir="ltr" class="font-mono">{{ number_format($metrics['active_loans']) }}</span> {{ __('active loans') }}</p>
+                </div>
             </section>
 
+            <!-- Activity and Collection Grid -->
             <section class="grid grid-cols-1 gap-6 xl:grid-cols-[1.35fr_0.65fr]">
-                <div class="rounded-lg border border-slate-200 bg-white shadow-sm"><div class="flex items-center justify-between border-b border-slate-200 px-5 py-4"><div><h2 class="font-semibold text-slate-950">{{ __('Recent loan applications') }}</h2><p class="mt-1 text-sm text-slate-500">{{ __('The latest movement in your credit pipeline') }}</p></div><a href="{{ route('loans.index') }}" class="text-sm font-semibold text-emerald-700 hover:text-emerald-900">{{ __('View all') }} &rarr;</a></div><div class="overflow-x-auto"><table class="min-w-full divide-y divide-slate-100"><thead class="bg-slate-50"><tr><th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Reference') }}</th><th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Customer') }}</th><th class="px-5 py-3 text-right text-xs font-semibold uppercase text-slate-500">{{ __('Amount') }}</th><th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Status') }}</th></tr></thead><tbody class="divide-y divide-slate-100">@forelse ($recentLoans as $loan) @php $loanStatusClass = match ($loan->status->value) { 'active', 'disbursed' => 'bg-sky-50 text-sky-700 ring-sky-200', 'approved' => 'bg-emerald-50 text-emerald-700 ring-emerald-200', 'rejected', 'defaulted' => 'bg-red-50 text-red-700 ring-red-200', 'paid_off' => 'bg-green-50 text-green-700 ring-green-200', default => 'bg-amber-50 text-amber-700 ring-amber-200' }; @endphp<tr class="transition hover:bg-slate-50"><td class="px-5 py-4 text-sm"><a href="{{ route('loans.show', $loan) }}" class="font-mono font-semibold text-slate-950 hover:text-emerald-700">{{ $loan->loan_reference }}</a><p class="mt-0.5 text-xs text-slate-500">{{ $loan->created_at?->diffForHumans() }}</p></td><td class="px-5 py-4 text-sm"><p class="font-medium text-slate-900">{{ $loan->customer?->full_name }}</p><p class="text-xs text-slate-500">{{ $loan->loanType?->name }}</p></td><td class="px-5 py-4 text-right text-sm font-semibold text-slate-900">{{ number_format((float) ($loan->approved_amount ?? $loan->requested_amount), 2) }}</td><td class="px-5 py-4 text-sm"><span class="rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset {{ $loanStatusClass }}">{{ $loan->status->label() }}</span></td></tr>@empty<tr><td colspan="4" class="px-5 py-12 text-center"><p class="text-sm font-semibold text-slate-700">{{ __('No loan activity yet.') }}</p><a href="{{ route('loans.create') }}" class="mt-2 inline-flex text-sm font-semibold text-emerald-700 hover:text-emerald-900">{{ __('Create the first application') }} &rarr;</a></td></tr>@endforelse</tbody></table></div></div>
-                <div class="rounded-lg border border-slate-200 bg-white shadow-sm"><div class="flex items-center justify-between border-b border-slate-200 px-5 py-4"><div><h2 class="font-semibold text-slate-950">{{ __('Collection watch') }}</h2><p class="mt-1 text-sm text-slate-500">{{ __('Next installments to handle') }}</p></div><a href="{{ route('installments.index') }}" class="text-sm font-semibold text-emerald-700 hover:text-emerald-900">{{ __('Open') }} &rarr;</a></div><div class="divide-y divide-slate-100">@forelse ($upcomingInstallments as $installment) @php $isOverdue = $installment->due_date?->isBefore(today()); @endphp<div class="flex items-center justify-between gap-3 px-5 py-4"><div class="min-w-0"><a href="{{ route('loans.show', $installment->loan) }}" class="block truncate text-sm font-semibold text-slate-900 hover:text-emerald-700">{{ $installment->loan?->customer?->full_name }}</a><p class="mt-1 text-xs text-slate-500">{{ $installment->loan?->loan_reference }} · {{ __('Installment') }} #{{ $installment->installment_number }}</p></div><div class="shrink-0 text-right"><p class="text-sm font-semibold text-slate-900">{{ number_format((float) $installment->remainingAmount(), 2) }}</p><p class="mt-1 text-xs font-medium {{ $isOverdue ? 'text-red-600' : 'text-slate-500' }}">{{ $isOverdue ? __('Overdue') : $installment->due_date?->toDateString() }}</p></div></div>@empty<div class="px-5 py-12 text-center"><p class="text-sm font-semibold text-slate-700">{{ __('Nothing urgent here.') }}</p><p class="mt-1 text-sm text-slate-500">{{ __('Upcoming unpaid installments will appear here.') }}</p></div>@endforelse</div></div>
+                <!-- Recent Loans -->
+                <div class="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+                    <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+                        <div>
+                            <h2 class="font-semibold text-slate-950">{{ __('Recent loan applications') }}</h2>
+                            <p class="mt-1 text-sm text-slate-500">{{ __('The latest movement in your credit pipeline') }}</p>
+                        </div>
+                        <a href="{{ route('loans.index') }}" class="text-sm font-semibold text-emerald-700 hover:text-emerald-900 inline-flex items-center gap-1">
+                            <span>{{ __('View all') }}</span>
+                            <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-slate-100">
+                            <thead class="bg-slate-50">
+                                <tr>
+                                    <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Reference') }}</th>
+                                    <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Customer') }}</th>
+                                    <th class="px-5 py-3 text-end text-xs font-semibold uppercase text-slate-500">{{ __('Amount') }}</th>
+                                    <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Status') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                @forelse ($recentLoans as $loan)
+                                    @php
+                                        $loanStatusClass = match ($loan->status->value) {
+                                            'active', 'disbursed' => 'bg-sky-50 text-sky-700 ring-sky-200',
+                                            'approved' => 'bg-emerald-50 text-emerald-700 ring-emerald-200',
+                                            'rejected', 'defaulted' => 'bg-red-50 text-red-700 ring-red-200',
+                                            'paid_off' => 'bg-green-50 text-green-700 ring-green-200',
+                                            default => 'bg-amber-50 text-amber-700 ring-amber-200'
+                                        };
+                                    @endphp
+                                    <tr class="transition hover:bg-slate-50/80">
+                                        <td class="px-5 py-4 text-sm">
+                                            <a href="{{ route('loans.show', $loan) }}" class="font-mono font-semibold text-slate-950 hover:text-emerald-700" dir="ltr">
+                                                {{ $loan->loan_reference }}
+                                            </a>
+                                            <p class="mt-0.5 text-xs text-slate-500">{{ $loan->created_at?->diffForHumans() }}</p>
+                                        </td>
+                                        <td class="px-5 py-4 text-sm">
+                                            <p class="font-medium text-slate-900">{{ $loan->customer?->full_name }}</p>
+                                            <p class="text-xs text-slate-500">{{ $loan->loanType?->name }}</p>
+                                        </td>
+                                        <td class="px-5 py-4 text-end text-sm font-semibold text-slate-900 font-mono" dir="ltr">
+                                            {{ number_format((float) ($loan->approved_amount ?? $loan->requested_amount), 2) }}
+                                        </td>
+                                        <td class="px-5 py-4 text-sm">
+                                            <span class="rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset {{ $loanStatusClass }}">
+                                                {{ $loan->status->label() }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="px-5 py-12 text-center">
+                                            <p class="text-sm font-semibold text-slate-700">{{ __('No loan activity yet.') }}</p>
+                                            <a href="{{ route('loans.create') }}" class="mt-2 inline-flex text-sm font-semibold text-emerald-700 hover:text-emerald-900">
+                                                {{ __('Create the first application') }} &rarr;
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Collection Watch -->
+                <div class="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+                    <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+                        <div>
+                            <h2 class="font-semibold text-slate-950">{{ __('Collection watch') }}</h2>
+                            <p class="mt-1 text-sm text-slate-500">{{ __('Next installments to handle') }}</p>
+                        </div>
+                        <a href="{{ route('installments.index') }}" class="text-sm font-semibold text-emerald-700 hover:text-emerald-900 inline-flex items-center gap-1">
+                            <span>{{ __('Open') }}</span>
+                            <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    </div>
+                    <div class="divide-y divide-slate-100">
+                        @forelse ($upcomingInstallments as $installment)
+                            @php $isOverdue = $installment->due_date?->isBefore(today()); @endphp
+                            <div class="flex items-center justify-between gap-3 px-5 py-4 transition hover:bg-slate-50/80">
+                                <div class="min-w-0">
+                                    <a href="{{ route('loans.show', $installment->loan) }}" class="block truncate text-sm font-semibold text-slate-900 hover:text-emerald-700">
+                                        {{ $installment->loan?->customer?->full_name }}
+                                    </a>
+                                    <p class="mt-1 text-xs text-slate-500">
+                                        <span dir="ltr" class="font-mono">{{ $installment->loan?->loan_reference }}</span> · {{ __('Installment') }} #{{ $installment->installment_number }}
+                                    </p>
+                                </div>
+                                <div class="shrink-0 text-end">
+                                    <p class="text-sm font-semibold text-slate-900 font-mono" dir="ltr">
+                                        {{ number_format((float) $installment->remainingAmount(), 2) }}
+                                    </p>
+                                    <p class="mt-1 text-xs font-medium {{ $isOverdue ? 'text-red-600 font-semibold' : 'text-slate-500' }}">
+                                        {{ $isOverdue ? __('Overdue') : $installment->due_date?->toDateString() }}
+                                    </p>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="px-5 py-12 text-center">
+                                <p class="text-sm font-semibold text-slate-700">{{ __('Nothing urgent here.') }}</p>
+                                <p class="mt-1 text-sm text-slate-500">{{ __('Upcoming unpaid installments will appear here.') }}</p>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
             </section>
 
+            <!-- Bottom Row: Portfolio mix & Quick Operations -->
             <section class="grid grid-cols-1 gap-6 lg:grid-cols-[0.8fr_1.2fr]">
-                <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"><div class="flex items-start justify-between"><div><h2 class="font-semibold text-slate-950">{{ __('Portfolio mix') }}</h2><p class="mt-1 text-sm text-slate-500">{{ __('Loan lifecycle at a glance') }}</p></div><a href="{{ route('loans.index') }}" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:border-emerald-300 hover:text-emerald-700" title="{{ __('View loans') }}"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 19V9m7 10V5m7 14v-7" /></svg></a></div><div class="mt-6 space-y-4">@php $portfolioTotal = max(1, array_sum($portfolio)); @endphp @foreach ([['active', 'Active', 'bg-sky-500'], ['pending', 'Pending review', 'bg-amber-500'], ['paid_off', 'Paid off', 'bg-emerald-500'], ['rejected', 'Rejected', 'bg-red-500']] as [$key, $label, $color])<div><div class="flex items-center justify-between text-sm"><span class="flex items-center gap-2 font-medium text-slate-700"><span class="h-2.5 w-2.5 rounded-full {{ $color }}"></span>{{ __($label) }}</span><span class="font-semibold text-slate-950">{{ $portfolio[$key] }}</span></div><div class="mt-2 h-2 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full {{ $color }}" style="width: {{ min(100, ($portfolio[$key] / $portfolioTotal) * 100) }}%"></div></div></div>@endforeach</div></div>
-                <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"><div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><div><h2 class="font-semibold text-slate-950">{{ __('Quick operations') }}</h2><p class="mt-1 text-sm text-slate-500">{{ __('Jump straight into the work that moves the day forward.') }}</p></div><span class="hidden h-px flex-1 bg-slate-200 sm:mx-5 sm:block"></span><span class="text-xs font-semibold uppercase tracking-widest text-emerald-700">{{ __('Shortcuts') }}</span></div><div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3"><a href="{{ route('customers.create') }}" class="group rounded-lg border border-slate-200 p-4 transition hover:border-emerald-300 hover:bg-emerald-50"><span class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 group-hover:bg-white"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19v-1.5A3.5 3.5 0 0 0 11.5 14h-5A3.5 3.5 0 0 0 3 17.5V19M9 10.5a3.25 3.25 0 1 0 0-6.5 3.25 3.25 0 0 0 0 6.5ZM17 8v6m3-3h-6" /></svg></span><p class="mt-3 text-sm font-semibold text-slate-900">{{ __('Add customer') }}</p><p class="mt-1 text-xs text-slate-500">{{ __('Open a new identity file') }}</p></a><a href="{{ route('accounts.create') }}" class="group rounded-lg border border-slate-200 p-4 transition hover:border-sky-300 hover:bg-sky-50"><span class="flex h-9 w-9 items-center justify-center rounded-lg bg-sky-50 text-sky-700 group-hover:bg-white"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5 12 5l9 5.5M5 10.5h14M6.5 10.5v7M10 10.5v7M14 10.5v7M17.5 10.5v7M4.5 18h15" /><path stroke-linecap="round" stroke-linejoin="round" d="M18 14v5m-2.5-2.5h5" /></svg></span><p class="mt-3 text-sm font-semibold text-slate-900">{{ __('Open account') }}</p><p class="mt-1 text-xs text-slate-500">{{ __('Create a new customer account') }}</p></a><a href="{{ route('installments.index', ['status' => 'overdue']) }}" class="group rounded-lg border border-slate-200 p-4 transition hover:border-amber-300 hover:bg-amber-50"><span class="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-50 text-amber-700 group-hover:bg-white"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2m5-2a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" /></svg></span><p class="mt-3 text-sm font-semibold text-slate-900">{{ __('Resolve overdue') }}</p><p class="mt-1 text-xs text-slate-500">{{ __('Review collection exceptions') }}</p></a></div></div>
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h2 class="font-semibold text-slate-950">{{ __('Portfolio mix') }}</h2>
+                            <p class="mt-1 text-sm text-slate-500">{{ __('Loan lifecycle at a glance') }}</p>
+                        </div>
+                        <a href="{{ route('loans.index') }}" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:border-emerald-300 hover:text-emerald-700" title="{{ __('View loans') }}">
+                            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 19V9m7 10V5m7 14v-7" /></svg>
+                        </a>
+                    </div>
+                    <div class="mt-6 space-y-4">
+                        @php $portfolioTotal = max(1, array_sum($portfolio)); @endphp
+                        @foreach ([['active', 'Active', 'bg-sky-500'], ['pending', 'Pending review', 'bg-amber-500'], ['paid_off', 'Paid off', 'bg-emerald-500'], ['rejected', 'Rejected', 'bg-red-500']] as [$key, $label, $color])
+                            <div>
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="flex items-center gap-2 font-medium text-slate-700">
+                                        <span class="h-2.5 w-2.5 rounded-full {{ $color }}"></span>
+                                        {{ __($label) }}
+                                    </span>
+                                    <span class="font-semibold text-slate-950 font-mono" dir="ltr">{{ $portfolio[$key] }}</span>
+                                </div>
+                                <div class="mt-2 h-2 overflow-hidden rounded-full bg-slate-100">
+                                    <div class="h-full rounded-full {{ $color }}" style="width: {{ min(100, ($portfolio[$key] / $portfolioTotal) * 100) }}%"></div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <h2 class="font-semibold text-slate-950">{{ __('Quick operations') }}</h2>
+                            <p class="mt-1 text-sm text-slate-500">{{ __('Jump straight into the work that moves the day forward.') }}</p>
+                        </div>
+                        <span class="hidden h-px flex-1 bg-slate-200 sm:mx-5 sm:block"></span>
+                        <span class="text-xs font-semibold uppercase tracking-widest text-emerald-700">{{ __('Shortcuts') }}</span>
+                    </div>
+                    <div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                        <a href="{{ route('customers.create') }}" class="group rounded-xl border border-slate-200 p-4 transition duration-200 hover:border-emerald-300 hover:bg-emerald-50/50 hover:shadow-sm">
+                            <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 transition group-hover:bg-white group-hover:shadow-sm">
+                                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19v-1.5A3.5 3.5 0 0 0 11.5 14h-5A3.5 3.5 0 0 0 3 17.5V19M9 10.5a3.25 3.25 0 1 0 0-6.5 3.25 3.25 0 0 0 0 6.5ZM17 8v6m3-3h-6" /></svg>
+                            </span>
+                            <p class="mt-3 text-sm font-semibold text-slate-900">{{ __('Add customer') }}</p>
+                            <p class="mt-1 text-xs text-slate-500">{{ __('Open a new identity file') }}</p>
+                        </a>
+                        <a href="{{ route('accounts.create') }}" class="group rounded-xl border border-slate-200 p-4 transition duration-200 hover:border-sky-300 hover:bg-sky-50/50 hover:shadow-sm">
+                            <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-sky-50 text-sky-700 transition group-hover:bg-white group-hover:shadow-sm">
+                                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5 12 5l9 5.5M5 10.5h14M6.5 10.5v7M10 10.5v7M14 10.5v7M17.5 10.5v7M4.5 18h15" /><path stroke-linecap="round" stroke-linejoin="round" d="M18 14v5m-2.5-2.5h5" /></svg>
+                            </span>
+                            <p class="mt-3 text-sm font-semibold text-slate-900">{{ __('Open account') }}</p>
+                            <p class="mt-1 text-xs text-slate-500">{{ __('Create a new customer account') }}</p>
+                        </a>
+                        <a href="{{ route('installments.index', ['status' => 'overdue']) }}" class="group rounded-xl border border-slate-200 p-4 transition duration-200 hover:border-amber-300 hover:bg-amber-50/50 hover:shadow-sm">
+                            <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-50 text-amber-700 transition group-hover:bg-white group-hover:shadow-sm">
+                                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 2m5-2a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" /></svg>
+                            </span>
+                            <p class="mt-3 text-sm font-semibold text-slate-900">{{ __('Resolve overdue') }}</p>
+                            <p class="mt-1 text-xs text-slate-500">{{ __('Review collection exceptions') }}</p>
+                        </a>
+                    </div>
+                </div>
             </section>
         </div>
     </div>

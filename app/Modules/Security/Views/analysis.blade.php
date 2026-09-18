@@ -3,17 +3,17 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">Security Analysis</h1>
-        <a href="{{ route('security.index') }}" class="text-gray-600 hover:text-gray-900">Back to Security Events</a>
+        <h1 class="text-3xl font-bold text-gray-900">{{ __('Security Analysis') }}</h1>
+        <a href="{{ route('security.index') }}" class="text-gray-600 hover:text-gray-900">{{ __('Back to Security Events') }}</a>
     </div>
 
     <div class="bg-white rounded-lg shadow p-6">
-        <h2 class="text-xl font-semibold text-gray-900 mb-4">Anomalous Pattern Detection</h2>
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">{{ __('Anomalous Pattern Detection') }}</h2>
         <p class="text-gray-600 mb-6">Customer ID: {{ $customerId ?? 'N/A' }}</p>
 
         @if(empty($anomalies))
             <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
-                <p class="text-emerald-800">No anomalous patterns detected for this customer.</p>
+                <p class="text-emerald-800">{{ __('No anomalous patterns detected for this customer.') }}</p>
             </div>
         @else
             <div class="space-y-4">

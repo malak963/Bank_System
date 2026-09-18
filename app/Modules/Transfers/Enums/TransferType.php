@@ -13,11 +13,11 @@ enum TransferType: string
     public function label(): string
     {
         return match ($this) {
-            self::Internal => 'Internal Transfer',
-            self::External => 'External Transfer',
-            self::International => 'International Transfer',
-            self::StandingOrder => 'Standing Order',
-            self::DirectDebit => 'Direct Debit',
+            self::Internal => __('Internal Transfer'),
+            self::External => __('External Transfer'),
+            self::International => __('International Transfer'),
+            self::StandingOrder => __('Standing Order'),
+            self::DirectDebit => __('Direct Debit'),
         };
     }
 

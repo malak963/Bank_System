@@ -14,12 +14,12 @@ enum TicketStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::Open => 'Open',
-            self::InProgress => 'In Progress',
-            self::PendingCustomer => 'Pending Customer',
-            self::Resolved => 'Resolved',
-            self::Closed => 'Closed',
-            self::Escalated => 'Escalated',
+            self::Open => __('Open'),
+            self::InProgress => __('In Progress'),
+            self::PendingCustomer => __('Pending Customer'),
+            self::Resolved => __('Resolved'),
+            self::Closed => __('Closed'),
+            self::Escalated => __('Escalated'),
         };
     }
 

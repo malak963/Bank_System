@@ -12,10 +12,10 @@ enum ReportFormat: string
     public function label(): string
     {
         return match ($this) {
-            self::PDF => 'PDF',
-            self::Excel => 'Excel',
-            self::CSV => 'CSV',
-            self::JSON => 'JSON',
+            self::PDF => __('PDF'),
+            self::Excel => __('Excel'),
+            self::CSV => __('CSV'),
+            self::JSON => __('JSON'),
         };
     }
 

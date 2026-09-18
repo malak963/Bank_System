@@ -3,7 +3,13 @@
 use App\Modules\CustomerService\Controllers\CustomerServiceController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('customer-service')->name('customerService.')->group(function () {
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+
+Route::group([
+    'prefix' => LaravelLocalization::setLocale(),
+    'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'],
+], function (): void {
+    Route::prefix('customer-service')->name('customerService.')->group(function () {
     Route::get('/', [CustomerServiceController::class, 'index'])->name('index');
     Route::get('/create', [CustomerServiceController::class, 'create'])->name('create');
     Route::post('/', [CustomerServiceController::class, 'store'])->name('store');
@@ -13,6 +19,7 @@ Route::prefix('customer-service')->name('customerService.')->group(function () {
     Route::post('/{ticket}/close', [CustomerServiceController::class, 'close'])->name('close');
     Route::post('/{ticket}/reopen', [CustomerServiceController::class, 'reopen'])->name('reopen');
     Route::post('/{ticket}/response', [CustomerServiceController::class, 'addResponse'])->name('add-response');
+});
 });
 
 Route::prefix('api')->middleware(['api'])->group(function () {

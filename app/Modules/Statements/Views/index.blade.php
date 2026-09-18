@@ -5,10 +5,10 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-slate-800">Account Statements</h1>
+        <h1 class="text-3xl font-bold text-slate-800">{{ __('Account Statements') }}</h1>
         <a href="{{ route('statements.create') }}" 
            class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition">
-            Generate Statement
+            {{ __('Generate Statement') }}
         </a>
     </div>
 
@@ -16,14 +16,14 @@
         <table class="min-w-full divide-y divide-slate-200">
             <thead class="bg-slate-50">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Reference</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Account</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Period</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Opening Balance</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Closing Balance</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Transactions</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">{{ __('Reference') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">{{ __('Account') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">{{ __('Period') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">{{ __('Opening Balance') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">{{ __('Closing Balance') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">{{ __('Transactions') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">{{ __('Status') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">{{ __('Actions') }}</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-slate-200">
@@ -58,16 +58,16 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <a href="{{ route('statements.show', $statement->id) }}" 
-                           class="text-emerald-600 hover:text-emerald-900">View</a>
+                           class="text-emerald-600 hover:text-emerald-900">{{ __('View') }}</a>
                     </td>
                 </tr>
                 @empty
                 <tr>
                     <td colspan="8" class="px-6 py-4 text-center text-sm text-slate-500">
-                        No statements found
+                        {{ __('No statements found') }}
                     </td>
                 </tr>
-                @endforese
+                @endforelse
             </tbody>
         </table>
     </div>

@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">Cards</h1>
+        <h1 class="text-3xl font-bold text-gray-900">{{ __('Cards') }}</h1>
         <a href="{{ route('cards.create') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -39,11 +39,11 @@
                     </div>
                     <div class="mt-4 flex justify-between text-white text-sm">
                         <div>
-                            <p class="opacity-75">Valid Thru</p>
+                            <p class="opacity-75">{{ __('Valid Thru') }}</p>
                             <p class="font-semibold">{{ str_pad($card->expiry_month, 2, '0', STR_PAD_LEFT) }}/{{ $card->expiry_year }}</p>
                         </div>
                         <div>
-                            <p class="opacity-75">Card Holder</p>
+                            <p class="opacity-75">{{ __('Card Holder') }}</p>
                             <p class="font-semibold">{{ $card->card_holder_name }}</p>
                         </div>
                     </div>
@@ -51,15 +51,15 @@
                 <div class="p-4">
                     <div class="space-y-2 text-sm">
                         <div class="flex justify-between">
-                            <span class="text-gray-500">Account:</span>
+                            <span class="text-gray-500">{{ __('Account') }}:</span>
                             <span class="font-medium">{{ $card->account?->account_number ?? 'N/A' }}</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-500">Brand:</span>
+                            <span class="text-gray-500">{{ __('Brand') }}:</span>
                             <span class="font-medium">{{ $card->card_brand->label() }}</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-500">Daily Limit:</span>
+                            <span class="text-gray-500">{{ __('Daily Limit') }}:</span>
                             <span class="font-medium">${{ number_format($card->daily_limit, 2) }}</span>
                         </div>
                     </div>
@@ -73,8 +73,8 @@
                 <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
                 </svg>
-                <p class="text-lg">No cards found</p>
-                <p class="text-sm mt-1">Create your first card to get started</p>
+                <p class="text-lg">{{ __('No cards found') }}</p>
+                <p class="text-sm mt-1">{{ __('Create your first card to get started') }}</p>
             </div>
         @endforelse
     </div>

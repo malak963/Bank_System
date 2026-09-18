@@ -18,16 +18,16 @@ enum ReportType: string
     public function label(): string
     {
         return match ($this) {
-            self::Transaction => 'Transaction Report',
-            self::Account => 'Account Report',
-            self::Customer => 'Customer Report',
-            self::Loan => 'Loan Report',
-            self::Card => 'Card Report',
-            self::Branch => 'Branch Report',
-            self::Revenue => 'Revenue Report',
-            self::Compliance => 'Compliance Report',
-            self::Audit => 'Audit Report',
-            self::Performance => 'Performance Report',
+            self::Transaction => __('Transaction Report'),
+            self::Account => __('Account Report'),
+            self::Customer => __('Customer Report'),
+            self::Loan => __('Loan Report'),
+            self::Card => __('Card Report'),
+            self::Branch => __('Branch Report'),
+            self::Revenue => __('Revenue Report'),
+            self::Compliance => __('Compliance Report'),
+            self::Audit => __('Audit Report'),
+            self::Performance => __('Performance Report'),
         };
     }
 

@@ -3,8 +3,8 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">Report Details</h1>
-        <a href="{{ route('reports.index') }}" class="text-gray-600 hover:text-gray-900">Back to Reports</a>
+        <h1 class="text-3xl font-bold text-gray-900">{{ __('Report Details') }}</h1>
+        <a href="{{ route('reports.index') }}" class="text-gray-600 hover:text-gray-900">{{ __('Back to Reports') }}</a>
     </div>
 
     @if(session('success'))
@@ -29,19 +29,19 @@
                     </div>
                     @switch($report->status->value)
                         @case('pending')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{{ __('Pending') }}</span>
                             @break
                         @case('generating')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Generating</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{{ __('Generating') }}</span>
                             @break
                         @case('completed')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">Completed</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">{{ __('Completed') }}</span>
                             @break
                         @case('failed')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">Failed</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ __('Failed') }}</span>
                             @break
                         @case('scheduled')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">Scheduled</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">{{ __('Scheduled') }}</span>
                             @break
                         @default
                             <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ $report->status->label() }}</span>
@@ -50,13 +50,13 @@
 
                 @if($report->description)
                     <div class="mb-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Description</h3>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ __('Description') }}</h3>
                         <p class="text-gray-700">{{ $report->description }}</p>
                     </div>
                 @endif
 
                 <div class="border-t pt-4">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Report Information</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Report Information') }}</h3>
                     <dl class="grid grid-cols-1 gap-4">
                         <div class="flex justify-between">
                             <dt class="text-sm text-gray-500">Type</dt>
@@ -107,7 +107,7 @@
 
                 @if($report->error_message)
                     <div class="mt-4 bg-red-50 border border-red-200 rounded-lg p-4">
-                        <h3 class="text-sm font-semibold text-red-800">Error Information</h3>
+                        <h3 class="text-sm font-semibold text-red-800">{{ __('Error Information') }}</h3>
                         <p class="text-sm text-red-700 mt-1">{{ $report->error_message }}</p>
                     </div>
                 @endif
@@ -116,16 +116,16 @@
 
         <div>
             <div class="bg-white rounded-lg shadow p-6 mb-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Actions') }}</h3>
                 <div class="space-y-3">
                     @if($report->canBeDownloaded())
-                        <a href="{{ route('reports.download', $report) }}" class="block w-full text-center bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 text-sm">Download Report</a>
+                        <a href="{{ route('reports.download', $report) }}" class="block w-full text-center bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 text-sm">{{ __('Download Report') }}</a>
                     @endif
 
                     @if($report->canBeRegenerated())
                         <form action="{{ route('reports.regenerate', $report) }}" method="POST">
                             @csrf
-                            <button type="submit" class="w-full bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 text-sm">Regenerate Report</button>
+                            <button type="submit" class="w-full bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 text-sm">{{ __('Regenerate Report') }}</button>
                         </form>
                     @endif
 
@@ -141,7 +141,7 @@
 
             @if($report->parameters)
                 <div class="bg-white rounded-lg shadow p-6 mb-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Parameters</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Parameters') }}</h3>
                     <pre class="text-xs text-gray-600 bg-gray-50 p-3 rounded overflow-auto">{{ json_encode($report->parameters, JSON_PRETTY_PRINT) }}</pre>
                 </div>
             @endif

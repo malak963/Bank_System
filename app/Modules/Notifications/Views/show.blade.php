@@ -3,8 +3,8 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">Notification Details</h1>
-        <a href="{{ route('notifications.index') }}" class="text-gray-600 hover:text-gray-900">Back to Notifications</a>
+        <h1 class="text-3xl font-bold text-gray-900">{{ __('Notification Details') }}</h1>
+        <a href="{{ route('notifications.index') }}" class="text-gray-600 hover:text-gray-900">{{ __('Back to Notifications') }}</a>
     </div>
 
     @if(session('success'))
@@ -29,19 +29,19 @@
                     </div>
                     @switch($notification->status->value)
                         @case('pending')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{{ __('Pending') }}</span>
                             @break
                         @case('sent')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Sent</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{{ __('Sent') }}</span>
                             @break
                         @case('delivered')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">Delivered</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">{{ __('Delivered') }}</span>
                             @break
                         @case('failed')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">Failed</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ __('Failed') }}</span>
                             @break
                         @case('read')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Read</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ __('Read') }}</span>
                             @break
                         @default
                             <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ $notification->status->label() }}</span>
@@ -53,7 +53,7 @@
                 </div>
 
                 <div class="border-t pt-4">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Notification Details</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Notification Details') }}</h3>
                     <dl class="grid grid-cols-1 gap-4">
                         <div class="flex justify-between">
                             <dt class="text-sm text-gray-500">Customer</dt>
@@ -100,7 +100,7 @@
 
                 @if($notification->failure_reason)
                     <div class="mt-4 bg-red-50 border border-red-200 rounded-lg p-4">
-                        <h3 class="text-sm font-semibold text-red-800">Failure Information</h3>
+                        <h3 class="text-sm font-semibold text-red-800">{{ __('Failure Information') }}</h3>
                         <p class="text-sm text-red-700 mt-1">{{ $notification->failure_reason }}</p>
                         <p class="text-xs text-red-600 mt-1">Failed at: {{ $notification->failed_at->format('M d, Y H:i:s') }}</p>
                     </div>
@@ -110,19 +110,19 @@
 
         <div>
             <div class="bg-white rounded-lg shadow p-6 mb-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Actions') }}</h3>
                 <div class="space-y-3">
                     @if(!$notification->isRead())
                         <form action="{{ route('notifications.mark-read', $notification) }}" method="POST">
                             @csrf
-                            <button type="submit" class="w-full bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 text-sm">Mark as Read</button>
+                            <button type="submit" class="w-full bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 text-sm">{{ __('Mark as Read') }}</button>
                         </form>
                     @endif
 
                     @if($notification->isFailed() && $notification->canBeRetried())
                         <form action="{{ route('notifications.retry-failed') }}" method="POST">
                             @csrf
-                            <button type="submit" class="w-full bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 text-sm">Retry Notification</button>
+                            <button type="submit" class="w-full bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 text-sm">{{ __('Retry Notification') }}</button>
                         </form>
                     @endif
                 </div>

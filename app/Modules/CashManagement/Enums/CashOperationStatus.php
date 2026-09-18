@@ -13,11 +13,11 @@ enum CashOperationStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::Pending => 'Pending',
-            self::Approved => 'Approved',
-            self::Rejected => 'Rejected',
-            self::Completed => 'Completed',
-            self::Cancelled => 'Cancelled',
+            self::Pending => __('Pending'),
+            self::Approved => __('Approved'),
+            self::Rejected => __('Rejected'),
+            self::Completed => __('Completed'),
+            self::Cancelled => __('Cancelled'),
         };
     }
 }

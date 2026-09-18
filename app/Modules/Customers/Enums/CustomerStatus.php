@@ -12,10 +12,10 @@ enum CustomerStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::Prospect => 'Prospect',
-            self::Active => 'Active',
-            self::Suspended => 'Suspended',
-            self::Closed => 'Closed',
+            self::Prospect => __('Prospect'),
+            self::Active => __('Active'),
+            self::Suspended => __('Suspended'),
+            self::Closed => __('Closed'),
         };
     }
 }

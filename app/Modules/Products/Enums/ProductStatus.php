@@ -14,12 +14,12 @@ enum ProductStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::Active => 'Active',
-            self::Inactive => 'Inactive',
-            self::Matured => 'Matured',
-            self::Closed => 'Closed',
-            self::Suspended => 'Suspended',
-            self::Pending => 'Pending',
+            self::Active => __('Active'),
+            self::Inactive => __('Inactive'),
+            self::Matured => __('Matured'),
+            self::Closed => __('Closed'),
+            self::Suspended => __('Suspended'),
+            self::Pending => __('Pending'),
         };
     }
 

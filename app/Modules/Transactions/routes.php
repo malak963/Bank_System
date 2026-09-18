@@ -3,7 +3,13 @@
 use App\Modules\Transactions\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('transactions')->name('transactions.')->group(function () {
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+
+Route::group([
+    'prefix' => LaravelLocalization::setLocale(),
+    'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'],
+], function (): void {
+    Route::prefix('transactions')->name('transactions.')->group(function () {
     Route::get('/', [TransactionController::class, 'index'])->name('index');
     Route::get('/create', [TransactionController::class, 'create'])->name('create');
     Route::post('/', [TransactionController::class, 'store'])->name('store');
@@ -12,6 +18,7 @@ Route::prefix('transactions')->name('transactions.')->group(function () {
     Route::put('/{transaction}', [TransactionController::class, 'update'])->name('update');
     Route::delete('/{transaction}', [TransactionController::class, 'destroy'])->name('destroy');
     Route::post('/{transaction}/reverse', [TransactionController::class, 'reverse'])->name('reverse');
+});
 });
 
 Route::prefix('api')->middleware(['api'])->group(function () {

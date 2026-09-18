@@ -6,7 +6,7 @@
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-2xl mx-auto">
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-3xl font-bold text-slate-800">Generate Statement</h1>
+            <h1 class="text-3xl font-bold text-slate-800">{{ __('Generate Statement') }}</h1>
             <a href="{{ route('statements.index') }}" 
                class="text-slate-600 hover:text-slate-900">Back</a>
         </div>
@@ -17,7 +17,7 @@
                 
                 <div class="grid grid-cols-1 gap-6">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Account</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Account') }}</label>
                         <select name="account_id" required class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                             <option value="">Select Account</option>
                             @foreach(\App\Modules\Accounts\Models\Account::all() as $account)
@@ -27,7 +27,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Customer</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Customer') }}</label>
                         <select name="customer_id" required class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                             <option value="">Select Customer</option>
                             @foreach(\App\Modules\Customers\Models\Customer::all() as $customer)
@@ -37,25 +37,25 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Period Start</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Period Start') }}</label>
                         <input type="date" name="period_start" required 
                                class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Period End</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Period End') }}</label>
                         <input type="date" name="period_end" required 
                                class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Opening Balance</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Opening Balance') }}</label>
                         <input type="number" name="opening_balance" step="0.01" value="0" required 
                                class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Currency</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Currency') }}</label>
                         <input type="text" name="currency" value="SYP" required 
                                class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                     </div>

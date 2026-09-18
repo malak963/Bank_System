@@ -27,15 +27,15 @@
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div class="bg-white rounded-lg shadow p-4">
-            <p class="text-sm text-gray-500">Total Tickets</p>
+            <p class="text-sm text-gray-500">{{ __('Total Tickets') }}</p>
             <p class="text-2xl font-bold text-gray-900">{{ $statistics['total'] }}</p>
         </div>
         <div class="bg-white rounded-lg shadow p-4">
-            <p class="text-sm text-gray-500">Open Tickets</p>
+            <p class="text-sm text-gray-500">{{ __('Open Tickets') }}</p>
             <p class="text-2xl font-bold text-emerald-600">{{ $statistics['open'] }}</p>
         </div>
         <div class="bg-white rounded-lg shadow p-4">
-            <p class="text-sm text-gray-500">Overdue</p>
+            <p class="text-sm text-gray-500">{{ __('Overdue') }}</p>
             <p class="text-2xl font-bold text-red-600">{{ $statistics['overdue'] }}</p>
         </div>
         <div class="bg-white rounded-lg shadow p-4">
@@ -53,7 +53,7 @@
                         <svg class="w-5 h-5 text-red-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <h3 class="font-semibold text-red-800">Overdue Tickets</h3>
+                        <h3 class="font-semibold text-red-800">{{ __('Overdue Tickets') }}</h3>
                     </div>
                     <p class="text-red-700">{{ $overdueTickets->count() }} tickets require immediate attention</p>
                 </div>
@@ -65,7 +65,7 @@
                         <svg class="w-5 h-5 text-orange-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                         </svg>
-                        <h3 class="font-semibold text-orange-800">Urgent Tickets</h3>
+                        <h3 class="font-semibold text-orange-800">{{ __('Urgent Tickets') }}</h3>
                     </div>
                     <p class="text-orange-700">{{ $urgentTickets->count() }} urgent tickets pending</p>
                 </div>
@@ -78,15 +78,15 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ticket #</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Ticket #') }}</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Priority</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Priority') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Status') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Customer') }}</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Assigned To</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Actions') }}</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -104,41 +104,41 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             @switch($ticket->priority->value)
                                 @case('low')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Low</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">{{ __('Low') }}</span>
                                     @break
                                 @case('normal')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Normal</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{{ __('Normal') }}</span>
                                     @break
                                 @case('high')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">High</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">{{ __('High') }}</span>
                                     @break
                                 @case('urgent')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Urgent</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ __('Urgent') }}</span>
                                     @break
                                 @case('critical')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Critical</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ __('Critical') }}</span>
                                     @break
                             @endswitch
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             @switch($ticket->status->value)
                                 @case('open')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Open</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{{ __('Open') }}</span>
                                     @break
                                 @case('in_progress')
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">In Progress</span>
                                     @break
                                 @case('pending_customer')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">Pending Customer</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">{{ __('Pending Customer') }}</span>
                                     @break
                                 @case('resolved')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">Resolved</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">{{ __('Resolved') }}</span>
                                     @break
                                 @case('closed')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Closed</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ __('Closed') }}</span>
                                     @break
                                 @case('escalated')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Escalated</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ __('Escalated') }}</span>
                                     @break
                             @endswitch
                         </td>
@@ -152,12 +152,12 @@
                             {{ $ticket->created_at->format('M d, Y H:i') }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="{{ route('customerService.show', $ticket) }}" class="text-emerald-600 hover:text-emerald-900">View</a>
+                            <a href="{{ route('customerService.show', $ticket) }}" class="text-emerald-600 hover:text-emerald-900">{{ __('View') }}</a>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="9" class="px-6 py-4 text-center text-gray-500">No tickets found</td>
+                        <td colspan="9" class="px-6 py-4 text-center text-gray-500">{{ __('No tickets found') }}</td>
                     </tr>
                 @endforelse
             </tbody>

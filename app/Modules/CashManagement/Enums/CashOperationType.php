@@ -14,12 +14,12 @@ enum CashOperationType: string
     public function label(): string
     {
         return match ($this) {
-            self::Deposit => 'Deposit',
-            self::Withdrawal => 'Withdrawal',
-            self::Transfer => 'Transfer',
-            self::Replenishment => 'Replenishment',
-            self::WithdrawalToVault => 'Withdrawal to Vault',
-            self::DepositFromVault => 'Deposit from Vault',
+            self::Deposit => __('Deposit'),
+            self::Withdrawal => __('Withdrawal'),
+            self::Transfer => __('Transfer'),
+            self::Replenishment => __('Replenishment'),
+            self::WithdrawalToVault => __('Withdrawal to Vault'),
+            self::DepositFromVault => __('Deposit from Vault'),
         };
     }
 }

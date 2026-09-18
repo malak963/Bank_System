@@ -16,14 +16,14 @@ enum ProductType: string
     public function label(): string
     {
         return match ($this) {
-            self::SavingsAccount => 'Savings Account',
-            self::FixedDeposit => 'Fixed Deposit',
-            self::InvestmentAccount => 'Investment Account',
-            self::CertificateOfDeposit => 'Certificate of Deposit',
-            self::MutualFund => 'Mutual Fund',
-            self::RetirementAccount => 'Retirement Account',
-            self::EducationAccount => 'Education Account',
-            self::HealthAccount => 'Health Account',
+            self::SavingsAccount => __('Savings Account'),
+            self::FixedDeposit => __('Fixed Deposit'),
+            self::InvestmentAccount => __('Investment Account'),
+            self::CertificateOfDeposit => __('Certificate of Deposit'),
+            self::MutualFund => __('Mutual Fund'),
+            self::RetirementAccount => __('Retirement Account'),
+            self::EducationAccount => __('Education Account'),
+            self::HealthAccount => __('Health Account'),
         };
     }
 

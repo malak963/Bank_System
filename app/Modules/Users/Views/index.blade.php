@@ -11,7 +11,7 @@
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14" />
                 </svg>
-                {{ __('New User') }}
+                <span>{{ __('New User') }}</span>
             </a>
         </div>
     </x-slot>
@@ -25,27 +25,27 @@
             @endif
 
             <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-                <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
                     <p class="text-xs font-semibold uppercase text-slate-500">{{ __('Total Users') }}</p>
-                    <p class="mt-2 text-3xl font-semibold text-slate-950">{{ number_format($users->total()) }}</p>
+                    <p class="mt-2 text-3xl font-semibold text-slate-950 font-mono" dir="ltr">{{ number_format($users->total()) }}</p>
                 </div>
-                <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
                     <p class="text-xs font-semibold uppercase text-slate-500">{{ __('Visible Records') }}</p>
-                    <p class="mt-2 text-3xl font-semibold text-slate-950">{{ number_format($users->count()) }}</p>
+                    <p class="mt-2 text-3xl font-semibold text-slate-950 font-mono" dir="ltr">{{ number_format($users->count()) }}</p>
                 </div>
-                <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+                <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
                     <p class="text-xs font-semibold uppercase text-slate-500">{{ __('Directory Page') }}</p>
-                    <p class="mt-2 text-3xl font-semibold text-slate-950">{{ number_format($users->currentPage()) }}</p>
+                    <p class="mt-2 text-3xl font-semibold text-slate-950 font-mono" dir="ltr">{{ number_format($users->currentPage()) }}</p>
                 </div>
             </div>
 
-            <div class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+            <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
                 <div class="flex flex-col gap-2 border-b border-slate-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h3 class="text-base font-semibold text-slate-950">{{ __('User Directory') }}</h3>
                         <p class="text-sm text-slate-500">{{ __('Access role, account state and authentication activity') }}</p>
                     </div>
-                    <span class="text-sm font-medium text-slate-500">
+                    <span class="text-sm font-medium text-slate-500 font-mono" dir="ltr">
                         {{ $users->firstItem() ?? 0 }}-{{ $users->lastItem() ?? 0 }} / {{ $users->total() }}
                     </span>
                 </div>
@@ -54,13 +54,13 @@
                     <table class="min-w-full divide-y divide-slate-200">
                         <thead class="bg-slate-50">
                             <tr>
-                                <th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Name') }}</th>
-                                <th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Email') }}</th>
-                                <th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Phone') }}</th>
-                                <th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Role') }}</th>
-                                <th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Active') }}</th>
-                                <th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Last Login') }}</th>
-                                <th class="px-5 py-3 text-right text-xs font-semibold uppercase text-slate-500">{{ __('Actions') }}</th>
+                                <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Name') }}</th>
+                                <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Email') }}</th>
+                                <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Phone') }}</th>
+                                <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Role') }}</th>
+                                <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Active') }}</th>
+                                <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Last Login') }}</th>
+                                <th class="px-5 py-3 text-end text-xs font-semibold uppercase text-slate-500">{{ __('Actions') }}</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 bg-white">
@@ -73,14 +73,14 @@
                                         default => 'bg-emerald-50 text-emerald-700 ring-emerald-200',
                                     };
                                 @endphp
-                                <tr class="transition hover:bg-slate-50">
+                                <tr class="transition hover:bg-slate-50/80">
                                     <td class="px-5 py-4 whitespace-nowrap text-sm">
                                         <a href="{{ route('users.show', $user) }}" class="font-semibold text-slate-900 hover:text-emerald-700">
                                             {{ $user->name }}
                                         </a>
                                     </td>
-                                    <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600">{{ $user->email }}</td>
-                                    <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600">{{ $user->phone ?? __('Not set') }}</td>
+                                    <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600 font-mono" dir="ltr">{{ $user->email }}</td>
+                                    <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600 font-mono" dir="ltr">{{ $user->phone ?? __('Not set') }}</td>
                                     <td class="px-5 py-4 whitespace-nowrap text-sm">
                                         <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset {{ $roleClass }}">{{ $user->role?->label() ?? __('Not set') }}</span>
                                     </td>
@@ -88,7 +88,7 @@
                                         <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset {{ $user->is_active ? 'bg-emerald-50 text-emerald-700 ring-emerald-200' : 'bg-red-50 text-red-700 ring-red-200' }}">{{ $user->is_active ? __('Yes') : __('No') }}</span>
                                     </td>
                                     <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600">{{ $user->last_login_at?->diffForHumans() ?? __('Never') }}</td>
-                                    <td class="px-5 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <td class="px-5 py-4 whitespace-nowrap text-end text-sm font-medium">
                                         <a href="{{ route('users.edit', $user) }}" class="inline-flex items-center rounded-md border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-emerald-300 hover:text-emerald-700">{{ __('Edit') }}</a>
                                     </td>
                                 </tr>
@@ -105,7 +105,7 @@
                 </div>
             </div>
 
-            <div class="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm">
+            <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
                 {{ $users->links() }}
             </div>
         </div>

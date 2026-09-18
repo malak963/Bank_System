@@ -14,11 +14,11 @@
         <div class="bg-white rounded-lg shadow p-6 mb-6">
             <div class="grid grid-cols-2 gap-6">
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Reference</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Reference') }}</label>
                     <p class="text-lg font-semibold text-slate-900">{{ $operation->operation_reference }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Status</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Status') }}</label>
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                         @if($operation->status === 'completed') bg-emerald-100 text-emerald-800
                         @elseif($operation->status === 'approved') bg-blue-100 text-blue-800
@@ -29,37 +29,37 @@
                     </span>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Operation Type</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Operation Type') }}</label>
                     <p class="text-slate-900">{{ ucfirst($operation->operation_type) }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Amount</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Amount') }}</label>
                     <p class="text-lg font-semibold text-slate-900">
                         {{ $operation->currency }} {{ number_format($operation->amount, 2) }}
                     </p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Branch</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Branch') }}</label>
                     <p class="text-slate-900">{{ $operation->branch?->name ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Teller</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Teller') }}</label>
                     <p class="text-slate-900">{{ $operation->teller?->name ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Account</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Account') }}</label>
                     <p class="text-slate-900">{{ $operation->account?->account_number ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Operation Date</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Operation Date') }}</label>
                     <p class="text-slate-900">{{ $operation->operation_date?->format('Y-m-d H:i') ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Approved By</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Approved By') }}</label>
                     <p class="text-slate-900">{{ $operation->approvedBy?->name ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Approved At</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Approved At') }}</label>
                     <p class="text-slate-900">{{ $operation->approved_at?->format('Y-m-d H:i') ?? 'N/A' }}</p>
                 </div>
                 <div>
@@ -74,14 +74,14 @@
 
             @if($operation->description)
             <div class="mt-6">
-                <label class="block text-sm font-medium text-slate-500 mb-1">Description</label>
+                <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Description') }}</label>
                 <p class="text-slate-900">{{ $operation->description }}</p>
             </div>
             @endif
 
             @if($operation->notes)
             <div class="mt-6">
-                <label class="block text-sm font-medium text-slate-500 mb-1">Notes</label>
+                <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Notes') }}</label>
                 <p class="text-slate-900">{{ $operation->notes }}</p>
             </div>
             @endif

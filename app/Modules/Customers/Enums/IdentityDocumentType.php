@@ -12,10 +12,10 @@ enum IdentityDocumentType: string
     public function label(): string
     {
         return match ($this) {
-            self::NationalId => 'National ID',
-            self::Passport => 'Passport',
-            self::DriverLicense => 'Driver License',
-            self::ResidencePermit => 'Residence Permit',
+            self::NationalId => __('National ID'),
+            self::Passport => __('Passport'),
+            self::DriverLicense => __('Driver License'),
+            self::ResidencePermit => __('Residence Permit'),
         };
     }
 }

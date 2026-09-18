@@ -3,8 +3,8 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">Product Details</h1>
-        <a href="{{ route('products.index') }}" class="text-gray-600 hover:text-gray-900">Back to Products</a>
+        <h1 class="text-3xl font-bold text-gray-900">{{ __('Product Details') }}</h1>
+        <a href="{{ route('products.index') }}" class="text-gray-600 hover:text-gray-900">{{ __('Back to Products') }}</a>
     </div>
 
     @if(session('success'))
@@ -29,28 +29,28 @@
                     </div>
                     @switch($product->status->value)
                         @case('active')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">Active</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">{{ __('Active') }}</span>
                             @break
                         @case('inactive')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Inactive</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ __('Inactive') }}</span>
                             @break
                         @case('matured')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Matured</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{{ __('Matured') }}</span>
                             @break
                         @case('closed')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">Closed</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ __('Closed') }}</span>
                             @break
                         @case('suspended')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">Suspended</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">{{ __('Suspended') }}</span>
                             @break
                         @case('pending')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Pending</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{{ __('Pending') }}</span>
                             @break
                     @endswitch
                 </div>
 
                 <div class="border-t pt-4">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Product Information</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Product Information') }}</h3>
                     <dl class="grid grid-cols-1 gap-4">
                         <div class="flex justify-between">
                             <dt class="text-sm text-gray-500">Type</dt>
@@ -119,7 +119,7 @@
 
                 @if($product->notes)
                     <div class="mt-4 bg-gray-50 border border-gray-200 rounded-lg p-4">
-                        <h3 class="text-sm font-semibold text-gray-800 mb-2">Notes</h3>
+                        <h3 class="text-sm font-semibold text-gray-800 mb-2">{{ __('Notes') }}</h3>
                         <p class="text-sm text-gray-700">{{ $product->notes }}</p>
                     </div>
                 @endif
@@ -127,7 +127,7 @@
 
             <!-- Transactions Section -->
             <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Related Transactions</h3>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Related Transactions') }}</h3>
                 @if($product->transactions->count() > 0)
                     <div class="space-y-2">
                         @foreach($product->transactions->take(5) as $transaction)
@@ -141,14 +141,14 @@
                         @endforeach
                     </div>
                 @else
-                    <p class="text-sm text-gray-500">No transactions yet</p>
+                    <p class="text-sm text-gray-500">{{ __('No transactions yet') }}</p>
                 @endif
             </div>
         </div>
 
         <div>
             <div class="bg-white rounded-lg shadow p-6 mb-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Actions') }}</h3>
                 <div class="space-y-3">
                     @if($product->isActive())
                         <form action="{{ route('products.apply-interest', $product) }}" method="POST">
@@ -162,7 +162,7 @@
                             @csrf
                             <div class="mb-3">
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Reason</label>
-                                <textarea name="reason" rows="2" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="Enter close reason..."></textarea>
+                                <textarea name="reason" rows="2" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="{{ __('Enter close reason...') }}"></textarea>
                             </div>
                             <button type="submit" class="w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 text-sm">Close Product</button>
                         </form>

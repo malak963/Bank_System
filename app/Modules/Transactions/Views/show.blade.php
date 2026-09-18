@@ -3,8 +3,8 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">Transaction Details</h1>
-        <a href="{{ route('transactions.index') }}" class="text-gray-600 hover:text-gray-900">Back to Transactions</a>
+        <h1 class="text-3xl font-bold text-gray-900">{{ __('Transaction Details') }}</h1>
+        <a href="{{ route('transactions.index') }}" class="text-gray-600 hover:text-gray-900">{{ __('Back to Transactions') }}</a>
     </div>
 
     @if(session('success'))
@@ -29,16 +29,16 @@
                     </div>
                     @switch($transaction->status->value)
                         @case('completed')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">Completed</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">{{ __('Completed') }}</span>
                             @break
                         @case('pending')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{{ __('Pending') }}</span>
                             @break
                         @case('failed')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">Failed</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ __('Failed') }}</span>
                             @break
                         @case('reversed')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">Reversed</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">{{ __('Reversed') }}</span>
                             @break
                         @default
                             <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ $transaction->status->label() }}</span>
@@ -47,19 +47,19 @@
 
                 <div class="grid grid-cols-2 gap-4 mb-6">
                     <div>
-                        <p class="text-sm text-gray-500">Amount</p>
+                        <p class="text-sm text-gray-500">{{ __('Amount') }}</p>
                         <p class="text-2xl font-bold {{ $transaction->isCredit() ? 'text-emerald-600' : 'text-red-600' }}">
                             {{ $transaction->isCredit() ? '+' : '-' }}{{ number_format($transaction->amount, 2) }} {{ $transaction->currency }}
                         </p>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-500">Date</p>
+                        <p class="text-sm text-gray-500">{{ __('Date') }}</p>
                         <p class="text-lg font-semibold text-gray-900">{{ $transaction->created_at->format('M d, Y H:i') }}</p>
                     </div>
                 </div>
 
                 <div class="border-t pt-4">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Transaction Details</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Transaction Details') }}</h3>
                     <dl class="grid grid-cols-1 gap-4">
                         <div class="flex justify-between">
                             <dt class="text-sm text-gray-500">Account</dt>
@@ -98,7 +98,7 @@
 
                 @if($transaction->description)
                     <div class="border-t pt-4 mt-4">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Description</h3>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ __('Description') }}</h3>
                         <p class="text-gray-700">{{ $transaction->description }}</p>
                     </div>
                 @endif
@@ -116,16 +116,16 @@
 
         <div>
             <div class="bg-white rounded-lg shadow p-6 mb-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Actions') }}</h3>
                 <div class="space-y-3">
                     @if($transaction->canBeReversed())
                         <form action="{{ route('transactions.reverse', $transaction) }}" method="POST">
                             @csrf
                             <div class="mb-3">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Reversal Reason</label>
-                                <textarea name="reason" required rows="2" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="Enter reason for reversal..."></textarea>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('Reversal Reason') }}</label>
+                                <textarea name="reason" required rows="2" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="{{ __('Enter reason for reversal...') }}"></textarea>
                             </div>
-                            <button type="submit" class="w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 text-sm">Reverse Transaction</button>
+                            <button type="submit" class="w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 text-sm">{{ __('Reverse Transaction') }}</button>
                         </form>
                     @endif
 
@@ -135,7 +135,7 @@
 
             @if($transaction->reversals->count() > 0)
                 <div class="bg-white rounded-lg shadow p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Reversals</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Reversals') }}</h3>
                     <div class="space-y-3">
                         @foreach($transaction->reversals as $reversal)
                             <a href="{{ route('transactions.show', $reversal) }}" class="block text-sm text-emerald-600 hover:text-emerald-900">

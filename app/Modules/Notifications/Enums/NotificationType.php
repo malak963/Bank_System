@@ -18,16 +18,16 @@ enum NotificationType: string
     public function label(): string
     {
         return match ($this) {
-            self::Transaction => 'Transaction',
-            self::Account => 'Account',
-            self::Card => 'Card',
-            self::Loan => 'Loan',
-            self::Security => 'Security',
-            self::Marketing => 'Marketing',
-            self::System => 'System',
-            self::Appointment => 'Appointment',
-            self::Payment => 'Payment',
-            self::Balance => 'Balance',
+            self::Transaction => __('Transaction'),
+            self::Account => __('Account'),
+            self::Card => __('Card'),
+            self::Loan => __('Loan'),
+            self::Security => __('Security'),
+            self::Marketing => __('Marketing'),
+            self::System => __('System'),
+            self::Appointment => __('Appointment'),
+            self::Payment => __('Payment'),
+            self::Balance => __('Balance'),
         };
     }
 

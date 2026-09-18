@@ -13,11 +13,11 @@ enum NotificationStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::Pending => 'Pending',
-            self::Sent => 'Sent',
-            self::Delivered => 'Delivered',
-            self::Failed => 'Failed',
-            self::Read => 'Read',
+            self::Pending => __('Pending'),
+            self::Sent => __('Sent'),
+            self::Delivered => __('Delivered'),
+            self::Failed => __('Failed'),
+            self::Read => __('Read'),
         };
     }
 

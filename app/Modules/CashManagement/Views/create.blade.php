@@ -6,7 +6,7 @@
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-2xl mx-auto">
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-3xl font-bold text-slate-800">Create Cash Operation</h1>
+            <h1 class="text-3xl font-bold text-slate-800">{{ __('Create Cash Operation') }}</h1>
             <a href="{{ route('cash-management.index') }}" 
                class="text-slate-600 hover:text-slate-900">Back</a>
         </div>
@@ -17,7 +17,7 @@
                 
                 <div class="grid grid-cols-1 gap-6">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Branch</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Branch') }}</label>
                         <select name="branch_id" required class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                             <option value="">Select Branch</option>
                             @foreach(\App\Modules\Branches\Models\Branch::all() as $branch)
@@ -27,32 +27,32 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Operation Type</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Operation Type') }}</label>
                         <select name="operation_type" required class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
-                            <option value="">Select Type</option>
-                            <option value="deposit">Deposit</option>
-                            <option value="withdrawal">Withdrawal</option>
-                            <option value="transfer">Transfer</option>
-                            <option value="replenishment">Replenishment</option>
-                            <option value="withdrawal_to_vault">Withdrawal to Vault</option>
-                            <option value="deposit_from_vault">Deposit from Vault</option>
+                            <option value="">{{ __('Select Type') }}</option>
+                            <option value="deposit">{{ __('Deposit') }}</option>
+                            <option value="withdrawal">{{ __('Withdrawal') }}</option>
+                            <option value="transfer">{{ __('Transfer') }}</option>
+                            <option value="replenishment">{{ __('Replenishment') }}</option>
+                            <option value="withdrawal_to_vault">{{ __('Withdrawal to Vault') }}</option>
+                            <option value="deposit_from_vault">{{ __('Deposit from Vault') }}</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Amount</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Amount') }}</label>
                         <input type="number" name="amount" step="0.01" required 
                                class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Currency</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Currency') }}</label>
                         <input type="text" name="currency" value="SYP" required 
                                class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Operation Date</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Operation Date') }}</label>
                         <input type="date" name="operation_date" 
                                class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
@@ -68,13 +68,13 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Description</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Description') }}</label>
                         <textarea name="description" rows="3" 
                                   class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500"></textarea>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Notes</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Notes') }}</label>
                         <textarea name="notes" rows="2" 
                                   class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500"></textarea>
                     </div>

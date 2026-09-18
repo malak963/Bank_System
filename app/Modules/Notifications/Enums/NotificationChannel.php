@@ -13,11 +13,11 @@ enum NotificationChannel: string
     public function label(): string
     {
         return match ($this) {
-            self::Email => 'Email',
-            self::SMS => 'SMS',
-            self::Push => 'Push Notification',
-            self::InApp => 'In-App',
-            self::WhatsApp => 'WhatsApp',
+            self::Email => __('Email'),
+            self::SMS => __('SMS'),
+            self::Push => __('Push Notification'),
+            self::InApp => __('In-App'),
+            self::WhatsApp => __('WhatsApp'),
         };
     }
 

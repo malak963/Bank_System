@@ -10,7 +10,8 @@
         "laravel/fortify": "^1.38",
         "laravel/framework": "^13.17",
         "laravel/tinker": "^3.0",
-        "mallardduck/blade-lucide-icons": "^2.0"
+        "mallardduck/blade-lucide-icons": "^2.0",
+        "mcamara/laravel-localization": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

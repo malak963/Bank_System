@@ -21,9 +21,6 @@ class BillsPaymentServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/Views', 'bills-payments');
         $this->loadMigrationsFrom(__DIR__ . '/Database/Migrations');
-
-        Route::middleware(['web'])
-            ->prefix('bills-payments')
-            ->group(base_path('app/Modules/BillsPayments/Routes/web.php'));
+        $this->loadRoutesFrom(__DIR__ . '/Routes/web.php');
     }
 }

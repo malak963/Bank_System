@@ -14,12 +14,12 @@ enum ServiceType: string
     public function label(): string
     {
         return match ($this) {
-            self::General => 'General Banking',
-            self::LoanConsultation => 'Loan Consultation',
-            self::AccountOpening => 'Account Opening',
-            self::WealthManagement => 'Wealth Management',
-            self::CardServices => 'Card Services',
-            self::ComplaintResolution => 'Complaint Resolution',
+            self::General => __('General Banking'),
+            self::LoanConsultation => __('Loan Consultation'),
+            self::AccountOpening => __('Account Opening'),
+            self::WealthManagement => __('Wealth Management'),
+            self::CardServices => __('Card Services'),
+            self::ComplaintResolution => __('Complaint Resolution'),
         };
     }
 

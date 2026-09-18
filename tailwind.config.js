@@ -7,12 +7,13 @@ export default {
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
+        './app/Modules/*/Views/**/*.blade.php',
     ],
 
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Alexandria', 'Figtree', ...defaultTheme.fontFamily.sans],
             },
         },
     },

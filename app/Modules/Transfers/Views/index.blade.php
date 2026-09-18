@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">Transfers</h1>
+        <h1 class="text-3xl font-bold text-gray-900">{{ __('Transfers') }}</h1>
         <div class="flex gap-3">
             <form action="{{ route('transfers.process-scheduled') }}" method="POST" class="inline">
                 @csrf
@@ -38,15 +38,15 @@
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div class="bg-white rounded-lg shadow p-4">
-            <p class="text-sm text-gray-500">Total Transfers</p>
+            <p class="text-sm text-gray-500">{{ __('Total Transfers') }}</p>
             <p class="text-2xl font-bold text-gray-900">{{ $statistics['total'] }}</p>
         </div>
         <div class="bg-white rounded-lg shadow p-4">
-            <p class="text-sm text-gray-500">Pending</p>
+            <p class="text-sm text-gray-500">{{ __('Pending') }}</p>
             <p class="text-2xl font-bold text-yellow-600">{{ $statistics['pending'] }}</p>
         </div>
         <div class="bg-white rounded-lg shadow p-4">
-            <p class="text-sm text-gray-500">Completed</p>
+            <p class="text-sm text-gray-500">{{ __('Completed') }}</p>
             <p class="text-2xl font-bold text-emerald-600">{{ $statistics['completed'] }}</p>
         </div>
         <div class="bg-white rounded-lg shadow p-4">
@@ -60,15 +60,15 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reference</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">From Account</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">To Account</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Reference') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Type') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('From Account') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('To Account') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Amount') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Status') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Customer') }}</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Actions') }}</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -92,22 +92,22 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             @switch($transfer->status->value)
                                 @case('pending')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{{ __('Pending') }}</span>
                                     @break
                                 @case('processing')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Processing</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{{ __('Processing') }}</span>
                                     @break
                                 @case('completed')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">Completed</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">{{ __('Completed') }}</span>
                                     @break
                                 @case('failed')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Failed</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ __('Failed') }}</span>
                                     @break
                                 @case('cancelled')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Cancelled</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ __('Cancelled') }}</span>
                                     @break
                                 @case('on_hold')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">On Hold</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">{{ __('On Hold') }}</span>
                                     @break
                             @endswitch
                         </td>
@@ -118,12 +118,12 @@
                             {{ $transfer->created_at->format('M d, Y H:i') }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="{{ route('transfers.show', $transfer) }}" class="text-emerald-600 hover:text-emerald-900">View</a>
+                            <a href="{{ route('transfers.show', $transfer) }}" class="text-emerald-600 hover:text-emerald-900">{{ __('View') }}</a>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="10" class="px-6 py-4 text-center text-gray-500">No transfers found</td>
+                        <td colspan="10" class="px-6 py-4 text-center text-gray-500">{{ __('No transfers found') }}</td>
                     </tr>
                 @endforelse
             </tbody>

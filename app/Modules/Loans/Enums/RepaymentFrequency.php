@@ -26,8 +26,8 @@ enum RepaymentFrequency: string
     public function label(): string
     {
         return match ($this) {
-            self::Monthly => 'Monthly',
-            self::Quarterly => 'Quarterly',
+            self::Monthly => __('Monthly'),
+            self::Quarterly => __('Quarterly'),
         };
     }
 }

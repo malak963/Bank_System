@@ -24,22 +24,22 @@ enum SecurityEventType: string
     public function label(): string
     {
         return match ($this) {
-            self::Login => 'Login',
-            self::Logout => 'Logout',
-            self::FailedLogin => 'Failed Login',
-            self::PasswordChange => 'Password Change',
-            self::PasswordReset => 'Password Reset',
-            self::Transaction => 'Transaction',
-            self::LargeTransaction => 'Large Transaction',
-            self::UnusualLocation => 'Unusual Location',
-            self::CardBlock => 'Card Block',
-            self::AccountFreeze => 'Account Freeze',
-            self::FraudAlert => 'Fraud Alert',
-            self::SuspiciousActivity => 'Suspicious Activity',
-            self::DataAccess => 'Data Access',
-            self::PermissionChange => 'Permission Change',
-            self::ApiAccess => 'API Access',
-            self::ConfigurationChange => 'Configuration Change',
+            self::Login => __('Login'),
+            self::Logout => __('Logout'),
+            self::FailedLogin => __('Failed Login'),
+            self::PasswordChange => __('Password Change'),
+            self::PasswordReset => __('Password Reset'),
+            self::Transaction => __('Transaction'),
+            self::LargeTransaction => __('Large Transaction'),
+            self::UnusualLocation => __('Unusual Location'),
+            self::CardBlock => __('Card Block'),
+            self::AccountFreeze => __('Account Freeze'),
+            self::FraudAlert => __('Fraud Alert'),
+            self::SuspiciousActivity => __('Suspicious Activity'),
+            self::DataAccess => __('Data Access'),
+            self::PermissionChange => __('Permission Change'),
+            self::ApiAccess => __('API Access'),
+            self::ConfigurationChange => __('Configuration Change'),
         };
     }
 

@@ -19,9 +19,6 @@ class CashManagementServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/Views', 'cash-management');
         $this->loadMigrationsFrom(__DIR__ . '/Migrations');
-
-        Route::middleware(['web'])
-            ->prefix('cash-management')
-            ->group(base_path('app/Modules/CashManagement/Routes/web.php'));
+        $this->loadRoutesFrom(__DIR__ . '/Routes/web.php');
     }
 }

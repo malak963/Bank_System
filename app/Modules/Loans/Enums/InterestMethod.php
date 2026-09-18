@@ -10,8 +10,8 @@ enum InterestMethod: string
     public function label(): string
     {
         return match ($this) {
-            self::ReducingBalance => 'Reducing Balance',
-            self::FlatRate => 'Flat Rate',
+            self::ReducingBalance => __('Reducing Balance'),
+            self::FlatRate => __('Flat Rate'),
         };
     }
 }

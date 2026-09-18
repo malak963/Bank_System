@@ -27,19 +27,19 @@
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div class="bg-white rounded-lg shadow p-4">
-            <p class="text-sm text-gray-500">Total Products</p>
+            <p class="text-sm text-gray-500">{{ __('Total Products') }}</p>
             <p class="text-2xl font-bold text-gray-900">{{ $statistics['total'] }}</p>
         </div>
         <div class="bg-white rounded-lg shadow p-4">
-            <p class="text-sm text-gray-500">Active</p>
+            <p class="text-sm text-gray-500">{{ __('Active') }}</p>
             <p class="text-2xl font-bold text-emerald-600">{{ $statistics['active'] }}</p>
         </div>
         <div class="bg-white rounded-lg shadow p-4">
-            <p class="text-sm text-gray-500">Total Balance</p>
+            <p class="text-sm text-gray-500">{{ __('Total Balance') }}</p>
             <p class="text-2xl font-bold text-blue-600">${{ number_format($statistics['total_balance'], 2) }}</p>
         </div>
         <div class="bg-white rounded-lg shadow p-4">
-            <p class="text-sm text-gray-500">Interest Earned</p>
+            <p class="text-sm text-gray-500">{{ __('Interest Earned') }}</p>
             <p class="text-2xl font-bold text-purple-600">${{ number_format($statistics['total_interest_earned'], 2) }}</p>
         </div>
     </div>
@@ -49,15 +49,15 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product #</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Balance</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Product #') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Name') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Type') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Balance') }}</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Interest Rate</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Maturity</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Status') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Customer') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Maturity') }}</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Actions') }}</th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -81,22 +81,22 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             @switch($product->status->value)
                                 @case('active')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">Active</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">{{ __('Active') }}</span>
                                     @break
                                 @case('inactive')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Inactive</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ __('Inactive') }}</span>
                                     @break
                                 @case('matured')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Matured</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{{ __('Matured') }}</span>
                                     @break
                                 @case('closed')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Closed</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ __('Closed') }}</span>
                                     @break
                                 @case('suspended')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">Suspended</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">{{ __('Suspended') }}</span>
                                     @break
                                 @case('pending')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Pending</span>
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{{ __('Pending') }}</span>
                                     @break
                             @endswitch
                         </td>
@@ -107,12 +107,12 @@
                             {{ $product->maturity_date?->format('M d, Y') ?? 'N/A' }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="{{ route('products.show', $product) }}" class="text-emerald-600 hover:text-emerald-900">View</a>
+                            <a href="{{ route('products.show', $product) }}" class="text-emerald-600 hover:text-emerald-900">{{ __('View') }}</a>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="10" class="px-6 py-4 text-center text-gray-500">No products found</td>
+                        <td colspan="10" class="px-6 py-4 text-center text-gray-500">{{ __('No products found') }}</td>
                     </tr>
                 @endforelse
             </tbody>

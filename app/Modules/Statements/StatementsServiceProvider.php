@@ -19,9 +19,6 @@ class StatementsServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/Views', 'statements');
         $this->loadMigrationsFrom(__DIR__ . '/Database/Migrations');
-
-        Route::middleware(['web'])
-            ->prefix('statements')
-            ->group(base_path('app/Modules/Statements/Routes/web.php'));
+        $this->loadRoutesFrom(__DIR__ . '/Routes/web.php');
     }
 }

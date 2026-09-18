@@ -13,11 +13,11 @@ enum ReportStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::Pending => 'Pending',
-            self::Generating => 'Generating',
-            self::Completed => 'Completed',
-            self::Failed => 'Failed',
-            self::Scheduled => 'Scheduled',
+            self::Pending => __('Pending'),
+            self::Generating => __('Generating'),
+            self::Completed => __('Completed'),
+            self::Failed => __('Failed'),
+            self::Scheduled => __('Scheduled'),
         };
     }
 

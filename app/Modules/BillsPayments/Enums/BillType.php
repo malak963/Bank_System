@@ -19,17 +19,17 @@ enum BillType: string
     public function getLabel(): string
     {
         return match($this) {
-            self::ELECTRICITY => 'Electricity',
-            self::WATER => 'Water',
-            self::GAS => 'Gas',
-            self::INTERNET => 'Internet',
-            self::PHONE => 'Phone',
-            self::TELEVISION => 'Television',
-            self::INSURANCE => 'Insurance',
-            self::TAX => 'Tax',
-            self::LOAN_INSTALLMENT => 'Loan Installment',
-            self::SUBSCRIPTION => 'Subscription',
-            self::OTHER => 'Other',
+            self::ELECTRICITY => __('Electricity'),
+            self::WATER => __('Water'),
+            self::GAS => __('Gas'),
+            self::INTERNET => __('Internet'),
+            self::PHONE => __('Phone'),
+            self::TELEVISION => __('Television'),
+            self::INSURANCE => __('Insurance'),
+            self::TAX => __('Tax'),
+            self::LOAN_INSTALLMENT => __('Loan Installment'),
+            self::SUBSCRIPTION => __('Subscription'),
+            self::OTHER => __('Other'),
         };
     }
 }

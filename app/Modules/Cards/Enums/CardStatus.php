@@ -17,15 +17,15 @@ enum CardStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::Active => 'Active',
-            self::Inactive => 'Inactive',
-            self::Blocked => 'Blocked',
-            self::Expired => 'Expired',
-            self::Lost => 'Lost',
-            self::Stolen => 'Stolen',
-            self::Damaged => 'Damaged',
-            self::Pending => 'Pending',
-            self::Replaced => 'Replaced',
+            self::Active => __('Active'),
+            self::Inactive => __('Inactive'),
+            self::Blocked => __('Blocked'),
+            self::Expired => __('Expired'),
+            self::Lost => __('Lost'),
+            self::Stolen => __('Stolen'),
+            self::Damaged => __('Damaged'),
+            self::Pending => __('Pending'),
+            self::Replaced => __('Replaced'),
         };
     }
 

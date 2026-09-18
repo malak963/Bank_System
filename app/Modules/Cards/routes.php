@@ -3,7 +3,13 @@
 use App\Modules\Cards\Controllers\CardController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('cards')->name('cards.')->group(function () {
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+
+Route::group([
+    'prefix' => LaravelLocalization::setLocale(),
+    'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'],
+], function (): void {
+    Route::prefix('cards')->name('cards.')->group(function () {
     Route::get('/', [CardController::class, 'index'])->name('index');
     Route::get('/create', [CardController::class, 'create'])->name('create');
     Route::post('/', [CardController::class, 'store'])->name('store');
@@ -15,6 +21,7 @@ Route::prefix('cards')->name('cards.')->group(function () {
     Route::post('/{card}/update-pin', [CardController::class, 'updatePin'])->name('update-pin');
     Route::post('/{card}/update-limits', [CardController::class, 'updateLimits'])->name('update-limits');
     Route::post('/{card}/toggle-features', [CardController::class, 'toggleFeatures'])->name('toggle-features');
+});
 });
 
 Route::prefix('api')->middleware(['api'])->group(function () {

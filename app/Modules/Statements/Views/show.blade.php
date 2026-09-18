@@ -6,7 +6,7 @@
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-4xl mx-auto">
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-3xl font-bold text-slate-800">Statement Details</h1>
+            <h1 class="text-3xl font-bold text-slate-800">{{ __('Statement Details') }}</h1>
             <a href="{{ route('statements.index') }}" 
                class="text-slate-600 hover:text-slate-900">Back</a>
         </div>
@@ -14,11 +14,11 @@
         <div class="bg-white rounded-lg shadow p-6 mb-6">
             <div class="grid grid-cols-2 gap-6">
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Reference</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Reference') }}</label>
                     <p class="text-lg font-semibold text-slate-900">{{ $statement->statement_reference }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Status</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Status') }}</label>
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                         @if($statement->status === 'completed') bg-emerald-100 text-emerald-800
                         @elseif($statement->status === 'generating') bg-blue-100 text-blue-800
@@ -28,47 +28,47 @@
                     </span>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Account</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Account') }}</label>
                     <p class="text-slate-900">{{ $statement->account?->account_number ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Customer</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Customer') }}</label>
                     <p class="text-slate-900">{{ $statement->customer?->first_name }} {{ $statement->customer?->last_name ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Period</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Period') }}</label>
                     <p class="text-slate-900">{{ $statement->period_start }} to {{ $statement->period_end }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Generated At</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Generated At') }}</label>
                     <p class="text-slate-900">{{ $statement->generated_at?->format('Y-m-d H:i') ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Opening Balance</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Opening Balance') }}</label>
                     <p class="text-lg font-semibold text-slate-900">
                         {{ $statement->currency }} {{ number_format($statement->opening_balance, 2) }}
                     </p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Closing Balance</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Closing Balance') }}</label>
                     <p class="text-lg font-semibold text-slate-900">
                         {{ $statement->currency }} {{ number_format($statement->closing_balance, 2) }}
                     </p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Total Debits</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Total Debits') }}</label>
                     <p class="text-slate-900">{{ $statement->currency }} {{ number_format($statement->total_debits, 2) }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Total Credits</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Total Credits') }}</label>
                     <p class="text-slate-900">{{ $statement->currency }} {{ number_format($statement->total_credits, 2) }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Transaction Count</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Transaction Count') }}</label>
                     <p class="text-slate-900">{{ $statement->transaction_count }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">File Size</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('File Size') }}</label>
                     <p class="text-slate-900">{{ $statement->file_size ? number_format($statement->file_size / 1024, 2) . ' KB' : 'N/A' }}</p>
                 </div>
             </div>

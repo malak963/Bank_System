@@ -15,13 +15,13 @@ enum BillStatus: string
     public function getLabel(): string
     {
         return match($this) {
-            self::PENDING => 'Pending',
-            self::SCHEDULED => 'Scheduled',
-            self::PROCESSING => 'Processing',
-            self::COMPLETED => 'Completed',
-            self::FAILED => 'Failed',
-            self::CANCELLED => 'Cancelled',
-            self::REFUNDED => 'Refunded',
+            self::PENDING => __('Pending'),
+            self::SCHEDULED => __('Scheduled'),
+            self::PROCESSING => __('Processing'),
+            self::COMPLETED => __('Completed'),
+            self::FAILED => __('Failed'),
+            self::CANCELLED => __('Cancelled'),
+            self::REFUNDED => __('Refunded'),
         };
     }
 

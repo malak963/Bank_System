@@ -6,43 +6,43 @@
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-4xl mx-auto">
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-3xl font-bold text-slate-800">Loan Calculator</h1>
+            <h1 class="text-3xl font-bold text-slate-800">{{ __('Loan Calculator') }}</h1>
             <a href="{{ route('calculators.index') }}" 
                class="text-slate-600 hover:text-slate-900">Back</a>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div class="bg-white rounded-lg shadow p-6">
-                <h2 class="text-xl font-semibold text-slate-800 mb-4">Loan Details</h2>
+                <h2 class="text-xl font-semibold text-slate-800 mb-4">{{ __('Loan Details') }}</h2>
                 <form id="loanCalculator">
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-2">Loan Amount</label>
                             <input type="number" id="amount" name="amount" min="1000" max="10000000" step="100" required
                                    class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
-                                   placeholder="Enter loan amount">
+                                   placeholder="{{ __('Enter loan amount') }}">
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-2">Interest Rate (%)</label>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Interest Rate (%)') }}</label>
                             <input type="number" id="interest_rate" name="interest_rate" min="0.1" max="30" step="0.1" required
                                    class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
-                                   placeholder="Enter annual interest rate">
+                                   placeholder="{{ __('Enter annual interest rate') }}">
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-2">Loan Term (Months)</label>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Loan Term (Months)') }}</label>
                             <input type="number" id="term_months" name="term_months" min="1" max="360" required
                                    class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
-                                   placeholder="Enter loan term in months">
+                                   placeholder="{{ __('Enter loan term in months') }}">
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-2">Interest Method</label>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Interest Method') }}</label>
                             <select id="method" name="method" 
                                     class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
-                                <option value="reducing_balance">Reducing Balance</option>
-                                <option value="flat_rate">Flat Rate</option>
+                                <option value="reducing_balance">{{ __('Reducing Balance') }}</option>
+                                <option value="flat_rate">{{ __('Flat Rate') }}</option>
                             </select>
                         </div>
 

@@ -3,8 +3,8 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">Transfer Details</h1>
-        <a href="{{ route('transfers.index') }}" class="text-gray-600 hover:text-gray-900">Back to Transfers</a>
+        <h1 class="text-3xl font-bold text-gray-900">{{ __('Transfer Details') }}</h1>
+        <a href="{{ route('transfers.index') }}" class="text-gray-600 hover:text-gray-900">{{ __('Back to Transfers') }}</a>
     </div>
 
     @if(session('success'))
@@ -29,28 +29,28 @@
                     </div>
                     @switch($transfer->status->value)
                         @case('pending')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{{ __('Pending') }}</span>
                             @break
                         @case('processing')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Processing</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{{ __('Processing') }}</span>
                             @break
                         @case('completed')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">Completed</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">{{ __('Completed') }}</span>
                             @break
                         @case('failed')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">Failed</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ __('Failed') }}</span>
                             @break
                         @case('cancelled')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Cancelled</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ __('Cancelled') }}</span>
                             @break
                         @case('on_hold')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">On Hold</span>
+                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">{{ __('On Hold') }}</span>
                             @break
                     @endswitch
                 </div>
 
                 <div class="border-t pt-4">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Transfer Information</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Transfer Information') }}</h3>
                     <dl class="grid grid-cols-1 gap-4">
                         <div class="flex justify-between">
                             <dt class="text-sm text-gray-500">Customer</dt>
@@ -137,14 +137,14 @@
 
                 @if($transfer->description)
                     <div class="mt-4 bg-gray-50 border border-gray-200 rounded-lg p-4">
-                        <h3 class="text-sm font-semibold text-gray-800 mb-2">Description</h3>
+                        <h3 class="text-sm font-semibold text-gray-800 mb-2">{{ __('Description') }}</h3>
                         <p class="text-sm text-gray-700">{{ $transfer->description }}</p>
                     </div>
                 @endif
 
                 @if($transfer->failure_reason)
                     <div class="mt-4 bg-red-50 border border-red-200 rounded-lg p-4">
-                        <h3 class="text-sm font-semibold text-red-800 mb-2">Failure Reason</h3>
+                        <h3 class="text-sm font-semibold text-red-800 mb-2">{{ __('Failure Reason') }}</h3>
                         <p class="text-sm text-red-700">{{ $transfer->failure_reason }}</p>
                     </div>
                 @endif
@@ -159,7 +159,7 @@
 
             <!-- Transactions Section -->
             <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Related Transactions</h3>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Related Transactions') }}</h3>
                 @if($transfer->transactions->count() > 0)
                     <div class="space-y-2">
                         @foreach($transfer->transactions as $transaction)
@@ -173,21 +173,21 @@
                         @endforeach
                     </div>
                 @else
-                    <p class="text-sm text-gray-500">No transactions yet</p>
+                    <p class="text-sm text-gray-500">{{ __('No transactions yet') }}</p>
                 @endif
             </div>
         </div>
 
         <div>
             <div class="bg-white rounded-lg shadow p-6 mb-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">Actions</h3>
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Actions') }}</h3>
                 <div class="space-y-3">
                     @if($transfer->status->canBeCancelled())
                         <form action="{{ route('transfers.cancel', $transfer) }}" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Cancellation Reason</label>
-                                <textarea name="reason" required rows="2" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="Enter reason..."></textarea>
+                                <textarea name="reason" required rows="2" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="{{ __('Enter reason...') }}"></textarea>
                             </div>
                             <button type="submit" class="w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 text-sm">Cancel Transfer</button>
                         </form>
@@ -196,7 +196,7 @@
                     @if($transfer->status->canBeRetried())
                         <form action="{{ route('transfers.retry', $transfer) }}" method="POST">
                             @csrf
-                            <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm">Retry Transfer</button>
+                            <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm">{{ __('Retry Transfer') }}</button>
                         </form>
                     @endif
 

@@ -18,9 +18,6 @@ class CalculatorsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(__DIR__ . '/Views', 'calculators');
-
-        Route::middleware(['web'])
-            ->prefix('calculators')
-            ->group(base_path('app/Modules/Calculators/Routes/web.php'));
+        $this->loadRoutesFrom(__DIR__ . '/Routes/web.php');
     }
 }

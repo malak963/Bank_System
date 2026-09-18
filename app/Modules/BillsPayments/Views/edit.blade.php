@@ -6,7 +6,7 @@
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-2xl mx-auto">
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-3xl font-bold text-slate-800">Edit Bill</h1>
+            <h1 class="text-3xl font-bold text-slate-800">{{ __('Edit Bill') }}</h1>
             <a href="{{ route('bills-payments.show', $bill->id) }}" 
                class="text-slate-600 hover:text-slate-900">Back</a>
         </div>
@@ -18,7 +18,7 @@
                 
                 <div class="grid grid-cols-1 gap-6">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Customer</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Customer') }}</label>
                         <select name="customer_id" required class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                             <option value="">Select Customer</option>
                             @foreach(\App\Modules\Customers\Models\Customer::all() as $customer)
@@ -42,9 +42,9 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Bill Type</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Bill Type') }}</label>
                         <select name="bill_type" required class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
-                            <option value="">Select Type</option>
+                            <option value="">{{ __('Select Type') }}</option>
                             <option value="electricity" {{ $bill->bill_type->value === 'electricity' ? 'selected' : '' }}>Electricity</option>
                             <option value="water" {{ $bill->bill_type->value === 'water' ? 'selected' : '' }}>Water</option>
                             <option value="gas" {{ $bill->bill_type->value === 'gas' ? 'selected' : '' }}>Gas</option>
@@ -60,37 +60,37 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Provider Name</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Provider Name') }}</label>
                         <input type="text" name="provider_name" value="{{ $bill->provider_name }}" required 
                                class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Provider Account Number (Optional)</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Provider Account Number (Optional)') }}</label>
                         <input type="text" name="provider_account_number" value="{{ $bill->provider_account_number }}" 
                                class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Amount</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Amount') }}</label>
                         <input type="number" name="amount" step="0.01" value="{{ $bill->amount }}" required 
                                class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Currency</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Currency') }}</label>
                         <input type="text" name="currency" value="{{ $bill->currency }}" required 
                                class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Due Date</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Due Date') }}</label>
                         <input type="date" name="due_date" value="{{ $bill->due_date?->format('Y-m-d') }}" required 
                                class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Description</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Description') }}</label>
                         <textarea name="description" rows="3" 
                                   class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">{{ $bill->description }}</textarea>
                     </div>

@@ -11,9 +11,9 @@ enum AccountStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::Open => 'Open',
-            self::Frozen => 'Frozen',
-            self::Closed => 'Closed',
+            self::Open => __('Open'),
+            self::Frozen => __('Frozen'),
+            self::Closed => __('Closed'),
         };
     }
 }

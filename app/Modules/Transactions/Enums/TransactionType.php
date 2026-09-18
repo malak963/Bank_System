@@ -24,22 +24,22 @@ enum TransactionType: string
     public function label(): string
     {
         return match ($this) {
-            self::Deposit => 'Deposit',
-            self::Withdrawal => 'Withdrawal',
-            self::Transfer => 'Transfer',
-            self::Fee => 'Fee',
-            self::Interest => 'Interest',
-            self::Penalty => 'Penalty',
-            self::Reversal => 'Reversal',
-            self::Refund => 'Refund',
-            self::BillPayment => 'Bill Payment',
-            self::CardPayment => 'Card Payment',
-            self::AtmWithdrawal => 'ATM Withdrawal',
-            self::ChequeDeposit => 'Cheque Deposit',
-            self::ChequeWithdrawal => 'Cheque Withdrawal',
-            self::OnlineTransfer => 'Online Transfer',
-            self::StandingOrder => 'Standing Order',
-            self::DirectDebit => 'Direct Debit',
+            self::Deposit => __('Deposit'),
+            self::Withdrawal => __('Withdrawal'),
+            self::Transfer => __('Transfer'),
+            self::Fee => __('Fee'),
+            self::Interest => __('Interest'),
+            self::Penalty => __('Penalty'),
+            self::Reversal => __('Reversal'),
+            self::Refund => __('Refund'),
+            self::BillPayment => __('Bill Payment'),
+            self::CardPayment => __('Card Payment'),
+            self::AtmWithdrawal => __('ATM Withdrawal'),
+            self::ChequeDeposit => __('Cheque Deposit'),
+            self::ChequeWithdrawal => __('Cheque Withdrawal'),
+            self::OnlineTransfer => __('Online Transfer'),
+            self::StandingOrder => __('Standing Order'),
+            self::DirectDebit => __('Direct Debit'),
         };
     }
 

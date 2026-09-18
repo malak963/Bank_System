@@ -151,15 +151,15 @@
                     <table class="min-w-full divide-y divide-slate-200">
                         <thead class="bg-slate-50">
                             <tr>
-                                <th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Number') }}</th>
-                                <th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Name') }}</th>
-                                <th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('User') }}</th>
-                                <th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Document') }}</th>
-                                <th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Status') }}</th>
-                                <th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('KYC') }}</th>
-                                <th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Risk') }}</th>
-                                <th class="px-5 py-3 text-left text-xs font-semibold uppercase text-slate-500">{{ __('Reviewed') }}</th>
-                                <th class="px-5 py-3 text-right text-xs font-semibold uppercase text-slate-500">{{ __('Actions') }}</th>
+                                <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Number') }}</th>
+                                <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Name') }}</th>
+                                <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('User') }}</th>
+                                <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Document') }}</th>
+                                <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Status') }}</th>
+                                <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('KYC') }}</th>
+                                <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Risk') }}</th>
+                                <th class="px-5 py-3 text-start text-xs font-semibold uppercase text-slate-500">{{ __('Reviewed') }}</th>
+                                <th class="px-5 py-3 text-end text-xs font-semibold uppercase text-slate-500">{{ __('Actions') }}</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 bg-white">
@@ -183,44 +183,44 @@
                                     };
                                 @endphp
                                 <tr class="transition hover:bg-slate-50">
-                                    <td class="px-5 py-4 whitespace-nowrap text-sm font-semibold text-slate-950">{{ $customer->customer_number }}</td>
+                                    <td class="px-5 py-4 whitespace-nowrap text-sm font-semibold text-slate-950 font-mono" dir="ltr">{{ $customer->customer_number }}</td>
                                     <td class="px-5 py-4 whitespace-nowrap text-sm">
-                                        <a href="{{ route('customers.show', $customer) }}" class="font-semibold text-slate-900 hover:text-emerald-700">
-                                            {{ $customer->full_name }}
-                                        </a>
-                                        @if ($customer->kyc_reference)
-                                            <p class="mt-0.5 text-xs text-slate-500">{{ $customer->kyc_reference }}</p>
-                                        @endif
-                                    </td>
-                                    <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600">{{ $customer->user?->email }}</td>
-                                    <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600">
-                                        <p class="font-medium text-slate-900">{{ $customer->identity_document_type?->label() ?? __('Not set') }}</p>
-                                        <p class="mt-0.5 text-xs text-slate-500">{{ $customer->identity_document_number ?? __('No document number') }}</p>
-                                        @if ($customer->identity_document_country || $customer->identity_document_expires_at)
-                                            <p class="mt-0.5 text-xs text-slate-500">
-                                                {{ $customer->identity_document_country ?? __('N/A') }}
-                                                @if ($customer->identity_document_expires_at)
-                                                    - {{ $customer->identity_document_expires_at->toDateString() }}
-                                                @endif
-                                            </p>
-                                        @endif
-                                    </td>
-                                    <td class="px-5 py-4 whitespace-nowrap text-sm">
-                                        <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset {{ $statusClass }}">{{ $customer->status->label() }}</span>
-                                    </td>
-                                    <td class="px-5 py-4 whitespace-nowrap text-sm">
-                                        <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset {{ $kycClass }}">{{ $customer->kyc_status->label() }}</span>
-                                    </td>
-                                    <td class="px-5 py-4 whitespace-nowrap text-sm">
-                                        <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset {{ $riskClass }}">{{ $customer->risk_level->label() }}</span>
-                                    </td>
-                                    <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600">
-                                        <p class="font-medium text-slate-900">{{ $customer->kyc_reviewed_at?->toDateString() ?? __('Pending') }}</p>
-                                        <p class="mt-0.5 text-xs text-slate-500">{{ $customer->kycReviewer?->name ?? __('No reviewer') }}</p>
-                                    </td>
-                                    <td class="px-5 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="{{ route('customers.edit', $customer) }}" class="inline-flex items-center rounded-md border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-emerald-300 hover:text-emerald-700">{{ __('Edit') }}</a>
-                                    </td>
+                                         <a href="{{ route('customers.show', $customer) }}" class="font-semibold text-slate-900 hover:text-emerald-700">
+                                             {{ $customer->full_name }}
+                                         </a>
+                                         @if ($customer->kyc_reference)
+                                             <p class="mt-0.5 text-xs text-slate-500 font-mono" dir="ltr">{{ $customer->kyc_reference }}</p>
+                                         @endif
+                                     </td>
+                                     <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600 font-mono" dir="ltr">{{ $customer->user?->email }}</td>
+                                     <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600">
+                                         <p class="font-medium text-slate-900">{{ $customer->identity_document_type?->label() ?? __('Not set') }}</p>
+                                         <p class="mt-0.5 text-xs text-slate-500 font-mono" dir="ltr">{{ $customer->identity_document_number ?? __('No document number') }}</p>
+                                         @if ($customer->identity_document_country || $customer->identity_document_expires_at)
+                                             <p class="mt-0.5 text-xs text-slate-500 font-mono" dir="ltr">
+                                                 {{ $customer->identity_document_country ?? __('N/A') }}
+                                                 @if ($customer->identity_document_expires_at)
+                                                     - {{ $customer->identity_document_expires_at->toDateString() }}
+                                                 @endif
+                                             </p>
+                                         @endif
+                                     </td>
+                                     <td class="px-5 py-4 whitespace-nowrap text-sm">
+                                         <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset {{ $statusClass }}">{{ $customer->status->label() }}</span>
+                                     </td>
+                                     <td class="px-5 py-4 whitespace-nowrap text-sm">
+                                         <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset {{ $kycClass }}">{{ $customer->kyc_status->label() }}</span>
+                                     </td>
+                                     <td class="px-5 py-4 whitespace-nowrap text-sm">
+                                         <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset {{ $riskClass }}">{{ $customer->risk_level->label() }}</span>
+                                     </td>
+                                     <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600">
+                                         <p class="font-medium text-slate-900 font-mono" dir="ltr">{{ $customer->kyc_reviewed_at?->toDateString() ?? __('Pending') }}</p>
+                                         <p class="mt-0.5 text-xs text-slate-500">{{ $customer->kycReviewer?->name ?? __('No reviewer') }}</p>
+                                     </td>
+                                     <td class="px-5 py-4 whitespace-nowrap text-end text-sm font-medium">
+                                         <a href="{{ route('customers.edit', $customer) }}" class="inline-flex items-center rounded-md border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-emerald-300 hover:text-emerald-700">{{ __('Edit') }}</a>
+                                     </td>
                                 </tr>
                             @empty
                                 <tr>

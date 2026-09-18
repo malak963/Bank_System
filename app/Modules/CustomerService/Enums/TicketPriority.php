@@ -13,11 +13,11 @@ enum TicketPriority: string
     public function label(): string
     {
         return match ($this) {
-            self::Low => 'Low',
-            self::Normal => 'Normal',
-            self::High => 'High',
-            self::Urgent => 'Urgent',
-            self::Critical => 'Critical',
+            self::Low => __('Low'),
+            self::Normal => __('Normal'),
+            self::High => __('High'),
+            self::Urgent => __('Urgent'),
+            self::Critical => __('Critical'),
         };
     }
 

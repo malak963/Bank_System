@@ -6,7 +6,7 @@
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-4xl mx-auto">
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-3xl font-bold text-slate-800">Bill Details</h1>
+            <h1 class="text-3xl font-bold text-slate-800">{{ __('Bill Details') }}</h1>
             <a href="{{ route('bills-payments.index') }}" 
                class="text-slate-600 hover:text-slate-900">Back</a>
         </div>
@@ -14,11 +14,11 @@
         <div class="bg-white rounded-lg shadow p-6 mb-6">
             <div class="grid grid-cols-2 gap-6">
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Reference</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Reference') }}</label>
                     <p class="text-lg font-semibold text-slate-900">{{ $bill->bill_reference }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Status</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Status') }}</label>
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                         @if($bill->status->getColor() === 'emerald') bg-emerald-100 text-emerald-800
                         @elseif($bill->status->getColor() === 'red') bg-red-100 text-red-800
@@ -31,44 +31,44 @@
                     </span>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Provider</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Provider') }}</label>
                     <p class="text-slate-900">{{ $bill->provider_name }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Bill Type</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Bill Type') }}</label>
                     <p class="text-slate-900">{{ $bill->bill_type->getLabel() }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Amount</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Amount') }}</label>
                     <p class="text-lg font-semibold text-slate-900">
                         {{ $bill->currency }} {{ number_format($bill->amount, 2) }}
                     </p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Due Date</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Due Date') }}</label>
                     <p class="text-slate-900">{{ $bill->due_date?->format('Y-m-d') ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Customer</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Customer') }}</label>
                     <p class="text-slate-900">{{ $bill->customer?->first_name }} {{ $bill->customer?->last_name ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Account</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Account') }}</label>
                     <p class="text-slate-900">{{ $bill->account?->account_number ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Paid At</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Paid At') }}</label>
                     <p class="text-slate-900">{{ $bill->paid_at?->format('Y-m-d H:i') ?? 'N/A' }}</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-500 mb-1">Transaction</label>
+                    <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Transaction') }}</label>
                     <p class="text-slate-900">{{ $bill->transaction?->transaction_reference ?? 'N/A' }}</p>
                 </div>
             </div>
 
             @if($bill->description)
             <div class="mt-6">
-                <label class="block text-sm font-medium text-slate-500 mb-1">Description</label>
+                <label class="block text-sm font-medium text-slate-500 mb-1">{{ __('Description') }}</label>
                 <p class="text-slate-900">{{ $bill->description }}</p>
             </div>
             @endif

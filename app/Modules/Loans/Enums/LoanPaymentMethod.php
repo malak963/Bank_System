@@ -11,9 +11,9 @@ enum LoanPaymentMethod: string
     public function label(): string
     {
         return match ($this) {
-            self::AccountDebit => 'Account Debit',
-            self::Cash => 'Cash',
-            self::BankTransfer => 'Bank Transfer',
+            self::AccountDebit => __('Account Debit'),
+            self::Cash => __('Cash'),
+            self::BankTransfer => __('Bank Transfer'),
         };
     }
 }
