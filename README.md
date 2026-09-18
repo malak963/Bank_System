@@ -1,58 +1,273 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Bank System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+نظام مصرفي مؤسسي مبني باستخدام Laravel لإدارة العملاء، المستخدمين، الحسابات، القروض، الأقساط، والتحصيل ضمن بنية Modules قابلة للتوسع. يحتوي النظام على لوحة تحكم تشغيلية وواجهات إدارة متجاوبة بهوية مصرفية موحدة.
 
-## About Laravel
+## المزايا الرئيسية
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### العملاء و KYC
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- إدارة ملفات العملاء بالكامل: إنشاء، عرض، تعديل، حذف منطقي، واستعراض الملف التفصيلي.
+- ربط العميل بمستخدم النظام عبر `user_id` مع منع التكرار.
+- توليد رقم عميل فريد.
+- إدارة بيانات الهوية، مثل الاسم، تاريخ الميلاد، الرقم الوطني، الهاتف، البريد، والعنوان.
+- دعم أنواع وثائق الهوية:
+  - National ID
+  - Passport
+  - Driver License
+  - Residence Permit
+- إدارة حالة KYC: `Pending`, `Approved`, `Rejected`.
+- حفظ رقم الوثيقة، دولة الإصدار، تاريخ الانتهاء، مرجع KYC، المراجع، تاريخ المراجعة، وسبب الرفض.
+- فلاتر وبحث متقدم حسب العميل، الوثيقة، KYC، المخاطر، الحالة، ودورية المراجعة.
+- تصنيف مستوى المخاطر: `Low`, `Medium`, `High`.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### المستخدمون والصلاحيات
 
-## Learning Laravel
+- إدارة مستخدمي النظام من خلال موديول مستقل.
+- دعم الأدوار: `Admin`, `Manager`, `Employee`, `Customer`.
+- حماية صفحات إدارة المستخدمين بواسطة صلاحية `canManageUsers`.
+- إدارة حالة المستخدم، رقم الهاتف، آخر دخول، والبيانات الشخصية.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### أنواع الحسابات
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- إنشاء وتعديل أنواع الحسابات.
+- تحديد اسم النوع، الكود، العملة، الحد الأدنى للرصيد، ومتطلبات الحساب.
+- دعم حالات النوع: `Active`, `Inactive`.
+- منع فتح حساب جديد على نوع حساب غير فعال.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### الحسابات المصرفية
 
-## Agentic Development
+- فتح حساب مرتبط بعميل ونوع حساب.
+- توليد رقم حساب فريد من 12 رقمًا.
+- توليد رقم IBAN سوري بطول 26 خانة والتحقق من رقم التحقق باستخدام Modulo 97.
+- دعم حالات الحساب:
+  - `Open`
+  - `Frozen`
+  - `Closed`
+- تجميد الحساب مع تسجيل سبب التجميد.
+- إعادة تفعيل الحساب.
+- إغلاق الحساب وتسجيل وقت الإغلاق.
+- عرض الرصيد، رقم الحساب، IBAN، العملة، المالك، ونوع الحساب.
+- البحث والتصفية حسب رقم الحساب، IBAN، العميل، النوع، والحالة.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### أنواع القروض
 
-```bash
-composer require laravel/boost --dev
+- إنشاء وتعديل منتجات القروض.
+- تحديد الحد الأدنى والأقصى للمبلغ.
+- تحديد الحد الأدنى والأقصى لمدة القرض بالأشهر.
+- تحديد نسبة الفائدة السنوية.
+- دعم طرق احتساب الفائدة:
+  - `Flat`
+  - `Reducing Balance`
+- دعم دوريات السداد الشهرية والربع سنوية.
+- تحديد العملة، الوصف، ومتطلب الضمان.
+- تفعيل أو تعطيل نوع القرض.
 
-php artisan boost:install
+### طلبات القروض
+
+- إنشاء طلب قرض مرتبط بالعميل، حساب الصرف والسداد، ونوع القرض.
+- توليد مرجع قرض فريد.
+- التحقق من حدود المبلغ والمدة ونوع القرض الفعال.
+- حالات طلب القرض:
+  - `Pending`
+  - `Under Review`
+  - `Approved`
+  - `Rejected`
+  - `Disbursed`
+  - `Active`
+  - `Paid Off`
+  - `Defaulted`
+- اعتماد أو رفض الطلب مع تسجيل المستخدم المنفذ وسبب الرفض.
+- صرف القرض إلى الحساب المفتوح المرتبط بالطلب.
+- تحديث أصل القرض والفائدة والرصيد المتبقي.
+- عرض محفظة القروض ومؤشرات الطلبات والرصيد القائم.
+
+### الأقساط والتحصيل
+
+- إنشاء جدول أقساط تلقائي عند اعتماد القرض.
+- حساب أصل القسط، الفائدة، إجمالي المستحق، وتاريخ الاستحقاق.
+- دعم حالات القسط: `Pending`, `Partially Paid`, `Paid`, `Overdue`.
+- متابعة الأقساط المستحقة والمتأخرة.
+- تسجيل الدفعات بطرق متعددة.
+- توزيع الدفعة على الفائدة أولًا ثم أصل القرض.
+- حفظ سجل الدفعة وتوزيعاتها في جداول مستقلة للمراجعة والتدقيق.
+
+### لوحة التحكم والواجهة
+
+- لوحة تحكم تشغيلية تعرض:
+  - عدد العملاء.
+  - الحسابات المفتوحة والسيولة المتاحة.
+  - الطلبات المعلقة.
+  - القروض النشطة.
+  - أصل القروض القائم.
+  - التحصيل والاستحقاقات الشهرية.
+  - أحدث طلبات القروض.
+  - الأقساط القادمة والمتأخرة.
+  - توزيع محفظة القروض حسب الحالة.
+- تصميم موحد مستوحى من منصات البنوك العالمية.
+- واجهات متجاوبة للحاسوب والهاتف.
+- تحسين النماذج والجداول والبطاقات والتنبيهات والترقيم.
+- صفحة دخول وتسجيل ذات هوية مصرفية احترافية.
+- تحويل الجذر `/` تلقائيًا إلى لوحة التحكم للمستخدم المسجل أو صفحة الدخول للزائر.
+
+## الهوية والإعدادات المركزية
+
+تتم إدارة قيم الهوية والقائمة من ملفات إعدادات مستقلة بدل توزيعها داخل القوالب:
+
+- `config/bank.php`: اسم البنك، الاختصار، الوصف، العملة، ورسائل لوحة التحكم.
+- `config/nav.php`: عناصر القائمة، المسارات، أنماط التفعيل، وصلاحيات الظهور.
+
+يمكن تخصيص الهوية من خلال `.env`:
+
+```dotenv
+BANK_NAME="Bank System"
+BANK_SHORT_NAME="BS"
+BANK_TAGLINE="Core Banking Platform"
+BANK_DESCRIPTOR="Secure banking operations"
+BANK_CURRENCY="SYP"
+BANK_SUPPORT_EMAIL="support@example.com"
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## البنية البرمجية
 
-## Contributing
+كل موديول يحتوي على حدوده الخاصة قدر الإمكان:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```text
+app/Modules/
+├── AccountTypes/
+├── Accounts/
+├── Customers/
+├── Installments/
+├── LoanTypes/
+├── Loans/
+└── Users/
+```
 
-## Code of Conduct
+وتتضمن الموديولات عادةً:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```text
+Contracts/
+Controllers/
+Database/Factories/
+Enums/
+Migrations/
+Models/
+Repositories/
+Requests/
+Routes/
+Services/
+Views/
+```
 
-## Security Vulnerabilities
+يتم تسجيل مزودي الخدمة في `bootstrap/providers.php`، وتبقى مسؤوليات النظام موزعة كالتالي:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- `Controllers`: استقبال الطلبات وإرجاع الاستجابات.
+- `Form Requests`: التحقق من المدخلات والصلاحيات الخاصة بالطلب.
+- `Services`: منطق الأعمال والانتقالات الحساسة.
+- `Repositories`: الاستعلامات والوصول إلى البيانات.
+- `Models`: العلاقات والتحويلات والـ casts.
+- `Enums`: تثبيت الحالات والخيارات المدعومة.
 
-## License
+## العلاقات الأساسية
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- المستخدم يملك ملف عميل واحدًا عند الحاجة.
+- العميل يملك عدة حسابات.
+- نوع الحساب يملك عدة حسابات.
+- العميل يملك عدة طلبات قروض.
+- نوع القرض يملك عدة قروض.
+- الحساب مرتبط بالقرض للصرف والسداد.
+- القرض يملك عدة أقساط وعدة دفعات.
+- الدفعة تملك عدة توزيعات على أصل القرض والفائدة.
+- مستخدم النظام يسجل اعتماد القرض أو مراجع KYC.
+
+## المتطلبات
+
+- PHP `^8.3`
+- Laravel `^13.17`
+- Composer
+- Node.js و npm
+- قاعدة بيانات SQLite أو MySQL
+
+## التثبيت والتشغيل
+
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+npm install
+npm run build
+php artisan serve
+```
+
+في PowerShell يمكن نسخ ملف البيئة باستخدام:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+أثناء التطوير يمكن تشغيل Vite في نافذة مستقلة:
+
+```bash
+npm run dev
+```
+
+ثم فتح:
+
+```text
+http://127.0.0.1:8000
+```
+
+## الاختبارات
+
+لتشغيل جميع اختبارات Feature وModule:
+
+```bash
+php artisan test
+```
+
+تشمل الاختبارات التحقق من:
+
+- المصادقة وحماية المسارات.
+- لوحة التحكم.
+- إنشاء العملاء وحقول KYC.
+- منع التكرار وتطبيع البيانات.
+- أنواع الحسابات والحسابات وأرقام الحساب وIBAN.
+- حالات فتح الحساب وتجميده وإعادة تفعيله وإغلاقه.
+- إنشاء أنواع القروض وطلبات القروض.
+- حساب الفوائد وتوليد الأقساط.
+- تسجيل الدفعات وتوزيعها على الفائدة والأصل.
+- صلاحيات إدارة المستخدمين.
+
+## أوامر مفيدة
+
+```bash
+php artisan route:list
+php artisan migrate:status
+php artisan view:cache
+php artisan optimize:clear
+npm run build
+```
+
+## المسارات الرئيسية
+
+| الوحدة | المسار |
+|---|---|
+| تسجيل الدخول | `/login` |
+| لوحة التحكم | `/dashboard` |
+| العملاء | `/customers` |
+| أنواع الحسابات | `/account-types` |
+| الحسابات | `/accounts` |
+| أنواع القروض | `/loan-types` |
+| القروض | `/loans` |
+| الأقساط | `/installments` |
+| المستخدمون | `/users` |
+| الملف الشخصي | `/profile` |
+
+## ملاحظات تشغيلية
+
+- يجب إنشاء نوع حساب فعال قبل فتح حساب جديد.
+- يجب أن يملك العميل حسابًا مفتوحًا قبل إنشاء طلب قرض.
+- لا يمكن صرف القرض قبل اعتماده.
+- إنشاء أو تعديل جدول الأقساط يتم من خلال خدمة القروض.
+- الدفعات تسجل في سجل مستقل مع توزيعاتها للحفاظ على قابلية التدقيق.
+- يفضل استخدام `config:cache` في بيئة الإنتاج بعد ضبط قيم البيئة.
