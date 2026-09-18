@@ -4,7 +4,12 @@ namespace App\Modules\Customers\Models;
 
 use App\Models\User;
 use App\Modules\Accounts\Models\Account;
+use App\Modules\Branches\Models\Branch;
 use App\Modules\Loans\Models\Loan;
+use App\Modules\Notifications\Models\Notification;
+use App\Modules\Security\Models\SecurityEvent;
+use App\Modules\CustomerService\Models\Ticket;
+use App\Modules\Products\Models\Product;
 use App\Modules\Customers\Database\Factories\CustomerFactory;
 use App\Modules\Customers\Enums\CustomerStatus;
 use App\Modules\Customers\Enums\IdentityDocumentType;
@@ -26,6 +31,7 @@ class Customer extends Model
 
     protected $fillable = [
         'user_id',
+        'branch_id',
         'customer_number',
         'first_name',
         'last_name',
@@ -64,6 +70,11 @@ class Customer extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
     public function kycReviewer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'kyc_reviewed_by');
@@ -79,11 +90,36 @@ class Customer extends Model
         return $this->hasMany(Loan::class);
     }
 
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function securityEvents(): HasMany
+    {
+        return $this->hasMany(SecurityEvent::class);
+    }
+
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(Ticket::class);
+    }
+
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
     protected function fullName(): Attribute
     {
         return Attribute::get(
             fn (): string => trim("{$this->first_name} {$this->last_name}")
         );
+    }
+
+    public function getFullNameAttribute(): string
+    {
+        return trim("{$this->first_name} {$this->last_name}");
     }
 
     protected static function newFactory(): CustomerFactory

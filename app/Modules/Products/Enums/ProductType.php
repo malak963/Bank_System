@@ -1,0 +1,65 @@
+<?php
+
+namespace App\Modules\Products\Enums;
+
+enum ProductType: string
+{
+    case SavingsAccount = 'savings_account';
+    case FixedDeposit = 'fixed_deposit';
+    case InvestmentAccount = 'investment_account';
+    case CertificateOfDeposit = 'certificate_of_deposit';
+    case MutualFund = 'mutual_fund';
+    case RetirementAccount = 'retirement_account';
+    case EducationAccount = 'education_account';
+    case HealthAccount = 'health_account';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::SavingsAccount => 'Savings Account',
+            self::FixedDeposit => 'Fixed Deposit',
+            self::InvestmentAccount => 'Investment Account',
+            self::CertificateOfDeposit => 'Certificate of Deposit',
+            self::MutualFund => 'Mutual Fund',
+            self::RetirementAccount => 'Retirement Account',
+            self::EducationAccount => 'Education Account',
+            self::HealthAccount => 'Health Account',
+        };
+    }
+
+    public function isInvestment(): bool
+    {
+        return in_array($this, [
+            self::InvestmentAccount,
+            self::MutualFund,
+        ]);
+    }
+
+    public function isSavings(): bool
+    {
+        return in_array($this, [
+            self::SavingsAccount,
+            self::FixedDeposit,
+            self::CertificateOfDeposit,
+        ]);
+    }
+
+    public function requiresRiskDisclosure(): bool
+    {
+        return $this->isInvestment();
+    }
+
+    public function minBalance(): float
+    {
+        return match ($this) {
+            self::SavingsAccount => 100,
+            self::FixedDeposit => 1000,
+            self::InvestmentAccount => 5000,
+            self::CertificateOfDeposit => 1000,
+            self::MutualFund => 1000,
+            self::RetirementAccount => 500,
+            self::EducationAccount => 500,
+            self::HealthAccount => 500,
+        };
+    }
+}

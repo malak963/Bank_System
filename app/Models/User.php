@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Modules\Customers\Models\Customer;
 use App\Modules\Accounts\Models\Account;
 use App\Modules\Users\Enums\UserRole;
+use App\Modules\Security\Models\SecurityEvent;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -46,6 +47,11 @@ class User extends Authenticatable
     public function accounts(): HasMany
     {
         return $this->hasManyThrough(Account::class, Customer::class);
+    }
+
+    public function securityEvents(): HasMany
+    {
+        return $this->hasMany(SecurityEvent::class);
     }
 
     public function canManageUsers(): bool

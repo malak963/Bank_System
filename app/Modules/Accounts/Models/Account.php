@@ -4,12 +4,15 @@ namespace App\Modules\Accounts\Models;
 
 use App\Modules\AccountTypes\Models\AccountType;
 use App\Modules\Accounts\Enums\AccountStatus;
+use App\Modules\Branches\Models\Branch;
 use App\Modules\Customers\Models\Customer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Modules\Loans\Models\Loan;
+use App\Modules\Transactions\Models\Transaction;
+use App\Modules\Cards\Models\Card;
 
 class Account extends Model
 {
@@ -18,12 +21,14 @@ class Account extends Model
     protected $table = 'accounts';
 
     protected $fillable = [
+        'branch_id',
         'customer_id',
         'account_type_id',
         'account_number',
         'iban',
         'status',
         'balance',
+        'currency',
         'opened_at',
         'closed_at',
         'frozen_at',
@@ -35,6 +40,7 @@ class Account extends Model
         return [
             'status' => AccountStatus::class,
             'balance' => 'decimal:2',
+            'currency' => 'string',
             'opened_at' => 'datetime',
             'closed_at' => 'datetime',
             'frozen_at' => 'datetime',
@@ -46,6 +52,11 @@ class Account extends Model
         return $this->belongsTo(Customer::class);
     }
 
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
     public function accountType(): BelongsTo
     {
         return $this->belongsTo(AccountType::class);
@@ -54,6 +65,16 @@ class Account extends Model
     public function loans(): HasMany
     {
         return $this->hasMany(Loan::class);
+    }
+
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function cards(): HasMany
+    {
+        return $this->hasMany(Card::class);
     }
 
     public function isOpen(): bool

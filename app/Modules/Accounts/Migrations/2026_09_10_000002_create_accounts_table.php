@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('iban', 34)->unique();
             $table->enum('status', ['open', 'frozen', 'closed'])->default('open');
             $table->decimal('balance', 15, 2)->default(0);
+            $table->string('currency', 3)->default('USD');
             $table->dateTime('opened_at')->nullable();
             $table->dateTime('closed_at')->nullable();
             $table->dateTime('frozen_at')->nullable();

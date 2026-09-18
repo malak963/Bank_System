@@ -4,6 +4,7 @@ namespace App\Modules\Loans\Models;
 
 use App\Models\User;
 use App\Modules\Accounts\Models\Account;
+use App\Modules\Branches\Models\Branch;
 use App\Modules\Customers\Models\Customer;
 use App\Modules\Installments\Models\Installment;
 use App\Modules\LoanTypes\Models\LoanType;
@@ -22,6 +23,7 @@ class Loan extends Model
     protected $table = 'loans';
 
     protected $fillable = [
+        'branch_id',
         'loan_reference',
         'customer_id',
         'account_id',
@@ -77,6 +79,11 @@ class Loan extends Model
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
     }
 
     public function account(): BelongsTo
