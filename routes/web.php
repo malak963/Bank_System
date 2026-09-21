@@ -16,21 +16,33 @@ Route::group([
     });
 
     Route::get('/dashboard', DashboardController::class)
-        ->middleware(['auth', 'verified'])
+        ->middleware(['auth:web,admin'])
         ->name('dashboard');
 
     Route::get('/premium/dashboard', function () {
         return view('premium-dashboard');
-    })->middleware(['auth', 'verified'])
+    })->middleware(['auth:web,admin'])
         ->name('premium.dashboard');
 
-    Route::middleware('auth')->group(function (): void {
+    Route::middleware('auth:web,admin')->group(function (): void {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+        // Two-Factor Authentication Management
+        Route::get('/2fa', function () {
+            if (auth()->guard('admin')->check()) {
+                return app(\App\Http\Controllers\Dashboard\TwoFactorAuthenticationController::class)->index();
+            }
+            return app(\App\Http\Controllers\User\TwoFactorAuthenticationController::class)->index();
+        })->name('2fa.index');
+
+        Route::get('/admin/2fa', [\App\Http\Controllers\Dashboard\TwoFactorAuthenticationController::class, 'index'])->name('admin.2fa.index');
+        Route::get('/user/2fa', [\App\Http\Controllers\User\TwoFactorAuthenticationController::class, 'index'])->name('user.2fa.index');
     });
 
-    require __DIR__.'/auth.php';
+    // Fortify handles authentication routes (login, register, 2fa challenge, password resets)
+    // require __DIR__.'/auth.php';
 });
 
 // Graceful redirect for trailing locale URLs (e.g. /bills-payments/ar -> /ar/bills-payments)

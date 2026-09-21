@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Admin;
 use App\Modules\Users\Enums\UserRole;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,6 +18,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Admin in admins table
+        Admin::updateOrCreate(
+            ['email' => 'admin@bank.com'],
+            [
+                'name' => 'System Administrator',
+                'password' => Hash::make('password'),
+                'status' => true,
+                'is_super_admin' => true,
+            ]
+        );
+
         // Admin user
         User::updateOrCreate(
             ['email' => 'admin@bank.com'],

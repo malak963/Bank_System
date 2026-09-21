@@ -19,6 +19,22 @@ return Application::configure(basePath: dirname(__DIR__))
             'localeCookieRedirect' => \Mcamara\LaravelLocalization\Middleware\LocaleCookieRedirect::class,
             'localeViewPath' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class,
         ]);
+
+        $middleware->redirectTo(
+            guests: function (Request $request) {
+                if (
+                    $request->is('admin*') || $request->is('*/admin*') ||
+                    $request->is('dashboard*') || $request->is('*/dashboard*') ||
+                    $request->is('2fa*') || $request->is('*/2fa*')
+                ) {
+                    return '/admin/login';
+                }
+                return '/user/login';
+            },
+            users: function (Request $request) {
+                return '/dashboard';
+            }
+        );
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
