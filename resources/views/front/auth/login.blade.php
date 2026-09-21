@@ -1,8 +1,18 @@
 <x-guest-layout>
-    <div class="mb-8">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">{{ __(config('bank.name', 'Bank System')) }}</p>
-        <h1 class="mt-3 text-3xl font-semibold tracking-tight text-slate-950">{{ __('Customer Sign In') }}</h1>
-        <p class="mt-2 text-sm leading-6 text-slate-500">{{ __('Sign in to access your digital banking account.') }}</p>
+    <div class="mb-6">
+        <div class="flex items-center justify-between">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                <svg class="h-3.5 w-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                {{ __('Customer Portal') }}
+            </span>
+            <a href="{{ route('admin.login') }}" class="text-xs font-semibold text-emerald-700 hover:text-emerald-900 transition flex items-center gap-1">
+                {{ __('Admin Portal') }} &rarr;
+            </a>
+        </div>
+        <h1 class="mt-3 text-2xl font-bold tracking-tight text-slate-950">{{ __('Customer Sign In') }}</h1>
+        <p class="mt-1 text-sm leading-6 text-slate-500">{{ __('Sign in to access your digital banking account.') }}</p>
     </div>
 
     <!-- Session Status -->
@@ -48,13 +58,22 @@
             </x-primary-button>
         </div>
 
-        @if (Route::has('register'))
-            <div class="pt-3 text-center text-sm text-slate-500">
-                {{ __("Don't have an account?") }}
-                <a href="{{ route('register') }}" class="font-medium text-emerald-700 hover:text-emerald-900">
-                    {{ __('Register here') }}
+        <div class="pt-4 border-t border-slate-100 flex flex-col gap-2 text-center text-xs text-slate-500">
+            <div>
+                {{ __('Are you a Bank Administrator?') }}
+                <a href="{{ route('admin.login') }}" class="font-semibold text-emerald-700 hover:text-emerald-900 ms-1">
+                    {{ __('Sign in through Admin Portal') }} &rarr;
                 </a>
             </div>
-        @endif
+
+            @if (Route::has('register'))
+                <div>
+                    {{ __("Don't have an account?") }}
+                    <a href="{{ route('register') }}" class="font-medium text-emerald-700 hover:text-emerald-900 ms-1">
+                        {{ __('Register here') }}
+                    </a>
+                </div>
+            @endif
+        </div>
     </form>
 </x-guest-layout>

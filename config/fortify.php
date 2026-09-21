@@ -86,7 +86,7 @@ return [
     |
     */
 
-    'prefix' => '/user',
+    'prefix' => '',
 
     'domain' => null,
 

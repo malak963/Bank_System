@@ -877,5 +877,17 @@
     "Disable Two-Factor Authentication": "تعطيل المصادقة الثنائية",
     "Are you sure you want to disable two-factor authentication?": "هل أنت متأكد من رغبتك في تعطيل المصادقة الثنائية؟",
     "The provided password does not match your current password.": "كلمة المرور المدخلة لا تطابق كلمة المرور الحالية الخاصة بك.",
-    "Two factor authentication enabled successfully": "تم تفعيل المصادقة الثنائية بنجاح"
+    "Two factor authentication enabled successfully": "تم تفعيل المصادقة الثنائية بنجاح",
+    "Admin Portal": "بوابة الإدارة",
+    "Customer Portal": "بوابة العملاء",
+    "Administrator Sign In": "تسجيل دخول مسؤول النظام",
+    "Access the management console for bank administration.": "الوصول إلى لوحة التحكم لإدارة العمليات المصرفية.",
+    "Sign In as Administrator": "تسجيل الدخول كمسؤول",
+    "Looking for customer digital banking?": "هل تبحث عن الخدمات المصرفية الرقمية للعملاء؟",
+    "Switch to Customer Portal": "الانتقال إلى بوابة العملاء",
+    "Are you a Bank Administrator?": "هل أنت مسؤول في البنك؟",
+    "Sign in through Admin Portal": "تسجيل الدخول عبر بوابة الإدارة",
+    "This account belongs to an Administrator. Please use the Admin Portal to sign in.": "هذا الحساب يخص مسؤول النظام. يرجى تسجيل الدخول عبر بوابة الإدارة.",
+    "This admin account is deactivated.": "تم تعطيل حساب المسؤول هذا.",
+    "The provided two-factor authentication code was invalid.": "رمز المصادقة الثنائية المدخل غير صالح."
 }

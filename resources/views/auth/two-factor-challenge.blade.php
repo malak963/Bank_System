@@ -18,7 +18,7 @@
 
         <x-auth-session-status class="mb-4" :status="session('status')" />
 
-        <form method="POST" action="{{ route('two-factor.login') }}" class="space-y-4">
+        <form method="POST" action="{{ route('admin.two-factor.login.store') }}" class="space-y-4">
             @csrf
 
             <div x-show="! recovery">

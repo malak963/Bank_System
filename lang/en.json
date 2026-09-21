@@ -876,5 +876,17 @@
     "Disable Two-Factor Authentication": "Disable Two-Factor Authentication",
     "Are you sure you want to disable two-factor authentication?": "Are you sure you want to disable two-factor authentication?",
     "The provided password does not match your current password.": "The provided password does not match your current password.",
-    "Two factor authentication enabled successfully": "Two factor authentication enabled successfully"
+    "Two factor authentication enabled successfully": "Two factor authentication enabled successfully",
+    "Admin Portal": "Admin Portal",
+    "Customer Portal": "Customer Portal",
+    "Administrator Sign In": "Administrator Sign In",
+    "Access the management console for bank administration.": "Access the management console for bank administration.",
+    "Sign In as Administrator": "Sign In as Administrator",
+    "Looking for customer digital banking?": "Looking for customer digital banking?",
+    "Switch to Customer Portal": "Switch to Customer Portal",
+    "Are you a Bank Administrator?": "Are you a Bank Administrator?",
+    "Sign in through Admin Portal": "Sign in through Admin Portal",
+    "This account belongs to an Administrator. Please use the Admin Portal to sign in.": "This account belongs to an Administrator. Please use the Admin Portal to sign in.",
+    "This admin account is deactivated.": "This admin account is deactivated.",
+    "The provided two-factor authentication code was invalid.": "The provided two-factor authentication code was invalid."
 }

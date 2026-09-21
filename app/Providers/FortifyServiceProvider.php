@@ -6,12 +6,16 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
 
@@ -22,24 +26,10 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $request = request();
-        if (
-            $request->is('admin/*') || $request->is('admin') ||
-            $request->is('*/admin/*') || $request->is('*/admin') ||
-            $request->is('dashboard/*') || $request->is('dashboard') ||
-            $request->is('*/dashboard/*') || $request->is('*/dashboard') ||
-            $request->is('2fa*') || $request->is('*/2fa*')
-        ) {
-            Config::set('fortify.guard', 'admin');
-            Config::set('fortify.passwords', 'admins');
-            Config::set('fortify.home', '/dashboard');
-            Config::set('fortify.prefix', '/admin');
-        } else {
-            Config::set('fortify.guard', 'web');
-            Config::set('fortify.passwords', 'users');
-            Config::set('fortify.home', '/dashboard');
-            Config::set('fortify.prefix', '/user');
-        }
+        Config::set('fortify.guard', 'web');
+        Config::set('fortify.passwords', 'users');
+        Config::set('fortify.home', '/dashboard');
+        Config::set('fortify.prefix', '');
     }
 
     /**
@@ -52,6 +42,37 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
         Fortify::redirectUserForTwoFactorAuthenticationUsing(RedirectIfTwoFactorAuthenticatable::class);
+
+        // Explicit view registration
+        Fortify::loginView(fn () => view('front.auth.login'));
+        Fortify::twoFactorChallengeView(fn () => view('front.auth.two-factor-challenge'));
+        Fortify::registerView(fn () => view('front.auth.register'));
+        Fortify::requestPasswordResetLinkView(fn () => view('front.auth.forgot-password'));
+        Fortify::resetPasswordView(fn (Request $request) => view('front.auth.reset-password', ['request' => $request]));
+
+        // Authentication logic with intelligent messaging
+        Fortify::authenticateUsing(function (Request $request) {
+            $user = User::where('email', $request->email)->first();
+
+            if ($user && Hash::check($request->password, $user->password)) {
+                if (isset($user->is_active) && !$user->is_active) {
+                    throw ValidationException::withMessages([
+                        'email' => [__('This account is deactivated.')],
+                    ]);
+                }
+                return $user;
+            }
+
+            // Check if this is an Admin account attempting to sign in on the user portal
+            $admin = Admin::where('email', $request->email)->first();
+            if ($admin && Hash::check($request->password, $admin->password)) {
+                throw ValidationException::withMessages([
+                    'email' => [__('This account belongs to an Administrator. Please use the Admin Portal to sign in.')],
+                ]);
+            }
+
+            return null;
+        });
 
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
@@ -70,11 +91,5 @@ class FortifyServiceProvider extends ServiceProvider
                 ($credentialId ?: $request->session()->getId()).'|'.$request->ip()
             );
         });
-
-        if (Config::get('fortify.guard') === 'admin') {
-            Fortify::viewPrefix('auth.');
-        } else {
-            Fortify::viewPrefix('front.auth.');
-        }
     }
 }

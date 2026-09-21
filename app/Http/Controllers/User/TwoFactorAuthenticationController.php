@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Dashboard\TwoFactorAuthenticationController as BaseController;
+use Illuminate\View\View;
 
 class TwoFactorAuthenticationController extends Controller
 {
-    public function index()
+    public function index(): View
     {
-        $user = Auth::guard('web')->user() ?? Auth::user();
-        return view('user.pages.two-factor-auth', compact('user'));
+        return app(BaseController::class)->index();
     }
 }
