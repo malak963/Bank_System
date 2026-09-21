@@ -3,22 +3,22 @@
         <div class="flex items-center justify-between">
             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
                 <svg class="h-3.5 w-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                 </svg>
-                {{ __('Admin Portal') }}
+                {{ __('Customer Portal') }}
             </span>
-            <a href="{{ route('login') }}" class="text-xs font-medium text-slate-500 hover:text-emerald-700 transition">
-                {{ __('Customer Portal') }} &rarr;
+            <a href="{{ route('admin.login') }}" class="text-xs font-semibold text-emerald-700 hover:text-emerald-900 transition flex items-center gap-1">
+                {{ __('Admin Portal') }} &rarr;
             </a>
         </div>
-        <h1 class="mt-3 text-2xl font-bold tracking-tight text-slate-950">{{ __('Administrator Sign In') }}</h1>
-        <p class="mt-1 text-sm leading-6 text-slate-500">{{ __('Access the management console for bank administration.') }}</p>
+        <h1 class="mt-3 text-2xl font-bold tracking-tight text-slate-950">{{ __('Customer Sign In') }}</h1>
+        <p class="mt-1 text-sm leading-6 text-slate-500">{{ __('Sign in to access your digital banking account.') }}</p>
     </div>
 
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('admin.login.store') }}" class="space-y-4">
+    <form method="POST" action="{{ route('login') }}" class="space-y-4">
         @csrf
 
         <!-- Email Address -->
@@ -44,19 +44,36 @@
                 <input id="remember_me" type="checkbox" class="rounded border-slate-300 text-emerald-600 shadow-sm focus:ring-emerald-500" name="remember">
                 <span class="ms-2 text-sm text-slate-600 select-none">{{ __('Remember me') }}</span>
             </label>
+
+            @if (Route::has('password.request'))
+                <a class="text-xs font-medium text-emerald-700 hover:text-emerald-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition" href="{{ route('password.request') }}">
+                    {{ __('Forgot your password?') }}
+                </a>
+            @endif
         </div>
 
         <div class="pt-2">
             <x-primary-button class="w-full justify-center py-2.5 bg-slate-950 hover:bg-slate-800 text-white font-semibold">
-                {{ __('Sign In as Administrator') }}
+                {{ __('Log in') }}
             </x-primary-button>
         </div>
 
-        <div class="pt-4 border-t border-slate-100 text-center text-xs text-slate-500">
-            {{ __('Looking for customer digital banking?') }}
-            <a href="{{ route('login') }}" class="font-semibold text-emerald-700 hover:text-emerald-900 ms-1">
-                {{ __('Switch to Customer Portal') }}
-            </a>
+        <div class="pt-4 border-t border-slate-100 flex flex-col gap-2 text-center text-xs text-slate-500">
+            <div>
+                {{ __('Are you a Bank Administrator?') }}
+                <a href="{{ route('admin.login') }}" class="font-semibold text-emerald-700 hover:text-emerald-900 ms-1">
+                    {{ __('Sign in through Admin Portal') }} &rarr;
+                </a>
+            </div>
+
+            @if (Route::has('register'))
+                <div>
+                    {{ __("Don't have an account?") }}
+                    <a href="{{ route('register') }}" class="font-medium text-emerald-700 hover:text-emerald-900 ms-1">
+                        {{ __('Register here') }}
+                    </a>
+                </div>
+            @endif
         </div>
     </form>
 </x-guest-layout>

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\AdminAuthController;
+use App\Http\Controllers\Dashboard\TwoFactorAuthenticationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -16,21 +18,44 @@ Route::group([
     });
 
     Route::get('/dashboard', DashboardController::class)
-        ->middleware(['auth', 'verified'])
+        ->middleware(['auth:web,admin'])
         ->name('dashboard');
 
     Route::get('/premium/dashboard', function () {
         return view('premium-dashboard');
-    })->middleware(['auth', 'verified'])
+    })->middleware(['auth:web,admin'])
         ->name('premium.dashboard');
 
-    Route::middleware('auth')->group(function (): void {
+    // Admin Authentication Routes
+    Route::get('/admin/login', [AdminAuthController::class, 'create'])->name('admin.login');
+    Route::post('/admin/login', [AdminAuthController::class, 'store'])->name('admin.login.store');
+    Route::post('/admin/logout', [AdminAuthController::class, 'destroy'])->name('admin.logout');
+    Route::get('/admin/two-factor-challenge', [AdminAuthController::class, 'createTwoFactor'])->name('admin.two-factor.login');
+    Route::post('/admin/two-factor-challenge', [AdminAuthController::class, 'storeTwoFactor'])->name('admin.two-factor.login.store');
+
+    Route::middleware('auth:web,admin')->group(function (): void {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    });
 
-    require __DIR__.'/auth.php';
+        // Two-Factor Authentication Management
+        Route::get('/2fa', [TwoFactorAuthenticationController::class, 'index'])->name('2fa.index');
+        Route::get('/admin/2fa', [TwoFactorAuthenticationController::class, 'index'])->name('admin.2fa.index');
+        Route::get('/user/2fa', [TwoFactorAuthenticationController::class, 'index'])->name('user.2fa.index');
+
+        // Two-Factor Authentication Actions (Multi-guard sync)
+        Route::post('/user/two-factor-authentication', [TwoFactorAuthenticationController::class, 'store'])->name('two-factor.enable');
+        Route::delete('/user/two-factor-authentication', [TwoFactorAuthenticationController::class, 'destroy'])->name('two-factor.disable');
+        Route::post('/user/two-factor-recovery-codes', [TwoFactorAuthenticationController::class, 'regenerateRecoveryCodes'])->name('two-factor.regenerate-recovery-codes');
+    });
+});
+
+// Legacy redirects
+Route::get('/user/login', function () {
+    return redirect()->route('login');
+});
+Route::get('/user/two-factor-challenge', function () {
+    return redirect()->route('two-factor.login');
 });
 
 // Graceful redirect for trailing locale URLs (e.g. /bills-payments/ar -> /ar/bills-payments)
