@@ -11,7 +11,8 @@
         "laravel/framework": "^13.17",
         "laravel/tinker": "^3.0",
         "mallardduck/blade-lucide-icons": "^2.0",
-        "mcamara/laravel-localization": "*"
+        "mcamara/laravel-localization": "*",
+        "melbedran/role-permession": "1.2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -86,5 +87,43 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": {
+        "melbedran-role-permession": {
+            "type": "package",
+            "package": {
+                "name": "melbedran/role-permession",
+                "version": "1.2.0",
+                "source": {
+                    "url": "https://github.com/muhammed-bedran/Melbedran-Role-permession.git",
+                    "type": "git",
+                    "reference": "main"
+                },
+                "require": {
+                    "php": "^8.2|^8.3",
+                    "illuminate/support": "^11.0|^12.0|^13.0",
+                    "illuminate/database": "^11.0|^12.0|^13.0",
+                    "illuminate/auth": "^11.0|^12.0|^13.0",
+                    "illuminate/http": "^11.0|^12.0|^13.0",
+                    "illuminate/console": "^11.0|^12.0|^13.0",
+                    "illuminate/view": "^11.0|^12.0|^13.0"
+                },
+                "autoload": {
+                    "psr-4": {
+                        "Melbedran\\RolePermession\\": "src/"
+                    }
+                },
+                "extra": {
+                    "laravel": {
+                        "providers": [
+                            "Melbedran\\RolePermession\\RolePermessionServiceProvider"
+                        ],
+                        "aliases": {
+                            "RolePermession": "Melbedran\\RolePermession\\Facades\\RolePermession"
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

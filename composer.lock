@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "96259b95308525427caef3170207fecd",
+    "content-hash": "09de927b10d553b8659ddd67fa0168b6",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2399,6 +2399,66 @@
             "time": "2026-03-08T20:05:35+00:00"
         },
         {
+            "name": "mallardduck/blade-lucide-icons",
+            "version": "2.0.19",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mallardduck/blade-lucide-icons.git",
+                "reference": "56a8735a7faeca6a2073a826fd07b8a2bf120ef3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mallardduck/blade-lucide-icons/zipball/56a8735a7faeca6a2073a826fd07b8a2bf120ef3",
+                "reference": "56a8735a7faeca6a2073a826fd07b8a2bf120ef3",
+                "shasum": ""
+            },
+            "require": {
+                "blade-ui-kit/blade-icons": "^1.8",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "ext-dom": "*",
+                "ext-fileinfo": "*",
+                "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0|^10.0",
+                "phpunit/phpunit": "^9.0|^10.0|^11.0",
+                "spatie/phpunit-snapshot-assertions": "^4.2.14|^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MallardDuck\\LucideIcons\\BladeLucideIconsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MallardDuck\\LucideIcons\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dan Pock"
+                }
+            ],
+            "description": "A package to easily make use of Lucide icons in your Laravel Blade views.",
+            "homepage": "https://github.com/mallardduck/blade-lucide-icons",
+            "keywords": [
+                "LucideIcons",
+                "blade",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/mallardduck/blade-lucide-icons/issues",
+                "source": "https://github.com/mallardduck/blade-lucide-icons/tree/2.0.19"
+            },
+            "time": "2026-09-18T02:58:44+00:00"
+        },
+        {
             "name": "mcamara/laravel-localization",
             "version": "v2.4.2",
             "source": {
@@ -2473,6 +2533,40 @@
                 }
             ],
             "time": "2026-08-24T08:07:04+00:00"
+        },
+        {
+            "name": "melbedran/role-permession",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/muhammed-bedran/Melbedran-Role-permession.git",
+                "reference": "main"
+            },
+            "require": {
+                "illuminate/auth": "^11.0|^12.0|^13.0",
+                "illuminate/console": "^11.0|^12.0|^13.0",
+                "illuminate/database": "^11.0|^12.0|^13.0",
+                "illuminate/http": "^11.0|^12.0|^13.0",
+                "illuminate/support": "^11.0|^12.0|^13.0",
+                "illuminate/view": "^11.0|^12.0|^13.0",
+                "php": "^8.2|^8.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Melbedran\\RolePermession\\RolePermessionServiceProvider"
+                    ],
+                    "aliases": {
+                        "RolePermession": "Melbedran\\RolePermession\\Facades\\RolePermession"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Melbedran\\RolePermession\\": "src/"
+                }
+            }
         },
         {
             "name": "monolog/monolog",

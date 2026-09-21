@@ -1,0 +1,13 @@
+{
+    "package": "melbedran/role-permession",
+    "name": "Melbedran-Role-permession",
+    "installed_at": "2026-09-19T19:06:12+00:00",
+    "published": {
+        "config": "C:\\Projects\\Mdad\\Bank_System-develop\\Bank_System-develop\\config\\role-permession.php",
+        "routes": "C:\\Projects\\Mdad\\Bank_System-develop\\Bank_System-develop\\routes/role-permession.php",
+        "controllers": "C:\\Projects\\Mdad\\Bank_System-develop\\Bank_System-develop\\app\\Http/Controllers/RolePermession",
+        "js": "C:\\Projects\\Mdad\\Bank_System-develop\\Bank_System-develop\\resources\\js/vendor/melbedran-role-permession",
+        "views": "C:\\Projects\\Mdad\\Bank_System-develop\\Bank_System-develop\\resources\\views/vendor/role-permession",
+        "migrations_tag": "role-permession-migrations"
+    }
+}
