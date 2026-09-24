@@ -28,60 +28,70 @@
                     'route' => 'customers.index',
                     'label' => 'Customers',
                     'active' => 'customers.*',
+                    'ability' => 'customers.view',
                     'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" /></svg>',
                 ],
                 [
                     'route' => 'accounts.index',
                     'label' => 'Accounts',
                     'active' => 'accounts.*',
+                    'ability' => 'accounts.view',
                     'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.5m-15 10.5V10.5M3 21h18M3 10.5h18" /></svg>',
                 ],
                 [
                     'route' => 'branches.index',
                     'label' => 'Branches',
                     'active' => 'branches.*',
+                    'ability' => 'branches.view',
                     'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.75a1.5 1.5 0 0 1 1.5-1.5h1.5a1.5 1.5 0 0 1 1.5 1.5V21" /></svg>',
                 ],
                 [
                     'route' => 'transactions.index',
                     'label' => 'Transactions',
                     'active' => 'transactions.*',
+                    'ability' => 'transactions.view',
                     'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" /></svg>',
                 ],
                 [
                     'route' => 'transfers.index',
                     'label' => 'Transfers',
                     'active' => 'transfers.*',
+                    'ability' => 'transfers.view',
                     'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" /></svg>',
                 ],
                 [
                     'route' => 'cards.index',
                     'label' => 'Cards',
                     'active' => 'cards.*',
+                    'ability' => 'cards.view',
                     'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-6.75 3h18a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-18A2.25 2.25 0 0 0 .75 6.75v10.5A2.25 2.25 0 0 0 3 19.5Z" /></svg>',
                 ],
                 [
                     'route' => 'loans.index',
                     'label' => 'Loans',
                     'active' => 'loans.*',
+                    'ability' => 'loans.view',
                     'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6H2.25m0 0v8.25m0-8.25c0-.414.336-.75.75-.75h14.25c.414 0 .75.336.75.75v8.25m-15.75 0h15.75m-15.75 0c0 .414.336.75.75.75h14.25c.414 0 .75-.336.75-.75v-8.25M9 12a3 3 0 1 0 6 0 3 3 0 0 0-6 0Z" /></svg>',
                 ],
                 [
                     'route' => 'installments.index',
                     'label' => 'Installments',
                     'active' => 'installments.*',
+                    'ability' => 'loans.view',
                     'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" /></svg>',
                 ],
                 [
                     'route' => 'bills-payments.index',
                     'label' => 'Bill Payments',
                     'active' => 'bills-payments.*',
+                    'ability' => 'bills.view',
                     'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6H2.25m0 0v8.25m0-8.25c0-.414.336-.75.75-.75h14.25c.414 0 .75.336.75.75v8.25m-15.75 0h15.75" /></svg>',
                 ],
                 [
                     'route' => 'statements.index',
                     'label' => 'Statements',
                     'active' => 'statements.*',
+                    'ability' => 'statements.generate',
                     'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" /></svg>',
                 ],
             ],
@@ -93,12 +103,14 @@
                     'route' => 'cash-management.index',
                     'label' => 'Cash Operations',
                     'active' => 'cash-management.*',
+                    'ability' => 'cash.view',
                     'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>',
                 ],
                 [
                     'route' => 'customerService.index',
                     'label' => 'Customer Service',
                     'active' => 'customerService.*',
+                    'ability' => 'tickets.view',
                     'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3.6-3.091c-.482-.016-.96-.046-1.435-.091a9.23 9.23 0 0 1-5.715-2.615m7.25-5.85c-.328-.01-.659-.015-.99-.015-4.97 0-9 3.582-9 8 0 1.28.344 2.482.956 3.513l-1.956 4.487 4.743-1.423A8.93 8.93 0 0 0 8 19c.331 0 .662-.005.99-.015" /></svg>',
                 ],
                 [
@@ -116,18 +128,21 @@
                     'route' => 'products.index',
                     'label' => 'Products',
                     'active' => 'products.*',
+                    'ability' => 'products.view',
                     'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" /></svg>',
                 ],
                 [
                     'route' => 'account-types.index',
                     'label' => 'Account Types',
                     'active' => 'account-types.*',
+                    'ability' => 'account_types.manage',
                     'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m-15 0a2.246 2.246 0 0 0-.75.128m15.75 0c-.235-.083-.487-.128-.75-.128m-14.25 0A2.25 2.25 0 0 0 3 12v6.75A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V12a2.25 2.25 0 0 0-1.5-2.122" /></svg>',
                 ],
                 [
                     'route' => 'loan-types.index',
                     'label' => 'Loan Types',
                     'active' => 'loan-types.*',
+                    'ability' => 'loan_types.manage',
                     'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" /></svg>',
                 ],
                 [
@@ -136,6 +151,20 @@
                     'active' => 'users.*',
                     'ability' => 'canManageUsers',
                     'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" /></svg>',
+                ],
+                [
+                    'route' => 'role-permession.roles.index',
+                    'label' => 'Roles & Permissions',
+                    'active' => 'role-permession.roles.*',
+                    'ability' => 'roles.view',
+                    'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>',
+                ],
+                [
+                    'route' => 'role-permession.users.index',
+                    'label' => 'Assign Roles',
+                    'active' => 'role-permession.users.*',
+                    'ability' => 'roles.update',
+                    'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.999-3.199a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" /></svg>',
                 ],
             ],
         ],
@@ -152,12 +181,14 @@
                     'route' => 'reports.index',
                     'label' => 'Reports',
                     'active' => 'reports.*',
+                    'ability' => 'reports.view',
                     'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" /></svg>',
                 ],
                 [
                     'route' => 'security.index',
                     'label' => 'Security',
                     'active' => 'security.*',
+                    'ability' => 'security.view',
                     'icon' => '<svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" /></svg>',
                 ],
                 [
@@ -193,7 +224,23 @@
         @foreach ($navSections as $section)
             @php
                 $visibleItems = array_filter($section['items'], function ($item) {
-                    return Route::has($item['route']) && (empty($item['ability']) || (Auth::check() && call_user_func([Auth::user(), $item['ability']])));
+                    if (! Route::has($item['route'])) {
+                        return false;
+                    }
+                    if (! Auth::check()) {
+                        return false;
+                    }
+                    $user = Auth::user();
+                    if (empty($item['ability'])) {
+                        if ($user->role === \App\Modules\Users\Enums\UserRole::Customer) {
+                            return in_array($item['route'], ['dashboard', 'premium.dashboard', '2fa.index'], true);
+                        }
+                        return true;
+                    }
+                    if (method_exists($user, $item['ability'])) {
+                        return (bool) $user->{$item['ability']}();
+                    }
+                    return \Illuminate\Support\Facades\Gate::forUser($user)->allows($item['ability']);
                 });
             @endphp
 
@@ -320,7 +367,23 @@
                 @foreach ($navSections as $section)
                     @php
                         $visibleItems = array_filter($section['items'], function ($item) {
-                            return Route::has($item['route']) && (empty($item['ability']) || (Auth::check() && call_user_func([Auth::user(), $item['ability']])));
+                            if (! Route::has($item['route'])) {
+                                return false;
+                            }
+                            if (! Auth::check()) {
+                                return false;
+                            }
+                            $user = Auth::user();
+                            if (empty($item['ability'])) {
+                                if ($user->role === \App\Modules\Users\Enums\UserRole::Customer) {
+                                    return in_array($item['route'], ['dashboard', 'premium.dashboard', '2fa.index'], true);
+                                }
+                                return true;
+                            }
+                            if (method_exists($user, $item['ability'])) {
+                                return (bool) $user->{$item['ability']}();
+                            }
+                            return \Illuminate\Support\Facades\Gate::forUser($user)->allows($item['ability']);
                         });
                     @endphp
 
