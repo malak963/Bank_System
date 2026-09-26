@@ -16,13 +16,14 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Melbedran\RolePermession\Concerns\HasRoles;
 
 #[Fillable(['name', 'email', 'phone', 'password', 'role', 'is_active', 'email_verified_at', 'last_login_at'])]
 #[Hidden(['password', 'remember_token', 'two_factor_recovery_codes', 'two_factor_secret'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable, HasRoles;
 
     /**
      * Get the attributes that should be cast.
@@ -59,6 +60,16 @@ class User extends Authenticatable
     public function canManageUsers(): bool
     {
         return $this->role?->canManageUsers() ?? false;
+    }
+
+    public function isRolePermessionSuperAdmin(): bool
+    {
+        return $this->role === UserRole::Admin;
+    }
+
+    public function getSuperAdminAttribute(): bool
+    {
+        return $this->role === UserRole::Admin;
     }
 
     public function markLoggedIn(): void

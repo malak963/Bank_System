@@ -157,13 +157,16 @@
                 <span>Manage roles & abilities</span>
             </div>
             <nav class="rp-nav">
+                <a href="{{ route('dashboard') }}" style="border-color: var(--rp-line); background: #fff;">
+                    &larr; {{ __('Back to Dashboard') }}
+                </a>
                 <a href="{{ route(config('role-permession.ui.route_name_prefix', 'role-permession.').'roles.index') }}"
                    class="{{ request()->routeIs(config('role-permession.ui.route_name_prefix', 'role-permession.').'roles.*') ? 'is-active' : '' }}">
-                    Roles
+                    {{ __('Roles') }}
                 </a>
                 <a href="{{ route(config('role-permession.ui.route_name_prefix', 'role-permession.').'users.index') }}"
                    class="{{ request()->routeIs(config('role-permession.ui.route_name_prefix', 'role-permession.').'users.*') ? 'is-active' : '' }}">
-                    Assign users
+                    {{ __('Assign Users') }}
                 </a>
             </nav>
         </header>
