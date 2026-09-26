@@ -41,7 +41,7 @@ return new class extends Migration
             $table->string('ip_address')->nullable();
             $table->text('user_agent')->nullable();
             $table->string('device_id')->nullable();
-            $table->morphs('transactable');
+            $table->nullableMorphs('transactable');
             $table->timestamps();
 
             $table->index(['account_id', 'created_at']);

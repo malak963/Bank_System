@@ -18,12 +18,16 @@ class TwoFactorAuthenticationController extends Controller
     /**
      * Show the two-factor authentication management page.
      */
-    public function index(): View
+    public function index(): View|\Illuminate\Http\RedirectResponse
     {
         $user = Auth::guard('admin')->user() ?? Auth::guard('web')->user() ?? Auth::user();
 
         if (Auth::guard('admin')->check() || ($user instanceof Admin)) {
             return view('dashboard.pages.two-factor-auth', compact('user'));
+        }
+
+        if ($user && ($user->role === \App\Modules\Users\Enums\UserRole::Customer || (is_string($user->role) && $user->role === 'customer') || $user->role?->value === 'customer')) {
+            return redirect()->route('portal.2fa');
         }
 
         return view('user.pages.two-factor-auth', compact('user'));

@@ -49,6 +49,8 @@ class Transaction extends Model
         'ip_address',
         'user_agent',
         'device_id',
+        'transactable_type',
+        'transactable_id',
     ];
 
     protected function casts(): array

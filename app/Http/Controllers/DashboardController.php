@@ -10,15 +10,21 @@ use App\Modules\Installments\Models\Installment;
 use App\Modules\Loans\Enums\LoanStatus;
 use App\Modules\Loans\Models\Loan;
 use App\Modules\Loans\Models\LoanPayment;
+use App\Modules\Users\Enums\UserRole;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 use Throwable;
 
 class DashboardController extends Controller
 {
-    public function __invoke(): View
+    public function __invoke(): View|RedirectResponse
     {
+        if (auth()->check() && auth()->user()->role === UserRole::Customer) {
+            return redirect()->route('portal.dashboard');
+        }
+
         $empty = $this->emptyData();
 
         try {

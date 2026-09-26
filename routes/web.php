@@ -12,18 +12,23 @@ Route::group([
     'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'],
 ], function (): void {
     Route::get('/', function () {
-        return auth()->check()
-            ? redirect()->route('dashboard')
-            : redirect()->route('login');
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+        $role = auth()->user()->role;
+        if ($role === \App\Modules\Users\Enums\UserRole::Customer || (is_string($role) && $role === 'customer') || $role?->value === 'customer') {
+            return redirect()->route('portal.dashboard');
+        }
+        return redirect()->route('dashboard');
     });
 
     Route::get('/dashboard', DashboardController::class)
-        ->middleware(['auth:web,admin'])
+        ->middleware(['auth:web,admin', 'not_customer'])
         ->name('dashboard');
 
     Route::get('/premium/dashboard', function () {
         return view('premium-dashboard');
-    })->middleware(['auth:web,admin'])
+    })->middleware(['auth:web,admin', 'not_customer'])
         ->name('premium.dashboard');
 
     // Admin Authentication Routes
