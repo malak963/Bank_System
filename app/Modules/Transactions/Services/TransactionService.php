@@ -43,6 +43,8 @@ class TransactionService
                 'ip_address' => request()->ip(),
                 'user_agent' => request()->userAgent(),
                 'device_id' => $data['device_id'] ?? null,
+                'transactable_type' => $data['transactable_type'] ?? Account::class,
+                'transactable_id' => $data['transactable_id'] ?? $account->id,
             ]);
 
             $this->processTransaction($transaction, $account);

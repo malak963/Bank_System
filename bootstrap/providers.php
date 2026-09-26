@@ -22,6 +22,7 @@ return [
     App\Modules\Statements\StatementsServiceProvider::class,
     App\Modules\Transactions\TransactionsServiceProvider::class,
     App\Modules\Transfers\TransfersServiceProvider::class,
+    App\Modules\CustomerPortal\CustomerPortalServiceProvider::class,
     App\Modules\Users\UserServiceProvider::class,
     App\Providers\AppServiceProvider::class,
     App\Providers\FortifyServiceProvider::class,

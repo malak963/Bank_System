@@ -18,6 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'localeSessionRedirect' => \Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class,
             'localeCookieRedirect' => \Mcamara\LaravelLocalization\Middleware\LocaleCookieRedirect::class,
             'localeViewPath' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class,
+            'not_customer' => \App\Http\Middleware\EnsureNotCustomer::class,
+        ]);
+
+        $middleware->web(append: [
+            \App\Http\Middleware\EnsureNotCustomer::class,
         ]);
 
         $middleware->redirectTo(
@@ -32,6 +37,12 @@ return Application::configure(basePath: dirname(__DIR__))
                 return '/user/login';
             },
             users: function (Request $request) {
+                if (auth()->check()) {
+                    $role = auth()->user()->role;
+                    if ($role === \App\Modules\Users\Enums\UserRole::Customer || (is_string($role) && $role === 'customer') || $role?->value === 'customer') {
+                        return route('portal.dashboard');
+                    }
+                }
                 return '/dashboard';
             }
         );

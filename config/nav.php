@@ -17,6 +17,13 @@ return [
         ],
 
         [
+            'route' => 'portal.dashboard',
+            'label' => 'Customer Portal',
+            'active' => 'portal.*',
+            'icon' => 'globe',
+        ],
+
+        [
             'route' => 'customers.index',
             'label' => 'Customers',
             'active' => 'customers.*',
