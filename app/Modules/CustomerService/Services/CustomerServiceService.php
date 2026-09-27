@@ -13,8 +13,20 @@ class CustomerServiceService
 {
     public function createTicket(array $data): Ticket
     {
-        $category = TicketCategory::from($data['category']);
-        $priority = $data['priority'] ?? $category->defaultPriority();
+        $category = is_string($data['category'] ?? null)
+            ? (TicketCategory::tryFrom($data['category']) ?? TicketCategory::from($data['category']))
+            : ($data['category'] ?? TicketCategory::General);
+
+        $priority = null;
+        if (isset($data['priority']) && $data['priority'] !== '') {
+            $priority = is_string($data['priority'])
+                ? (TicketPriority::tryFrom($data['priority']) ?? TicketPriority::from($data['priority']))
+                : ($data['priority'] instanceof TicketPriority ? $data['priority'] : null);
+        }
+
+        if (! $priority) {
+            $priority = $category->defaultPriority();
+        }
 
         $ticket = Ticket::create([
             'ticket_number' => $this->generateTicketNumber(),
@@ -37,8 +49,8 @@ class CustomerServiceService
         Log::info("Customer service ticket created", [
             'ticket_id' => $ticket->id,
             'ticket_number' => $ticket->ticket_number,
-            'category' => $category->value,
-            'priority' => $priority->value,
+            'category' => $category instanceof TicketCategory ? $category->value : (string) $category,
+            'priority' => $priority instanceof TicketPriority ? $priority->value : (string) $priority,
         ]);
 
         return $ticket;
@@ -170,7 +182,7 @@ class CustomerServiceService
         }
 
         if (isset($filters['status'])) {
-            $query->where('status', $filters['status']);
+            $query->byStatus($filters['status']);
         }
 
         if (isset($filters['active_only']) && $filters['active_only']) {

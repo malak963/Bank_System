@@ -50,18 +50,22 @@ class CustomerServiceController extends Controller
             'priority' => 'nullable|string',
             'subject' => 'required|string|max:200',
             'description' => 'required|string',
-            'tags' => 'nullable|array',
+            'tags' => 'nullable',
         ]);
+
+        if (isset($validated['tags']) && is_string($validated['tags'])) {
+            $validated['tags'] = array_values(array_filter(array_map('trim', explode(',', $validated['tags']))));
+        }
 
         try {
             $ticket = $this->customerServiceService->createTicket($validated);
             return redirect()
                 ->route('customerService.show', $ticket)
-                ->with('success', 'Ticket created successfully');
+                ->with('success', __('Ticket created successfully'));
         } catch (\Exception $e) {
             return back()
                 ->withInput()
-                ->with('error', 'Ticket creation failed: ' . $e->getMessage());
+                ->with('error', __('Ticket creation failed: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -81,9 +85,9 @@ class CustomerServiceController extends Controller
             $ticket = $this->customerServiceService->assignTicket($ticket, $validated['assigned_to']);
             return redirect()
                 ->route('customerService.show', $ticket)
-                ->with('success', 'Ticket assigned successfully');
+                ->with('success', __('Ticket assigned successfully'));
         } catch (\Exception $e) {
-            return back()->with('error', 'Assignment failed: ' . $e->getMessage());
+            return back()->with('error', __('Assignment failed: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -97,9 +101,9 @@ class CustomerServiceController extends Controller
             $ticket = $this->customerServiceService->resolveTicket($ticket, $validated['resolution']);
             return redirect()
                 ->route('customerService.show', $ticket)
-                ->with('success', 'Ticket resolved successfully');
+                ->with('success', __('Ticket resolved successfully'));
         } catch (\Exception $e) {
-            return back()->with('error', 'Resolution failed: ' . $e->getMessage());
+            return back()->with('error', __('Resolution failed: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -109,9 +113,9 @@ class CustomerServiceController extends Controller
             $ticket = $this->customerServiceService->closeTicket($ticket);
             return redirect()
                 ->route('customerService.show', $ticket)
-                ->with('success', 'Ticket closed successfully');
+                ->with('success', __('Ticket closed successfully'));
         } catch (\Exception $e) {
-            return back()->with('error', 'Close failed: ' . $e->getMessage());
+            return back()->with('error', __('Close failed: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -121,9 +125,9 @@ class CustomerServiceController extends Controller
             $ticket = $this->customerServiceService->reopenTicket($ticket);
             return redirect()
                 ->route('customerService.show', $ticket)
-                ->with('success', 'Ticket reopened successfully');
+                ->with('success', __('Ticket reopened successfully'));
         } catch (\Exception $e) {
-            return back()->with('error', 'Reopen failed: ' . $e->getMessage());
+            return back()->with('error', __('Reopen failed: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -144,9 +148,9 @@ class CustomerServiceController extends Controller
             );
             return redirect()
                 ->route('customerService.show', $ticket)
-                ->with('success', 'Response added successfully');
+                ->with('success', __('Response added successfully'));
         } catch (\Exception $e) {
-            return back()->with('error', 'Response failed: ' . $e->getMessage());
+            return back()->with('error', __('Response failed: :message', ['message' => $e->getMessage()]));
         }
     }
 
@@ -174,8 +178,12 @@ class CustomerServiceController extends Controller
             'priority' => 'nullable|string',
             'subject' => 'required|string|max:200',
             'description' => 'required|string',
-            'tags' => 'nullable|array',
+            'tags' => 'nullable',
         ]);
+
+        if (isset($validated['tags']) && is_string($validated['tags'])) {
+            $validated['tags'] = array_values(array_filter(array_map('trim', explode(',', $validated['tags']))));
+        }
 
         try {
             $ticket = $this->customerServiceService->createTicket($validated);

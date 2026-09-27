@@ -1,191 +1,59 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Roles') — Role Permissions</title>
-    <style>
-        :root {
-            --rp-bg: #f3f5f7;
-            --rp-surface: #ffffff;
-            --rp-ink: #1a2332;
-            --rp-muted: #5b6b7c;
-            --rp-line: #d8dee6;
-            --rp-accent: #0f6b5c;
-            --rp-accent-soft: #e6f4f1;
-            --rp-danger: #b42318;
-            --rp-danger-soft: #fef3f2;
-            --rp-warn: #b54708;
-            --rp-radius: 12px;
-            --rp-shadow: 0 1px 2px rgba(26, 35, 50, 0.06), 0 8px 24px rgba(26, 35, 50, 0.04);
-            --rp-font: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-        }
-
-        * { box-sizing: border-box; }
-        body {
-            margin: 0;
-            font-family: var(--rp-font);
-            color: var(--rp-ink);
-            background:
-                radial-gradient(1200px 500px at 10% -10%, #d9efe9 0%, transparent 55%),
-                radial-gradient(900px 400px at 100% 0%, #e8eef5 0%, transparent 50%),
-                var(--rp-bg);
-            min-height: 100vh;
-        }
-        a { color: var(--rp-accent); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-
-        .rp-shell { max-width: 980px; margin: 0 auto; padding: 28px 20px 48px; }
-        .rp-top {
-            display: flex; align-items: center; justify-content: space-between;
-            gap: 16px; margin-bottom: 22px; flex-wrap: wrap;
-        }
-        .rp-brand { display: flex; flex-direction: column; gap: 2px; }
-        .rp-brand strong { font-size: 1.25rem; letter-spacing: -0.02em; }
-        .rp-brand span { color: var(--rp-muted); font-size: 0.9rem; }
-        .rp-nav { display: flex; gap: 8px; flex-wrap: wrap; }
-        .rp-nav a {
-            display: inline-flex; align-items: center;
-            padding: 8px 12px; border-radius: 999px;
-            color: var(--rp-muted); background: transparent; text-decoration: none;
-            border: 1px solid transparent;
-        }
-        .rp-nav a:hover, .rp-nav a.is-active {
-            color: var(--rp-accent); background: var(--rp-accent-soft);
-            border-color: #c5e4dd; text-decoration: none;
-        }
-
-        .rp-card {
-            background: var(--rp-surface);
-            border: 1px solid var(--rp-line);
-            border-radius: var(--rp-radius);
-            box-shadow: var(--rp-shadow);
-            overflow: hidden;
-        }
-        .rp-card-head {
-            display: flex; align-items: center; justify-content: space-between;
-            gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--rp-line);
-            flex-wrap: wrap;
-        }
-        .rp-card-head h1 { margin: 0; font-size: 1.1rem; }
-        .rp-card-body { padding: 20px; }
-
-        .rp-btn {
-            display: inline-flex; align-items: center; justify-content: center;
-            gap: 6px; border: 1px solid transparent; border-radius: 10px;
-            padding: 9px 14px; font: inherit; font-weight: 600; cursor: pointer;
-            text-decoration: none; line-height: 1.2;
-        }
-        .rp-btn:hover { text-decoration: none; filter: brightness(0.97); }
-        .rp-btn-primary { background: var(--rp-accent); color: #fff; }
-        .rp-btn-secondary { background: #fff; color: var(--rp-ink); border-color: var(--rp-line); }
-        .rp-btn-danger { background: var(--rp-danger-soft); color: var(--rp-danger); border-color: #f5c2c0; }
-        .rp-btn-sm { padding: 6px 10px; font-size: 0.85rem; border-radius: 8px; }
-
-        .rp-alert {
-            margin-bottom: 16px; padding: 12px 14px; border-radius: 10px;
-            background: var(--rp-accent-soft); color: #0b4f44; border: 1px solid #c5e4dd;
-        }
-        .rp-errors {
-            margin-bottom: 16px; padding: 12px 14px; border-radius: 10px;
-            background: var(--rp-danger-soft); color: var(--rp-danger); border: 1px solid #f5c2c0;
-        }
-        .rp-errors ul { margin: 0; padding-left: 18px; }
-
-        table.rp-table { width: 100%; border-collapse: collapse; }
-        .rp-table th, .rp-table td {
-            text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--rp-line);
-            vertical-align: middle;
-        }
-        .rp-table th { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--rp-muted); }
-        .rp-table tr:last-child td { border-bottom: 0; }
-        .rp-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-
-        .rp-field { margin-bottom: 18px; }
-        .rp-field label { display: block; font-weight: 600; margin-bottom: 6px; }
-        .rp-field input[type="text"], .rp-field input[type="search"] {
-            width: 100%; max-width: 420px; padding: 10px 12px;
-            border: 1px solid var(--rp-line); border-radius: 10px; font: inherit;
-            background: #fff;
-        }
-        .rp-field input:focus { outline: 2px solid #9fd2c7; border-color: var(--rp-accent); }
-
-        .rp-group { margin-bottom: 18px; border: 1px solid var(--rp-line); border-radius: 12px; overflow: hidden; }
-        .rp-group-title {
-            padding: 10px 14px; background: #f7f9fb; font-weight: 700; font-size: 0.92rem;
-            border-bottom: 1px solid var(--rp-line);
-        }
-        .rp-ability {
-            display: grid; grid-template-columns: minmax(160px, 1.2fr) repeat(3, minmax(90px, 1fr));
-            gap: 8px; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--rp-line);
-        }
-        .rp-ability:last-child { border-bottom: 0; }
-        .rp-ability-code { color: var(--rp-muted); font-size: 0.82rem; display: block; margin-top: 2px; }
-        .rp-choice {
-            display: flex; align-items: center; justify-content: center; gap: 6px;
-            padding: 8px; border-radius: 8px; border: 1px solid var(--rp-line); cursor: pointer;
-            background: #fff; font-size: 0.85rem;
-        }
-        .rp-choice:has(input:checked) {
-            border-color: var(--rp-accent); background: var(--rp-accent-soft); color: var(--rp-accent); font-weight: 600;
-        }
-        .rp-choice input { accent-color: var(--rp-accent); }
-
-        .rp-chip {
-            display: inline-flex; padding: 3px 8px; border-radius: 999px;
-            background: #eef2f6; color: var(--rp-muted); font-size: 0.8rem; margin: 2px;
-        }
-        .rp-empty { padding: 28px; text-align: center; color: var(--rp-muted); }
-        .rp-footer-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
-        .rp-search { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-
-        @media (max-width: 720px) {
-            .rp-ability {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-            .rp-choice { justify-content: flex-start; }
-        }
-    </style>
-</head>
-<body>
-    <div class="rp-shell">
-        <header class="rp-top">
-            <div class="rp-brand">
-                <strong>Role Permissions</strong>
-                <span>Manage roles & abilities</span>
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Access Control & Security') }}</p>
+                <h2 class="mt-1 text-2xl font-semibold text-slate-950 leading-tight">
+                    @yield('title', __('Roles & Permissions'))
+                </h2>
             </div>
-            <nav class="rp-nav">
-                <a href="{{ route('dashboard') }}" style="border-color: var(--rp-line); background: #fff;">
-                    &larr; {{ __('Back to Dashboard') }}
-                </a>
-                <a href="{{ route(config('role-permession.ui.route_name_prefix', 'role-permession.').'roles.index') }}"
-                   class="{{ request()->routeIs(config('role-permession.ui.route_name_prefix', 'role-permession.').'roles.*') ? 'is-active' : '' }}">
-                    {{ __('Roles') }}
-                </a>
-                <a href="{{ route(config('role-permession.ui.route_name_prefix', 'role-permession.').'users.index') }}"
-                   class="{{ request()->routeIs(config('role-permession.ui.route_name_prefix', 'role-permession.').'users.*') ? 'is-active' : '' }}">
-                    {{ __('Assign Users') }}
-                </a>
-            </nav>
-        </header>
+            <div class="flex items-center gap-2">
+                @canAbility('roles.view')
+                    <a href="{{ route(config('role-permession.ui.route_name_prefix', 'role-permession.').'roles.index') }}"
+                       class="inline-flex items-center gap-2 rounded-lg px-3.5 py-2 text-xs font-semibold transition {{ request()->routeIs(config('role-permession.ui.route_name_prefix', 'role-permession.').'roles.*') ? 'bg-emerald-600 text-white shadow-sm' : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50' }}">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                        </svg>
+                        {{ __('Roles') }}
+                    </a>
+                @endcanAbility
 
-        @if (session('role_permession_success'))
-            <div class="rp-alert">{{ session('role_permession_success') }}</div>
-        @endif
-
-        @if ($errors->any())
-            <div class="rp-errors">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+                @canAbility('roles.update')
+                    <a href="{{ route(config('role-permession.ui.route_name_prefix', 'role-permession.').'users.index') }}"
+                       class="inline-flex items-center gap-2 rounded-lg px-3.5 py-2 text-xs font-semibold transition {{ request()->routeIs(config('role-permession.ui.route_name_prefix', 'role-permession.').'users.*') ? 'bg-emerald-600 text-white shadow-sm' : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50' }}">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.999-3.199a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+                        </svg>
+                        {{ __('Assign Roles') }}
+                    </a>
+                @endcanAbility
             </div>
-        @endif
+        </div>
+    </x-slot>
 
-        @yield('content')
+    <div class="py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            @if (session('role_permession_success') || session('status'))
+                <div class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800 flex items-center gap-2">
+                    <svg class="h-5 w-5 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>{{ __(session('role_permession_success') ?? session('status')) }}</span>
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800 space-y-1">
+                    <p class="font-semibold">{{ __('Please correct the following errors:') }}</p>
+                    <ul class="list-disc list-inside text-xs space-y-0.5">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @yield('content')
+        </div>
     </div>
-</body>
-</html>
+</x-app-layout>

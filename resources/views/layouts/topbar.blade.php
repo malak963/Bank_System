@@ -143,7 +143,7 @@
             <!-- Descriptor Badge (Desktop) -->
             <span class="hidden md:inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-inset ring-emerald-600/20">
                 <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                {{ config('bank.descriptor', 'Secure banking operations') }}
+                {{ __(config('bank.descriptor', 'Secure banking operations')) }}
             </span>
         </div>
 

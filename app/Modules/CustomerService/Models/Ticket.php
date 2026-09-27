@@ -176,14 +176,22 @@ class Ticket extends Model
         return $query->where('customer_id', $customerId);
     }
 
-    public function scopeByCategory($query, TicketCategory $category)
+    public function scopeByCategory($query, $category)
     {
-        return $query->where('category', $category);
+        $categoryEnum = is_string($category) ? TicketCategory::tryFrom($category) : $category;
+        return $query->where('category', $categoryEnum ?? $category);
     }
 
-    public function scopeByPriority($query, TicketPriority $priority)
+    public function scopeByPriority($query, $priority)
     {
-        return $query->where('priority', $priority);
+        $priorityEnum = is_string($priority) ? TicketPriority::tryFrom($priority) : $priority;
+        return $query->where('priority', $priorityEnum ?? $priority);
+    }
+
+    public function scopeByStatus($query, $status)
+    {
+        $statusEnum = is_string($status) ? TicketStatus::tryFrom($status) : $status;
+        return $query->where('status', $statusEnum ?? $status);
     }
 
     public function scopeByAssignee($query, $userId)
