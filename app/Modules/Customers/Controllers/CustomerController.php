@@ -4,6 +4,7 @@ namespace App\Modules\Customers\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Modules\Branches\Models\Branch;
 use App\Modules\Customers\Enums\CustomerStatus;
 use App\Modules\Customers\Enums\IdentityDocumentType;
 use App\Modules\Customers\Enums\KycStatus;
@@ -37,6 +38,7 @@ class CustomerController extends Controller
                 'kycStatuses' => KycStatus::cases(),
                 'riskLevels' => RiskLevel::cases(),
                 'identityDocumentTypes' => IdentityDocumentType::cases(),
+                'branches' => Branch::query()->orderBy('name')->get(['id', 'name', 'code']),
             ]
         );
     }
@@ -60,7 +62,7 @@ class CustomerController extends Controller
 
     public function show(Customer $customer): View
     {
-        $customer->load(['user', 'kycReviewer']);
+        $customer->load(['user', 'kycReviewer', 'branch']);
 
         return view('customers::show', [
             'customer' => $customer,
@@ -118,6 +120,9 @@ class CustomerController extends Controller
             'kycReviewers' => User::query()
                 ->orderBy('name')
                 ->get(['id', 'name', 'email']),
+            'branches' => Branch::query()
+                ->orderBy('name')
+                ->get(['id', 'name', 'code', 'status']),
         ];
     }
 

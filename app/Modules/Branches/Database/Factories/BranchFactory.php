@@ -4,7 +4,7 @@ namespace App\Modules\Branches\Database\Factories;
 
 use App\Modules\Branches\Enums\BranchStatus;
 use App\Modules\Branches\Models\Branch;
-use App\Modules\Users\Models\User;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

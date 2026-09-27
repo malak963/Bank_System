@@ -14,7 +14,7 @@ class CustomerRepository implements CustomerRepositoryContract
     public function paginate(array $filters = [], int $perPage = 15): LengthAwarePaginator
     {
         return $this->filteredQuery($filters)
-            ->with(['user', 'kycReviewer'])
+            ->with(['user', 'kycReviewer', 'branch'])
             ->paginate($perPage)
             ->withQueryString();
     }
@@ -67,6 +67,7 @@ class CustomerRepository implements CustomerRepositoryContract
 
         foreach ([
             'status',
+            'branch_id',
             'kyc_status',
             'risk_level',
             'identity_document_type',

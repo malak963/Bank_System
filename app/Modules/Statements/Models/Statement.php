@@ -48,8 +48,27 @@ class Statement extends Model
         return $this->belongsTo(\App\Modules\Customers\Models\Customer::class);
     }
 
-    public function transactions()
+    public function getTransactionsAttribute()
     {
-        return $this->hasMany(\App\Modules\Transactions\Models\Transaction::class);
+        if (! $this->account_id || ! $this->period_start || ! $this->period_end) {
+            return collect();
+        }
+
+        return \App\Modules\Transactions\Models\Transaction::where('account_id', $this->account_id)
+            ->whereBetween('created_at', [
+                $this->period_start->copy()->startOfDay(),
+                $this->period_end->copy()->endOfDay(),
+            ])
+            ->orderBy('created_at', 'asc')
+            ->get();
+    }
+
+    public function transactionsQuery()
+    {
+        return \App\Modules\Transactions\Models\Transaction::where('account_id', $this->account_id)
+            ->whereBetween('created_at', [
+                $this->period_start ? $this->period_start->copy()->startOfDay() : now()->startOfDay(),
+                $this->period_end ? $this->period_end->copy()->endOfDay() : now()->endOfDay(),
+            ]);
     }
 }

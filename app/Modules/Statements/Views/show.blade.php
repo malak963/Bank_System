@@ -74,6 +74,52 @@
             </div>
         </div>
 
+        <div class="bg-white rounded-lg shadow overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-slate-200">
+                <h2 class="text-lg font-semibold text-slate-800">{{ __('Transactions in Period') }}</h2>
+            </div>
+            <table class="min-w-full divide-y divide-slate-200">
+                <thead class="bg-slate-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">{{ __('Reference') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">{{ __('Type') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">{{ __('Amount') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">{{ __('Date') }}</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">{{ __('Status') }}</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-slate-200">
+                    @forelse($statement->transactions as $transaction)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
+                                {{ $transaction->transaction_reference }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                                {{ method_exists($transaction->transaction_type, 'label') ? $transaction->transaction_type->label() : ($transaction->transaction_type->value ?? $transaction->transaction_type) }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium {{ method_exists($transaction, 'isCredit') && $transaction->isCredit() ? 'text-emerald-600' : 'text-red-600' }}">
+                                {{ (method_exists($transaction, 'isCredit') && $transaction->isCredit()) ? '+' : '-' }}{{ number_format($transaction->amount, 2) }} {{ $statement->currency }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                                {{ $transaction->created_at->format('Y-m-d H:i') }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-slate-100 text-slate-800">
+                                    {{ $transaction->status->value ?? $transaction->status }}
+                                </span>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="px-6 py-4 text-center text-sm text-slate-500">
+                                {{ __('No transactions found for this period.') }}
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
         <div class="flex justify-end space-x-4">
             @if($statement->status === 'completed' && !$statement->file_path)
             <form action="{{ route('statements.generate', $statement->id) }}" method="POST" class="inline">

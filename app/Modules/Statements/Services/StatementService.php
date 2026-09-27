@@ -31,7 +31,7 @@ class StatementService
 
     public function getStatement(int $id): Statement
     {
-        return Statement::with(['account', 'customer', 'transactions'])->findOrFail($id);
+        return Statement::with(['account', 'customer'])->findOrFail($id);
     }
 
     public function createStatement(array $data): Statement
@@ -136,21 +136,28 @@ class StatementService
         $lines[] = 'Opening Balance,' . $statement->opening_balance;
         $lines[] = 'Closing Balance,' . $statement->closing_balance;
         $lines[] = 'Total Debits,' . $statement->total_debits;
-        $lines->push('Total Credits,' . $statement->total_credits);
+        $lines[] = 'Total Credits,' . $statement->total_credits;
         $lines[] = 'Transaction Count,' . $statement->transaction_count;
         $lines[] = '';
         
         // Transactions
         $lines[] = 'Date,Reference,Type,Description,Amount,Balance';
         
+        $startDate = \Illuminate\Support\Carbon::parse($statement->period_start)->startOfDay();
+        $endDate = \Illuminate\Support\Carbon::parse($statement->period_end)->endOfDay();
+
         $transactions = Transaction::where('account_id', $statement->account_id)
-            ->whereBetween('created_at', [$statement->period_start, $statement->period_end])
+            ->whereBetween('created_at', [$startDate, $endDate])
             ->orderBy('created_at')
             ->get();
 
         $balance = $statement->opening_balance;
         foreach ($transactions as $transaction) {
-            if (in_array($transaction->transaction_type, ['deposit', 'transfer'])) {
+            $typeVal = $transaction->transaction_type instanceof \App\Modules\Transactions\Enums\TransactionType
+                ? $transaction->transaction_type->value
+                : (string) $transaction->transaction_type;
+
+            if (in_array($typeVal, ['deposit', 'transfer'])) {
                 $balance += $transaction->amount;
             } else {
                 $balance -= $transaction->amount;
@@ -159,8 +166,8 @@ class StatementService
             $lines[] = implode(',', [
                 $transaction->created_at->format('Y-m-d H:i:s'),
                 $transaction->transaction_reference,
-                $transaction->transaction_type,
-                $transaction->description,
+                $typeVal,
+                '"' . str_replace('"', '""', $transaction->description ?? '') . '"',
                 $transaction->amount,
                 $balance,
             ]);

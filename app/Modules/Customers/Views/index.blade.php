@@ -53,9 +53,19 @@
 
             <form method="GET" action="{{ route('customers.index') }}" class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
                 <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-                    <div class="lg:col-span-4">
+                    <div class="lg:col-span-3">
                         <x-input-label for="search" :value="__('Search')" />
                         <x-text-input id="search" name="search" type="search" class="mt-1 block w-full rounded-lg border-slate-300 text-sm shadow-sm focus:border-emerald-500 focus:ring-emerald-500" :value="$filterValue('search')" placeholder="{{ __('Name, number, ID, phone, email or KYC reference') }}" />
+                    </div>
+
+                    <div class="lg:col-span-2">
+                        <x-input-label for="branch_id" :value="__('Branch')" />
+                        <select id="branch_id" name="branch_id" class="mt-1 block w-full rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                            <option value="">{{ __('All Branches') }}</option>
+                            @foreach ($branches as $branch)
+                                <option value="{{ $branch->id }}" @selected($filterValue('branch_id') == $branch->id)>{{ $branch->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="lg:col-span-2">
@@ -188,9 +198,19 @@
                                          <a href="{{ route('customers.show', $customer) }}" class="font-semibold text-slate-900 hover:text-emerald-700">
                                              {{ $customer->full_name }}
                                          </a>
-                                         @if ($customer->kyc_reference)
-                                             <p class="mt-0.5 text-xs text-slate-500 font-mono" dir="ltr">{{ $customer->kyc_reference }}</p>
-                                         @endif
+                                         <div class="flex items-center gap-2 mt-0.5">
+                                             @if ($customer->branch)
+                                                 <span class="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-700">
+                                                     <svg class="h-3 w-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.75a1.5 1.5 0 0 1 1.5-1.5h1.5a1.5 1.5 0 0 1 1.5 1.5V21" />
+                                                     </svg>
+                                                     {{ $customer->branch->name }}
+                                                 </span>
+                                             @endif
+                                             @if ($customer->kyc_reference)
+                                                 <span class="text-xs text-slate-400 font-mono" dir="ltr">({{ $customer->kyc_reference }})</span>
+                                             @endif
+                                         </div>
                                      </td>
                                      <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600 font-mono" dir="ltr">{{ $customer->user?->email }}</td>
                                      <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600">

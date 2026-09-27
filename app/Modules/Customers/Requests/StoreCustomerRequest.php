@@ -26,6 +26,12 @@ class StoreCustomerRequest extends FormRequest
                 Rule::unique('customers', 'user_id'),
             ],
 
+            'branch_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('branches', 'id'),
+            ],
+
             'customer_number' => [
                 'required',
                 'string',

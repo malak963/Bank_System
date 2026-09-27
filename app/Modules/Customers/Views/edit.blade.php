@@ -23,6 +23,7 @@
                     @include('customers::partials._form', [
                         'customer' => $customer,
                         'users' => $users,
+                        'branches' => $branches,
                         'customerStatuses' => $customerStatuses,
                         'kycStatuses' => $kycStatuses,
                         'riskLevels' => $riskLevels,

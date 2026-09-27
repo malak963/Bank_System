@@ -362,8 +362,33 @@
                 </a>
             </div>
 
+            <!-- Mobile Branch Switcher -->
+            @php
+                $mobileBranches = \App\Modules\Branches\Models\Branch::orderBy('name')->get(['id', 'code', 'name', 'status']);
+                $mobileActiveBranchId = session('current_branch_id');
+                $mobileActiveBranch = $mobileActiveBranchId ? $mobileBranches->firstWhere('id', $mobileActiveBranchId) : null;
+            @endphp
+            <div class="px-4 mt-4">
+                <div class="rounded-xl border border-slate-800 bg-slate-900/80 p-2.5">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">{{ __('Active Branch') }}</span>
+                        <a href="{{ route('branches.index') }}" class="text-[11px] text-emerald-400 hover:underline">{{ __('All') }}</a>
+                    </div>
+                    <select onchange="window.location.href = this.value;" class="w-full rounded-lg border-slate-700 bg-slate-950 text-xs text-white focus:border-emerald-500 focus:ring-emerald-500 py-1.5 px-2.5">
+                        <option value="{{ route('branches.switch', ['redirect' => 'index']) }}" @selected(!$mobileActiveBranch)>
+                            {{ __('All Branches (General)') }}
+                        </option>
+                        @foreach ($mobileBranches as $b)
+                            <option value="{{ route('branches.switch', ['branch' => $b->id, 'redirect' => 'show']) }}" @selected($mobileActiveBranch && $mobileActiveBranch->id === $b->id)>
+                                {{ $b->name }} ({{ $b->code }})
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
             <!-- Mobile Nav Links -->
-            <nav class="mt-6 flex-1 overflow-y-auto px-4 space-y-6">
+            <nav class="mt-4 flex-1 overflow-y-auto px-4 space-y-6">
                 @foreach ($navSections as $section)
                     @php
                         $visibleItems = array_filter($section['items'], function ($item) {

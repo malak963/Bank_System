@@ -1,6 +1,7 @@
 @props([
     'customer',
     'users',
+    'branches' => [],
     'customerStatuses',
     'kycStatuses',
     'riskLevels',
@@ -11,6 +12,7 @@
 
 @php
     $selectedUser = old('user_id', $customer?->user_id);
+    $selectedBranch = old('branch_id', $customer?->branch_id ?? session('current_branch_id'));
     $selectedStatus = old('status', $customer?->status?->value ?? 'prospect');
     $selectedKycStatus = old('kyc_status', $customer?->kyc_status?->value ?? 'pending');
     $selectedRiskLevel = old('risk_level', $customer?->risk_level?->value ?? 'low');
@@ -23,10 +25,23 @@
     <section>
         <div class="mb-4 border-b border-slate-200 pb-3">
             <h4 class="text-sm font-semibold text-slate-950">{{ __('Identity') }}</h4>
-            <p class="mt-1 text-sm text-slate-500">{{ __('Core customer identity and linked system user.') }}</p>
+            <p class="mt-1 text-sm text-slate-500">{{ __('Core customer identity, branch allocation and linked system user.') }}</p>
         </div>
 
         <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+    <div>
+        <x-input-label for="branch_id" :value="__('Linked Branch')" />
+        <select id="branch_id" name="branch_id" class="mt-1 block w-full rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+            <option value="">{{ __('Select branch (Optional)') }}</option>
+            @foreach ($branches as $branch)
+                <option value="{{ $branch->id }}" @selected((string) $selectedBranch === (string) $branch->id)>
+                    {{ $branch->name }} ({{ $branch->code }})
+                </option>
+            @endforeach
+        </select>
+        <x-input-error :messages="$errors->get('branch_id')" class="mt-2" />
+    </div>
+
     <div>
         <x-input-label for="user_id" :value="__('Linked User')" />
         <select id="user_id" name="user_id" class="mt-1 block w-full rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-emerald-500 focus:ring-emerald-500">

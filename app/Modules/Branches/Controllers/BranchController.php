@@ -9,9 +9,10 @@ use App\Modules\Branches\Requests\IndexBranchRequest;
 use App\Modules\Branches\Requests\StoreBranchRequest;
 use App\Modules\Branches\Requests\UpdateBranchRequest;
 use App\Modules\Branches\Services\BranchService;
-use App\Modules\Users\Models\User;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class BranchController extends Controller
 {
@@ -83,5 +84,28 @@ class BranchController extends Controller
         $this->service->close($branch);
 
         return redirect()->route('branches.show', $branch)->with('status', 'Branch closed.');
+    }
+
+    public function switchBranch(Request $request, ?Branch $branch = null): RedirectResponse
+    {
+        if ($branch && $branch->exists) {
+            session(['current_branch_id' => $branch->id]);
+
+            if ($request->query('redirect') === 'show') {
+                return redirect()->route('branches.show', $branch)
+                    ->with('status', __('Switched active branch to: :name', ['name' => $branch->name]));
+            }
+
+            return back()->with('status', __('Switched active branch to: :name', ['name' => $branch->name]));
+        }
+
+        session()->forget('current_branch_id');
+
+        if ($request->query('redirect') === 'index') {
+            return redirect()->route('branches.index')
+                ->with('status', __('Viewing all branches.'));
+        }
+
+        return back()->with('status', __('Viewing all branches.'));
     }
 }

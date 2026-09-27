@@ -30,6 +30,12 @@ class UpdateCustomerRequest extends FormRequest
                 Rule::unique('customers', 'user_id')->ignore($customerId),
             ],
 
+            'branch_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('branches', 'id'),
+            ],
+
             'customer_number' => [
                 'required',
                 'string',

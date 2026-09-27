@@ -30,6 +30,12 @@ class IndexCustomerRequest extends FormRequest
                 Rule::enum(CustomerStatus::class),
             ],
 
+            'branch_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('branches', 'id'),
+            ],
+
             'kyc_status' => [
                 'nullable',
                 Rule::enum(KycStatus::class),

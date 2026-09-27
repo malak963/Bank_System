@@ -66,6 +66,22 @@
                             <dd class="mt-1 text-sm font-medium text-slate-900">{{ $customer->user?->email }}</dd>
                         </div>
                         <div>
+                            <dt class="text-xs font-semibold uppercase text-slate-500">{{ __('Linked Branch') }}</dt>
+                            <dd class="mt-1 text-sm font-medium text-slate-900">
+                                @if ($customer->branch)
+                                    <a href="{{ route('branches.show', $customer->branch) }}" class="inline-flex items-center gap-1.5 font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">
+                                        <svg class="h-4 w-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.75a1.5 1.5 0 0 1 1.5-1.5h1.5a1.5 1.5 0 0 1 1.5 1.5V21" />
+                                        </svg>
+                                        {{ $customer->branch->name }}
+                                        <span class="font-mono text-xs text-slate-500">({{ $customer->branch->code }})</span>
+                                    </a>
+                                @else
+                                    <span class="text-slate-400 italic">{{ __('Not assigned') }}</span>
+                                @endif
+                            </dd>
+                        </div>
+                        <div>
                             <dt class="text-xs font-semibold uppercase text-slate-500">{{ __('National ID') }}</dt>
                             <dd class="mt-1 text-sm font-medium text-slate-900">{{ $customer->national_id }}</dd>
                         </div>

@@ -71,11 +71,12 @@ class CardService
             throw new \Exception('Card can only be activated from pending status');
         }
 
-        if ($card->pin !== $pin) {
-            throw new \Exception('Invalid PIN');
+        if (strlen($pin) !== 4 || !is_numeric($pin)) {
+            throw new \Exception('PIN must be 4 digits');
         }
 
         $card->update([
+            'pin' => $pin,
             'status' => CardStatus::Active,
             'activated_at' => now(),
         ]);

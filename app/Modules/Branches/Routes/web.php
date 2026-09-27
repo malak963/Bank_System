@@ -11,6 +11,7 @@ Route::group([
 ], function (): void {
     Route::middleware(['web', 'auth', 'verified'])
     ->group(function (): void {
+        Route::get('branches/switch/{branch?}', [BranchController::class, 'switchBranch'])->name('branches.switch');
         Route::post('branches/{branch}/open', [BranchController::class, 'open'])->name('branches.open');
         Route::post('branches/{branch}/close', [BranchController::class, 'close'])->name('branches.close');
         Route::resource('branches', BranchController::class);
