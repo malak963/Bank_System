@@ -21,22 +21,29 @@
     <form method="POST" action="{{ route('login') }}" class="space-y-4">
         @csrf
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+        <!-- Account Number or Email Address -->
+        <x-form.input
+            :label="__('Account Number or Email')"
+            name="email"
+            id="email"
+            type="text"
+            :value="old('email')"
+            :placeholder="__('e.g. ACC-100234 or user@bank.com')"
+            required
+            autofocus
+            autocomplete="username"
+        />
 
-        <!-- Password -->
-        <div>
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+        <!-- Password or PIN -->
+        <x-form.input
+            :label="__('Password or Online PIN')"
+            name="password"
+            id="password"
+            type="password"
+            :placeholder="__('••••••••••••')"
+            required
+            autocomplete="current-password"
+        />
 
         <!-- Remember Me -->
         <div class="flex items-center justify-between pt-1">
@@ -47,14 +54,14 @@
 
             @if (Route::has('password.request'))
                 <a class="text-xs font-medium text-emerald-700 hover:text-emerald-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
+                    {{ __('Forgot your password or PIN?') }}
                 </a>
             @endif
         </div>
 
         <div class="pt-2">
-            <x-primary-button class="w-full justify-center py-2.5 bg-slate-950 hover:bg-slate-800 text-white font-semibold">
-                {{ __('Log in') }}
+            <x-primary-button class="w-full justify-center py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-sm transition">
+                {{ __('Sign In to Digital Banking') }}
             </x-primary-button>
         </div>
 

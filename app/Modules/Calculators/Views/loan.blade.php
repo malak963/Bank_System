@@ -3,7 +3,6 @@
 @section('title', __('Loan Calculator'))
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a></li>
     <li class="breadcrumb-item"><a href="{{ route('calculators.index') }}">{{ __('Banking Calculators') }}</a></li>
     <li class="breadcrumb-item active">{{ __('Loan Calculator') }}</li>
 @endsection

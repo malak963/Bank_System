@@ -21,16 +21,16 @@
             <div class="bank-card">
                 <div class="bank-card-header flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
-                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">{{ $ticket->category->label() }}</span>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">{{ is_object($ticket->category) && method_exists($ticket->category, 'label') ? $ticket->category->label() : ($ticket->category ?? '') }}</span>
                         <h2 class="text-xl font-bold text-slate-900 mt-0.5">{{ $ticket->subject }}</h2>
                         <p class="text-xs text-slate-400 font-mono mt-0.5" dir="ltr">{{ $ticket->ticket_number }}</p>
                     </div>
                     <div class="flex items-center gap-2">
-                        <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset {{ $ticket->priority->badgeColor() }}">
-                            {{ $ticket->priority->label() }}
+                        <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset {{ is_object($ticket->priority) && method_exists($ticket->priority, 'badgeColor') ? $ticket->priority->badgeColor() : 'bg-slate-50 text-slate-700 ring-slate-200' }}">
+                            {{ is_object($ticket->priority) && method_exists($ticket->priority, 'label') ? $ticket->priority->label() : ($ticket->priority ?? '-') }}
                         </span>
-                        <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset {{ $ticket->status->badgeColor() }}">
-                            {{ $ticket->status->label() }}
+                        <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset {{ is_object($ticket->status) && method_exists($ticket->status, 'badgeColor') ? $ticket->status->badgeColor() : 'bg-slate-50 text-slate-700 ring-slate-200' }}">
+                            {{ is_object($ticket->status) && method_exists($ticket->status, 'label') ? $ticket->status->label() : ($ticket->status ?? '-') }}
                         </span>
                     </div>
                 </div>

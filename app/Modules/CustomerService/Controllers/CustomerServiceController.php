@@ -40,8 +40,9 @@ class CustomerServiceController extends Controller
         $priorities = \App\Modules\CustomerService\Enums\TicketPriority::cases();
         $branches = \App\Modules\Branches\Models\Branch::all();
         $customers = \App\Modules\Customers\Models\Customer::all();
+        $accounts = \App\Modules\Accounts\Models\Account::all();
         
-        return view('customerService::create', compact('categories', 'priorities', 'branches', 'customers'));
+        return view('customerService::create', compact('categories', 'priorities', 'branches', 'customers', 'accounts'));
     }
 
     public function store(Request $request)

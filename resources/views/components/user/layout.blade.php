@@ -2,6 +2,7 @@
     'title' => null,
     'subtitle' => null,
     'actions' => null,
+    'breadcrumbs' => [],
 ])
 
 <!DOCTYPE html>
@@ -35,10 +36,41 @@
 
     <!-- Main Container -->
     <main class="flex-1 pb-16">
-        @if($title || $actions)
+        @if($title || $actions || !empty($breadcrumbs))
             <div class="bg-white border-b border-slate-200">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
+                        <!-- Consistent Breadcrumb like school-system -->
+                        <div class="mb-1.5">
+                            <ol class="inline-flex items-center gap-1.5 text-xs text-slate-500">
+                                <li>
+                                    <a href="{{ route('portal.dashboard') }}" class="hover:text-emerald-700 transition flex items-center gap-1 font-medium">
+                                        <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                                        </svg>
+                                        <span>{{ __('Digital Banking') }}</span>
+                                    </a>
+                                </li>
+                                @if(!empty($breadcrumbs))
+                                    @foreach($breadcrumbs as $bc)
+                                        <li class="flex items-center gap-1.5">
+                                            <svg class="h-3 w-3 text-slate-300 rtl:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                            @if(!empty($bc['url']) && !$loop->last)
+                                                <a href="{{ $bc['url'] }}" class="hover:text-emerald-700 transition">{{ $bc['label'] }}</a>
+                                            @else
+                                                <span class="text-slate-900 font-semibold">{{ is_array($bc) ? $bc['label'] : $bc }}</span>
+                                            @endif
+                                        </li>
+                                    @endforeach
+                                @elseif($title)
+                                    <li class="flex items-center gap-1.5">
+                                        <svg class="h-3 w-3 text-slate-300 rtl:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                        <span class="text-slate-900 font-semibold">{{ $title }}</span>
+                                    </li>
+                                @endif
+                            </ol>
+                        </div>
+
                         <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
                             {{ $title }}
                         </h1>

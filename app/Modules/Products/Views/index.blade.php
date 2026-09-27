@@ -21,19 +21,19 @@
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div class="bank-card p-4">
             <p class="text-xs font-semibold uppercase text-slate-500">{{ __('Total Products') }}</p>
-            <p class="text-2xl font-bold text-slate-900 mt-1 font-mono" dir="ltr">{{ $statistics['total'] }}</p>
+            <p class="text-2xl font-bold text-slate-900 mt-1 font-mono" dir="ltr">{{ $statistics['total'] ?? $statistics['total_products'] ?? 0 }}</p>
         </div>
         <div class="bank-card p-4">
             <p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Active') }}</p>
-            <p class="text-2xl font-bold text-emerald-800 mt-1 font-mono" dir="ltr">{{ $statistics['active'] }}</p>
+            <p class="text-2xl font-bold text-emerald-800 mt-1 font-mono" dir="ltr">{{ $statistics['active'] ?? $statistics['active_products'] ?? 0 }}</p>
         </div>
         <div class="bank-card p-4">
             <p class="text-xs font-semibold uppercase text-slate-500">{{ __('Total Balance') }}</p>
-            <p class="text-2xl font-bold text-slate-900 mt-1 font-mono" dir="ltr">${{ number_format($statistics['total_balance'], 2) }}</p>
+            <p class="text-2xl font-bold text-slate-900 mt-1 font-mono" dir="ltr">${{ number_format($statistics['total_balance'] ?? 0, 2) }}</p>
         </div>
         <div class="bank-card p-4">
             <p class="text-xs font-semibold uppercase text-slate-500">{{ __('Interest Earned') }}</p>
-            <p class="text-2xl font-bold text-slate-900 mt-1 font-mono" dir="ltr">${{ number_format($statistics['total_interest_earned'], 2) }}</p>
+            <p class="text-2xl font-bold text-slate-900 mt-1 font-mono" dir="ltr">${{ number_format($statistics['total_interest_earned'] ?? 0, 2) }}</p>
         </div>
     </div>
 
@@ -74,8 +74,8 @@
                                 {{ $product->interest_rate }}%
                             </td>
                             <td class="px-5 py-4 whitespace-nowrap text-sm">
-                                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset {{ $product->status->badgeColor() }}">
-                                    {{ $product->status->label() }}
+                                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset {{ is_object($product->status) && method_exists($product->status, 'badgeColor') ? $product->status->badgeColor() : 'bg-slate-50 text-slate-700 ring-slate-200' }}">
+                                    {{ is_object($product->status) && method_exists($product->status, 'label') ? $product->status->label() : ($product->status ?? '-') }}
                                 </span>
                             </td>
                             <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600">

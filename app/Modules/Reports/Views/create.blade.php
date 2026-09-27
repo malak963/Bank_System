@@ -32,7 +32,7 @@
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">{{ __('Report Type') }} <span class="text-rose-500">*</span></label>
                         <select name="report_type" required class="w-full rounded-lg border-slate-300 text-sm shadow-xs focus:border-emerald-500 focus:ring-emerald-500">
                             <option value="">{{ __('Select Type') }}</option>
-                            @foreach($reportTypes as $type)
+                            @foreach(($reportTypes ?? []) as $type)
                                 <option value="{{ $type->value }}" @selected(old('report_type') === $type->value)>{{ $type->label() }}</option>
                             @endforeach
                         </select>
@@ -45,7 +45,7 @@
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">{{ __('Format') }} <span class="text-rose-500">*</span></label>
                         <select name="format" required class="w-full rounded-lg border-slate-300 text-sm shadow-xs focus:border-emerald-500 focus:ring-emerald-500">
                             <option value="">{{ __('Select Format') }}</option>
-                            @foreach($formats as $format)
+                            @foreach(($formats ?? []) as $format)
                                 <option value="{{ $format->value }}" @selected(old('format') === $format->value)>{{ $format->label() }}</option>
                             @endforeach
                         </select>
@@ -63,7 +63,7 @@
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">{{ __('Branch') }}</label>
                         <select name="branch_id" class="w-full rounded-lg border-slate-300 text-sm shadow-xs focus:border-emerald-500 focus:ring-emerald-500">
                             <option value="">{{ __('All Branches') }}</option>
-                            @foreach($branches as $branch)
+                            @foreach(($branches ?? []) as $branch)
                                 <option value="{{ $branch->id }}" @selected(old('branch_id') == $branch->id)>{{ $branch->name }}</option>
                             @endforeach
                         </select>

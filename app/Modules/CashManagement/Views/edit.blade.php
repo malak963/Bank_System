@@ -3,7 +3,6 @@
 @section('title', __('Edit Cash Operation'))
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a></li>
     <li class="breadcrumb-item"><a href="{{ route('cash-management.index') }}">{{ __('Cash Operations') }}</a></li>
     <li class="breadcrumb-item"><a href="{{ route('cash-management.show', $operation->id) }}">{{ $operation->operation_reference }}</a></li>
     <li class="breadcrumb-item active">{{ __('Edit') }}</li>

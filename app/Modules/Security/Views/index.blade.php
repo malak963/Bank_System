@@ -57,8 +57,8 @@
                                 {{ $event->event_type->label() }}
                             </td>
                             <td class="px-5 py-4 whitespace-nowrap text-sm">
-                                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset {{ $event->security_level->badgeColor() }}">
-                                    {{ $event->security_level->label() }}
+                                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset {{ is_object($event->security_level) && method_exists($event->security_level, 'badgeColor') ? $event->security_level->badgeColor() : 'bg-slate-50 text-slate-700 ring-slate-200' }}">
+                                    {{ is_object($event->security_level) && method_exists($event->security_level, 'label') ? $event->security_level->label() : ($event->security_level ?? '-') }}
                                 </span>
                             </td>
                             <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600">

@@ -64,8 +64,8 @@
                                 {{ $report->format->value }}
                             </td>
                             <td class="px-5 py-4 whitespace-nowrap text-sm">
-                                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset {{ $report->status->badgeColor() }}">
-                                    {{ $report->status->label() }}
+                                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset {{ is_object($report->status) && method_exists($report->status, 'badgeColor') ? $report->status->badgeColor() : 'bg-slate-50 text-slate-700 ring-slate-200' }}">
+                                    {{ is_object($report->status) && method_exists($report->status, 'label') ? $report->status->label() : ($report->status ?? '-') }}
                                 </span>
                             </td>
                             <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600">

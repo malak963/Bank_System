@@ -19,6 +19,16 @@ enum SecurityLevel: string
         };
     }
 
+    public function badgeColor(): string
+    {
+        return match ($this) {
+            self::Low => 'bg-slate-50 text-slate-700 ring-slate-200',
+            self::Medium => 'bg-blue-50 text-blue-700 ring-blue-200',
+            self::High => 'bg-amber-50 text-amber-700 ring-amber-200',
+            self::Critical => 'bg-rose-50 text-rose-700 ring-rose-200',
+        };
+    }
+
     public function priority(): int
     {
         return match ($this) {

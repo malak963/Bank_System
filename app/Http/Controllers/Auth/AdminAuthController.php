@@ -23,7 +23,7 @@ class AdminAuthController extends Controller
             return redirect()->intended('/dashboard');
         }
 
-        return view('auth.login');
+        return view('auth.admin-login');
     }
 
     /**

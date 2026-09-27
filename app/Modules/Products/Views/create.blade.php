@@ -32,7 +32,7 @@
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">{{ __('Product Type') }} <span class="text-rose-500">*</span></label>
                         <select name="product_type" required class="w-full rounded-lg border-slate-300 text-sm shadow-xs focus:border-emerald-500 focus:ring-emerald-500">
                             <option value="">{{ __('Select Type') }}</option>
-                            @foreach($productTypes as $type)
+                            @foreach(($productTypes ?? []) as $type)
                                 <option value="{{ $type->value }}" @selected(old('product_type') === $type->value)>{{ $type->label() }}</option>
                             @endforeach
                         </select>
@@ -45,7 +45,7 @@
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">{{ __('Customer') }} <span class="text-rose-500">*</span></label>
                         <select name="customer_id" required class="w-full rounded-lg border-slate-300 text-sm shadow-xs focus:border-emerald-500 focus:ring-emerald-500">
                             <option value="">{{ __('Select Customer') }}</option>
-                            @foreach($customers as $customer)
+                            @foreach(($customers ?? []) as $customer)
                                 <option value="{{ $customer->id }}" @selected(old('customer_id') == $customer->id)>{{ $customer->full_name }} ({{ $customer->customer_number }})</option>
                             @endforeach
                         </select>
@@ -58,7 +58,7 @@
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">{{ __('Linked Account') }}</label>
                         <select name="account_id" class="w-full rounded-lg border-slate-300 text-sm shadow-xs focus:border-emerald-500 focus:ring-emerald-500">
                             <option value="">{{ __('Select Account (optional)') }}</option>
-                            @foreach($accounts as $account)
+                            @foreach(($accounts ?? []) as $account)
                                 <option value="{{ $account->id }}" @selected(old('account_id') == $account->id)>{{ $account->account_number }}</option>
                             @endforeach
                         </select>

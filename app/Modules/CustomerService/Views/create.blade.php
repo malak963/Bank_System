@@ -32,7 +32,7 @@
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">{{ __('Category') }} <span class="text-rose-500">*</span></label>
                         <select name="category" required class="w-full rounded-lg border-slate-300 text-sm shadow-xs focus:border-emerald-500 focus:ring-emerald-500">
                             <option value="">{{ __('Select Category') }}</option>
-                            @foreach($categories as $category)
+                            @foreach(($categories ?? []) as $category)
                                 <option value="{{ $category->value }}" @selected(old('category') === $category->value)>{{ $category->label() }}</option>
                             @endforeach
                         </select>
@@ -45,7 +45,7 @@
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">{{ __('Priority') }}</label>
                         <select name="priority" class="w-full rounded-lg border-slate-300 text-sm shadow-xs focus:border-emerald-500 focus:ring-emerald-500">
                             <option value="">{{ __('Auto (based on category)') }}</option>
-                            @foreach($priorities as $priority)
+                            @foreach(($priorities ?? []) as $priority)
                                 <option value="{{ $priority->value }}" @selected(old('priority') === $priority->value)>{{ $priority->label() }}</option>
                             @endforeach
                         </select>
@@ -58,7 +58,7 @@
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">{{ __('Customer') }}</label>
                         <select name="customer_id" class="w-full rounded-lg border-slate-300 text-sm shadow-xs focus:border-emerald-500 focus:ring-emerald-500">
                             <option value="">{{ __('Select Customer (optional)') }}</option>
-                            @foreach($customers as $customer)
+                            @foreach(($customers ?? []) as $customer)
                                 <option value="{{ $customer->id }}" @selected(old('customer_id') == $customer->id)>{{ $customer->full_name }} ({{ $customer->customer_number }})</option>
                             @endforeach
                         </select>
@@ -71,7 +71,7 @@
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">{{ __('Account') }}</label>
                         <select name="account_id" class="w-full rounded-lg border-slate-300 text-sm shadow-xs focus:border-emerald-500 focus:ring-emerald-500">
                             <option value="">{{ __('Select Account (optional)') }}</option>
-                            @foreach($accounts as $account)
+                            @foreach(($accounts ?? []) as $account)
                                 <option value="{{ $account->id }}" @selected(old('account_id') == $account->id)>{{ $account->account_number }}</option>
                             @endforeach
                         </select>

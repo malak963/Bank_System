@@ -55,7 +55,7 @@
                                 <td class="px-5 py-4 text-sm text-slate-700"><p class="text-slate-700">{{ $branch->phone }}</p><p class="text-xs text-slate-500">{{ $branch->email }}</p></td>
                                 <td class="px-5 py-4 text-sm text-slate-700">{{ $branch->manager?->name ?? __('Not assigned') }}</td>
                                 <td class="px-5 py-4 text-sm"><span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset {{ $statusClass }}">{{ $branch->status->label() }}</span></td>
-                                <td class="px-5 py-4 text-right text-sm"><a href="{{ route('branches.show', $branch) }}" class="font-semibold text-emerald-700 hover:text-emerald-900">{{ __('Manage') }}</a></td>
+                                <td class="px-5 py-4 text-end text-sm"><a href="{{ route('branches.show', $branch) }}" class="font-semibold text-emerald-700 hover:text-emerald-900">{{ __('Manage') }}</a></td>
                             </tr>
                         @empty
                             <tr><td colspan="5" class="px-6 py-14 text-center text-sm text-slate-500">{{ __('No branches found.') }}</td></tr>
