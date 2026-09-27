@@ -20,9 +20,12 @@ class NotificationController extends Controller
 
     public function index(): View
     {
+        $branchId = session('current_branch_id');
         $notifications = Notification::with(['customer'])
+            ->when($branchId, fn ($q) => $q->whereHas('customer', fn ($cq) => $cq->where('branch_id', $branchId)))
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
 
         return view('notifications::index', compact('notifications'));
     }

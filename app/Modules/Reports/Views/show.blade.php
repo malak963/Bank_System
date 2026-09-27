@@ -1,176 +1,106 @@
 @extends('layouts.app')
 
+@section('title', __('Report Details'))
+
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('reports.index') }}">{{ __('Reports') }}</a></li>
+    <li class="breadcrumb-item active">{{ Str::limit($report->title, 30) }}</li>
+@endsection
+
+@section('actions')
+    @if($report->isCompleted() && $report->file_path)
+        <a href="{{ route('reports.download', $report) }}" class="btn btn-primary">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>
+            <span>{{ __('Download File') }}</span>
+        </a>
+    @endif
+    <a href="{{ route('reports.index') }}" class="btn btn-secondary">
+        {{ __('Back to Reports') }}
+    </a>
+@endsection
+
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">{{ __('Report Details') }}</h1>
-        <a href="{{ route('reports.index') }}" class="text-gray-600 hover:text-gray-900">{{ __('Back to Reports') }}</a>
-    </div>
-
-    @if(session('success'))
-        <div class="bg-emerald-100 border border-emerald-400 text-emerald-700 px-4 py-3 rounded mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {{ session('error') }}
-        </div>
-    @endif
-
+<div class="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div class="lg:col-span-2">
-            <div class="bg-white rounded-lg shadow p-6">
-                <div class="flex justify-between items-start mb-6">
+        <div class="lg:col-span-2 space-y-6">
+            <div class="bank-card">
+                <div class="bank-card-header flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
-                        <h2 class="text-xl font-semibold text-gray-900">{{ $report->title }}</h2>
-                        <p class="text-sm text-gray-500">{{ $report->report_type->label() }} - {{ $report->format->label() }}</p>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">{{ $report->report_type->label() }} &bull; {{ $report->format->label() }}</span>
+                        <h2 class="text-xl font-bold text-slate-900 mt-0.5">{{ $report->title }}</h2>
                     </div>
-                    @switch($report->status->value)
-                        @case('pending')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{{ __('Pending') }}</span>
-                            @break
-                        @case('generating')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{{ __('Generating') }}</span>
-                            @break
-                        @case('completed')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">{{ __('Completed') }}</span>
-                            @break
-                        @case('failed')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ __('Failed') }}</span>
-                            @break
-                        @case('scheduled')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">{{ __('Scheduled') }}</span>
-                            @break
-                        @default
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ $report->status->label() }}</span>
-                    @endswitch
+                    <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset {{ $report->status->badgeColor() }}">
+                        {{ $report->status->label() }}
+                    </span>
                 </div>
 
-                @if($report->description)
-                    <div class="mb-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ __('Description') }}</h3>
-                        <p class="text-gray-700">{{ $report->description }}</p>
-                    </div>
-                @endif
+                <div class="bank-card-body">
+                    @if($report->description)
+                        <div class="mb-6">
+                            <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">{{ __('Description') }}</h3>
+                            <p class="text-sm text-slate-700 bg-slate-50 p-3 rounded-lg">{{ $report->description }}</p>
+                        </div>
+                    @endif
 
-                <div class="border-t pt-4">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Report Information') }}</h3>
-                    <dl class="grid grid-cols-1 gap-4">
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">Type</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $report->report_type->label() }}</dd>
+                    <h3 class="text-sm font-semibold text-slate-900 mb-4">{{ __('Report Specifications') }}</h3>
+                    <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm">
+                        <div class="flex justify-between border-b border-slate-50 pb-2">
+                            <dt class="text-slate-500">{{ __('Type') }}</dt>
+                            <dd class="font-medium text-slate-900">{{ $report->report_type->label() }}</dd>
                         </div>
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">Format</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $report->format->label() }}</dd>
+                        <div class="flex justify-between border-b border-slate-50 pb-2">
+                            <dt class="text-slate-500">{{ __('Format') }}</dt>
+                            <dd class="font-medium text-slate-900 uppercase font-mono" dir="ltr">{{ $report->format->value }}</dd>
                         </div>
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">Branch</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $report->branch?->name ?? 'All Branches' }}</dd>
+                        <div class="flex justify-between border-b border-slate-50 pb-2">
+                            <dt class="text-slate-500">{{ __('Branch') }}</dt>
+                            <dd class="font-medium text-slate-900">{{ $report->branch?->name ?? __('All Branches') }}</dd>
                         </div>
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">Generated By</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $report->generatedBy?->name ?? 'System' }}</dd>
+                        <div class="flex justify-between border-b border-slate-50 pb-2">
+                            <dt class="text-slate-500">{{ __('Generated By') }}</dt>
+                            <dd class="font-medium text-slate-900">{{ $report->generatedBy?->name ?? __('System') }}</dd>
                         </div>
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">Created</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $report->created_at->format('M d, Y H:i:s') }}</dd>
+                        <div class="flex justify-between border-b border-slate-50 pb-2">
+                            <dt class="text-slate-500">{{ __('Generated At') }}</dt>
+                            <dd class="font-medium text-slate-900 font-mono" dir="ltr">{{ $report->generated_at?->format('Y-m-d H:i') ?? __('Pending') }}</dd>
                         </div>
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">Generated</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $report->generated_at?->format('M d, Y H:i:s') ?? 'Not generated' }}</dd>
+                        <div class="flex justify-between border-b border-slate-50 pb-2">
+                            <dt class="text-slate-500">{{ __('File Size') }}</dt>
+                            <dd class="font-medium text-slate-900 font-mono" dir="ltr">{{ $report->file_size ? number_format($report->file_size / 1024, 1) . ' KB' : __('N/A') }}</dd>
                         </div>
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">Scheduled</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $report->scheduled_at?->format('M d, Y H:i:s') ?? 'Not scheduled' }}</dd>
-                        </div>
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">Expires</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $report->expires_at?->format('M d, Y H:i:s') ?? 'Never' }}</dd>
-                        </div>
-                        @if($report->record_count)
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-500">Record Count</dt>
-                                <dd class="text-sm font-medium text-gray-900">{{ number_format($report->record_count) }}</dd>
-                            </div>
-                        @endif
-                        @if($report->file_size)
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-500">File Size</dt>
-                                <dd class="text-sm font-medium text-gray-900">{{ $this->formatFileSize($report->file_size) }}</dd>
-                            </div>
-                        @endif
                     </dl>
                 </div>
-
-                @if($report->error_message)
-                    <div class="mt-4 bg-red-50 border border-red-200 rounded-lg p-4">
-                        <h3 class="text-sm font-semibold text-red-800">{{ __('Error Information') }}</h3>
-                        <p class="text-sm text-red-700 mt-1">{{ $report->error_message }}</p>
-                    </div>
-                @endif
             </div>
         </div>
 
-        <div>
-            <div class="bg-white rounded-lg shadow p-6 mb-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Actions') }}</h3>
-                <div class="space-y-3">
-                    @if($report->canBeDownloaded())
-                        <a href="{{ route('reports.download', $report) }}" class="block w-full text-center bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 text-sm">{{ __('Download Report') }}</a>
-                    @endif
+        <div class="space-y-6">
+            <div class="bank-card">
+                <div class="bank-card-header">
+                    <h3 class="text-sm font-semibold text-slate-900">{{ __('Actions & Maintenance') }}</h3>
+                </div>
+                <div class="bank-card-body space-y-3">
+                    <form action="{{ route('reports.generate', $report) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="w-full btn btn-primary text-xs">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                            </svg>
+                            <span>{{ __('Regenerate Report') }}</span>
+                        </button>
+                    </form>
 
-                    @if($report->canBeRegenerated())
-                        <form action="{{ route('reports.regenerate', $report) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="w-full bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 text-sm">{{ __('Regenerate Report') }}</button>
-                        </form>
-                    @endif
-
-                    @if($report->status === \App\Modules\Reports\Enums\ReportStatus::Scheduled)
-                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                            <p class="text-sm text-blue-800">
-                                <strong>Scheduled:</strong> {{ $report->scheduled_at->format('M d, Y H:i') }}
-                            </p>
-                        </div>
-                    @endif
+                    <form action="{{ route('reports.destroy', $report) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to delete this report?') }}')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="w-full btn btn-danger text-xs">
+                            {{ __('Delete Report') }}
+                        </button>
+                    </form>
                 </div>
             </div>
-
-            @if($report->parameters)
-                <div class="bg-white rounded-lg shadow p-6 mb-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Parameters') }}</h3>
-                    <pre class="text-xs text-gray-600 bg-gray-50 p-3 rounded overflow-auto">{{ json_encode($report->parameters, JSON_PRETTY_PRINT) }}</pre>
-                </div>
-            @endif
-
-            @if($report->metadata)
-                <div class="bg-white rounded-lg shadow p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Metadata</h3>
-                    <pre class="text-xs text-gray-600 bg-gray-50 p-3 rounded overflow-auto">{{ json_encode($report->metadata, JSON_PRETTY_PRINT) }}</pre>
-                </div>
-            @endif
         </div>
     </div>
 </div>
-
-@php
-function formatFileSize($bytes) {
-    if ($bytes >= 1073741824) {
-        return number_format($bytes / 1073741824, 2) . ' GB';
-    } elseif ($bytes >= 1048576) {
-        return number_format($bytes / 1048576, 2) . ' MB';
-    } elseif ($bytes >= 1024) {
-        return number_format($bytes / 1024, 2) . ' KB';
-    } elseif ($bytes > 1) {
-        return $bytes . ' bytes';
-    } elseif ($bytes == 1) {
-        return '1 byte';
-    } else {
-        return '0 bytes';
-    }
-}
-@endphp
 @endsection

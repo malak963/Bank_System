@@ -1,3 +1,8 @@
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('accounts.index') }}">{{ __('Accounts') }}</a></li>
+    <li class="breadcrumb-item active" dir="ltr">{{ $account->account_number }}</li>
+@endsection
+
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -5,8 +10,10 @@
                 <p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Account Operations') }}</p>
                 <h2 class="mt-1 font-mono text-2xl font-semibold text-slate-950" dir="ltr">{{ $account->account_number }}</h2>
             </div>
-            <a href="{{ route('accounts.index') }}" class="text-sm font-semibold text-slate-600 hover:text-emerald-700 inline-flex items-center gap-1">
-                <span>&larr;</span>
+            <a href="{{ route('accounts.index') }}" class="btn btn-secondary">
+                <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
                 <span>{{ __('Back to Accounts') }}</span>
             </a>
         </div>

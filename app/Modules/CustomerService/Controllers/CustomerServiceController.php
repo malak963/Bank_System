@@ -20,13 +20,16 @@ class CustomerServiceController extends Controller
 
     public function index(): View
     {
+        $branchId = session('current_branch_id');
         $tickets = Ticket::with(['customer', 'branch', 'assignedTo'])
+            ->when($branchId, fn ($q) => $q->where('branch_id', $branchId))
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
 
-        $statistics = $this->customerServiceService->getTicketStatistics();
-        $overdueTickets = $this->customerServiceService->getOverdueTickets();
-        $urgentTickets = $this->customerServiceService->getUrgentTickets();
+        $statistics = $this->customerServiceService->getTicketStatistics($branchId);
+        $overdueTickets = $this->customerServiceService->getOverdueTickets($branchId);
+        $urgentTickets = $this->customerServiceService->getUrgentTickets($branchId);
 
         return view('customerService::index', compact('tickets', 'statistics', 'overdueTickets', 'urgentTickets'));
     }

@@ -65,9 +65,13 @@ class CustomerRepository implements CustomerRepositoryContract
 
         $this->applySearch($query, $filters['search'] ?? null);
 
+        $activeBranchId = $filters['branch_id'] ?? session('current_branch_id');
+        if (! empty($activeBranchId)) {
+            $query->where('branch_id', $activeBranchId);
+        }
+
         foreach ([
             'status',
-            'branch_id',
             'kyc_status',
             'risk_level',
             'identity_document_type',

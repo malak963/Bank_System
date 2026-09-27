@@ -1,84 +1,85 @@
 @extends('layouts.app')
 
+@section('title', __('Cards'))
+
+@section('breadcrumb')
+    <li class="breadcrumb-item active">{{ __('Cards') }}</li>
+@endsection
+
+@section('actions')
+    <a href="{{ route('cards.create') }}" class="btn btn-primary">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+        </svg>
+        <span>{{ __('New Card') }}</span>
+    </a>
+@endsection
+
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">{{ __('Cards') }}</h1>
-        <a href="{{ route('cards.create') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-            </svg>
-            New Card
-        </a>
-    </div>
-
-    @if(session('success'))
-        <div class="bg-emerald-100 border border-emerald-400 text-emerald-700 px-4 py-3 rounded mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {{ session('error') }}
-        </div>
-    @endif
-
+<div class="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @forelse($cards as $card)
-            <div class="bg-white rounded-lg shadow overflow-hidden">
-                <div class="bg-gradient-to-r from-emerald-500 to-blue-500 p-4">
+            <div class="bank-card">
+                <!-- Card Gradient Banner -->
+                <div class="bg-gradient-to-r from-slate-900 to-slate-800 p-5 text-white">
                     <div class="flex justify-between items-start">
                         <div>
-                            <p class="text-white text-sm font-medium">{{ $card->card_type->label() }}</p>
-                            <p class="text-white text-lg font-bold mt-1">{{ $card->maskCardNumber() }}</p>
+                            <p class="text-xs font-semibold uppercase tracking-wider text-emerald-400">{{ $card->card_type->label() }}</p>
+                            <p class="text-lg font-mono font-bold mt-1 tracking-widest" dir="ltr">{{ $card->maskCardNumber() }}</p>
                         </div>
-                        <span class="px-2 py-1 rounded-full text-xs font-semibold {{ $card->isActive() ? 'bg-white text-emerald-600' : 'bg-red-100 text-red-800' }}">
+                        <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset {{ $card->isActive() ? 'bg-emerald-500/20 text-emerald-300 ring-emerald-400/30' : 'bg-rose-500/20 text-rose-300 ring-rose-400/30' }}">
                             {{ $card->status->label() }}
                         </span>
                     </div>
-                    <div class="mt-4 flex justify-between text-white text-sm">
+                    <div class="mt-5 flex justify-between text-xs text-slate-300">
                         <div>
-                            <p class="opacity-75">{{ __('Valid Thru') }}</p>
-                            <p class="font-semibold">{{ str_pad($card->expiry_month, 2, '0', STR_PAD_LEFT) }}/{{ $card->expiry_year }}</p>
+                            <p class="text-[10px] uppercase text-slate-400 font-semibold">{{ __('Valid Thru') }}</p>
+                            <p class="font-mono font-medium mt-0.5" dir="ltr">{{ str_pad($card->expiry_month, 2, '0', STR_PAD_LEFT) }}/{{ $card->expiry_year }}</p>
                         </div>
-                        <div>
-                            <p class="opacity-75">{{ __('Card Holder') }}</p>
-                            <p class="font-semibold">{{ $card->card_holder_name }}</p>
+                        <div class="text-end">
+                            <p class="text-[10px] uppercase text-slate-400 font-semibold">{{ __('Card Holder') }}</p>
+                            <p class="font-medium mt-0.5 truncate max-w-[120px]">{{ $card->card_holder_name }}</p>
                         </div>
                     </div>
                 </div>
-                <div class="p-4">
-                    <div class="space-y-2 text-sm">
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">{{ __('Account') }}:</span>
-                            <span class="font-medium">{{ $card->account?->account_number ?? 'N/A' }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">{{ __('Brand') }}:</span>
-                            <span class="font-medium">{{ $card->card_brand->label() }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-500">{{ __('Daily Limit') }}:</span>
-                            <span class="font-medium">${{ number_format($card->daily_limit, 2) }}</span>
-                        </div>
+
+                <!-- Card Body Metadata -->
+                <div class="bank-card-body space-y-2.5 text-xs">
+                    <div class="flex justify-between items-center py-1 border-b border-slate-50">
+                        <span class="text-slate-500">{{ __('Account') }}</span>
+                        <span class="font-semibold text-slate-900 font-mono" dir="ltr">{{ $card->account?->account_number ?? __('N/A') }}</span>
                     </div>
-                    <div class="mt-4 pt-4 border-t">
-                        <a href="{{ route('cards.show', $card) }}" class="text-emerald-600 hover:text-emerald-900 text-sm font-medium">View Details →</a>
+                    <div class="flex justify-between items-center py-1 border-b border-slate-50">
+                        <span class="text-slate-500">{{ __('Brand') }}</span>
+                        <span class="font-semibold text-slate-900">{{ $card->card_brand->label() }}</span>
                     </div>
+                    <div class="flex justify-between items-center py-1 border-b border-slate-50">
+                        <span class="text-slate-500">{{ __('Daily Limit') }}</span>
+                        <span class="font-semibold text-slate-900 font-mono" dir="ltr">${{ number_format($card->daily_limit, 2) }}</span>
+                    </div>
+                </div>
+
+                <div class="bank-card-footer flex justify-end">
+                    <a href="{{ route('cards.show', $card) }}" class="btn btn-sm btn-secondary">
+                        {{ __('View Details') }} &rarr;
+                    </a>
                 </div>
             </div>
         @empty
-            <div class="col-span-full text-center py-12 text-gray-500">
-                <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+            <div class="col-span-full bank-card p-12 text-center text-slate-500">
+                <svg class="w-12 h-12 mx-auto mb-3 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
                 </svg>
-                <p class="text-lg">{{ __('No cards found') }}</p>
-                <p class="text-sm mt-1">{{ __('Create your first card to get started') }}</p>
+                <p class="text-sm font-semibold text-slate-700">{{ __('No cards found') }}</p>
+                <p class="text-xs text-slate-400 mt-1">{{ __('Create your first card to get started') }}</p>
             </div>
         @endforelse
     </div>
 
-    {{ $cards->links() }}
+    @if (method_exists($cards, 'hasPages') && $cards->hasPages())
+        <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
+            {{ $cards->links() }}
+        </div>
+    @endif
 </div>
 @endsection

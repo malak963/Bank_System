@@ -41,7 +41,7 @@
                            class="w-56 sm:w-64 rounded-lg border-slate-300 text-xs py-1.5 px-3 focus:ring-emerald-500 focus:border-emerald-500 shadow-xs">
                 </div>
                 <button type="submit"
-                        class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-emerald-500 transition shadow-xs">
+                        class="btn btn-sm btn-primary">
                     <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clip-rule="evenodd" />
                     </svg>

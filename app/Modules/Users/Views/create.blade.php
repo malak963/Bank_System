@@ -1,3 +1,8 @@
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('users.index') }}">{{ __('Users') }}</a></li>
+    <li class="breadcrumb-item active">{{ __('New User') }}</li>
+@endsection
+
 <x-app-layout>
     <x-slot name="header">
         <div>

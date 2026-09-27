@@ -11,8 +11,9 @@ class CashManagementService
     {
         $query = CashOperation::with(['branch', 'teller', 'account', 'approvedBy']);
 
-        if (isset($filters['branch_id'])) {
-            $query->where('branch_id', $filters['branch_id']);
+        $branchId = !empty($filters['branch_id']) ? $filters['branch_id'] : session('current_branch_id');
+        if (!empty($branchId)) {
+            $query->where('branch_id', $branchId);
         }
 
         if (isset($filters['status'])) {

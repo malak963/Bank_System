@@ -24,6 +24,14 @@ class InstallmentRepository implements InstallmentRepositoryContract
     {
         $query = Installment::query();
 
+        $activeBranchId = session('current_branch_id');
+        if (! empty($activeBranchId)) {
+            $query->whereHas('loan', function (Builder $q) use ($activeBranchId): void {
+                $q->where('branch_id', $activeBranchId)
+                  ->orWhereHas('customer', fn ($cq) => $cq->where('branch_id', $activeBranchId));
+            });
+        }
+
         return [
             'total' => (clone $query)->count(),
             'paid' => (clone $query)->where('status', InstallmentStatus::Paid->value)->count(),
@@ -35,6 +43,14 @@ class InstallmentRepository implements InstallmentRepositoryContract
     private function filteredQuery(array $filters): Builder
     {
         $query = Installment::query();
+
+        $activeBranchId = $filters['branch_id'] ?? session('current_branch_id');
+        if (! empty($activeBranchId)) {
+            $query->whereHas('loan', function (Builder $q) use ($activeBranchId): void {
+                $q->where('branch_id', $activeBranchId)
+                  ->orWhereHas('customer', fn ($cq) => $cq->where('branch_id', $activeBranchId));
+            });
+        }
 
         if (! empty($filters['search'])) {
             $like = '%'.mb_strtolower(trim($filters['search'])).'%';

@@ -1,124 +1,107 @@
 @extends('layouts.app')
 
+@section('title', __('Reports'))
+
+@section('breadcrumb')
+    <li class="breadcrumb-item active">{{ __('Reports') }}</li>
+@endsection
+
+@section('actions')
+    <form action="{{ route('reports.process-scheduled') }}" method="POST" class="inline">
+        @csrf
+        <button type="submit" class="btn btn-secondary">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>{{ __('Process Scheduled') }}</span>
+        </button>
+    </form>
+    <form action="{{ route('reports.cleanup-expired') }}" method="POST" class="inline">
+        @csrf
+        <button type="submit" class="btn btn-secondary text-rose-700 hover:text-rose-800">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+            </svg>
+            <span>{{ __('Cleanup Expired') }}</span>
+        </button>
+    </form>
+    <a href="{{ route('reports.create') }}" class="btn btn-primary">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+        </svg>
+        <span>{{ __('New Report') }}</span>
+    </a>
+@endsection
+
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">{{ __('Reports') }}</h1>
-        <div class="flex gap-3">
-            <form action="{{ route('reports.process-scheduled') }}" method="POST" class="inline">
-                @csrf
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    Process Scheduled
-                </button>
-            </form>
-            <form action="{{ route('reports.cleanup-expired') }}" method="POST" class="inline">
-                @csrf
-                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                    </svg>
-                    Cleanup Expired
-                </button>
-            </form>
-            <a href="{{ route('reports.create') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                </svg>
-                New Report
-            </a>
-        </div>
-    </div>
-
-    @if(session('success'))
-        <div class="bg-emerald-100 border border-emerald-400 text-emerald-700 px-4 py-3 rounded mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {{ session('error') }}
-        </div>
-    @endif
-
-    <div class="bg-white rounded-lg shadow overflow-hidden">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Type') }}</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Format</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Status') }}</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Branch') }}</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Generated') }}</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Actions') }}</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                @forelse($reports as $report)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">{{ $report->title }}</div>
-                            <div class="text-sm text-gray-500">{{ $report->description }}</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ $report->report_type->label() }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ $report->format->label() }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            @switch($report->status->value)
-                                @case('pending')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{{ __('Pending') }}</span>
-                                    @break
-                                @case('generating')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{{ __('Generating') }}</span>
-                                    @break
-                                @case('completed')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">{{ __('Completed') }}</span>
-                                    @break
-                                @case('failed')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ __('Failed') }}</span>
-                                    @break
-                                @case('scheduled')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">{{ __('Scheduled') }}</span>
-                                    @break
-                                @default
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ $report->status->label() }}</span>
-                            @endswitch
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ $report->branch?->name ?? 'All Branches' }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ $report->generated_at?->format('M d, Y H:i') ?? $report->scheduled_at?->format('M d, Y H:i') ?? 'N/A' }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="{{ route('reports.show', $report) }}" class="text-emerald-600 hover:text-emerald-900">{{ __('View') }}</a>
-                            @if($report->canBeDownloaded())
-                                <a href="{{ route('reports.download', $report) }}" class="text-blue-600 hover:text-blue-900 ml-2">{{ __('Download') }}</a>
-                            @endif
-                            @if($report->canBeRegenerated())
-                                <form action="{{ route('reports.regenerate', $report) }}" method="POST" class="inline ml-2">
-                                    @csrf
-                                    <button type="submit" class="text-yellow-600 hover:text-yellow-900">{{ __('Regenerate') }}</button>
-                                </form>
-                            @endif
-                        </td>
-                    </tr>
-                @empty
+<div class="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
+    <div class="bank-card">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-slate-200">
+                <thead class="bg-slate-50">
                     <tr>
-                        <td colspan="7" class="px-6 py-4 text-center text-gray-500">{{ __('No reports found') }}</td>
+                        <th class="px-5 py-3.5 text-start text-xs font-semibold uppercase tracking-wider text-slate-500">{{ __('Title') }}</th>
+                        <th class="px-5 py-3.5 text-start text-xs font-semibold uppercase tracking-wider text-slate-500">{{ __('Type') }}</th>
+                        <th class="px-5 py-3.5 text-start text-xs font-semibold uppercase tracking-wider text-slate-500">{{ __('Format') }}</th>
+                        <th class="px-5 py-3.5 text-start text-xs font-semibold uppercase tracking-wider text-slate-500">{{ __('Status') }}</th>
+                        <th class="px-5 py-3.5 text-start text-xs font-semibold uppercase tracking-wider text-slate-500">{{ __('Branch') }}</th>
+                        <th class="px-5 py-3.5 text-start text-xs font-semibold uppercase tracking-wider text-slate-500">{{ __('Generated') }}</th>
+                        <th class="px-5 py-3.5 text-end text-xs font-semibold uppercase tracking-wider text-slate-500">{{ __('Actions') }}</th>
                     </tr>
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="divide-y divide-slate-100 bg-white">
+                    @forelse($reports as $report)
+                        <tr class="transition hover:bg-slate-50">
+                            <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
+                                <a href="{{ route('reports.show', $report) }}" class="hover:text-emerald-700">
+                                    {{ $report->title }}
+                                </a>
+                            </td>
+                            <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600">
+                                {{ $report->report_type->label() }}
+                            </td>
+                            <td class="px-5 py-4 whitespace-nowrap text-sm font-mono text-slate-600 uppercase" dir="ltr">
+                                {{ $report->format->value }}
+                            </td>
+                            <td class="px-5 py-4 whitespace-nowrap text-sm">
+                                <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset {{ $report->status->badgeColor() }}">
+                                    {{ $report->status->label() }}
+                                </span>
+                            </td>
+                            <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600">
+                                {{ $report->branch?->name ?? __('All Branches') }}
+                            </td>
+                            <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-500 font-mono" dir="ltr">
+                                {{ $report->generated_at?->format('Y-m-d H:i') ?? __('Pending') }}
+                            </td>
+                            <td class="px-5 py-4 whitespace-nowrap text-end text-sm space-x-1 rtl:space-x-reverse">
+                                <a href="{{ route('reports.show', $report) }}" class="btn btn-sm btn-secondary">
+                                    {{ __('View') }}
+                                </a>
+                                @if($report->isCompleted() && $report->file_path)
+                                    <a href="{{ route('reports.download', $report) }}" class="btn btn-sm btn-secondary text-emerald-700">
+                                        {{ __('Download') }}
+                                    </a>
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="px-6 py-12 text-center text-slate-500">
+                                <p class="text-sm font-semibold text-slate-700">{{ __('No reports found.') }}</p>
+                                <p class="mt-1 text-xs text-slate-400">{{ __('Generate financial, customer, or audit reports.') }}</p>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    {{ $reports->links() }}
+    @if (method_exists($reports, 'hasPages') && $reports->hasPages())
+        <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
+            {{ $reports->links() }}
+        </div>
+    @endif
 </div>
 @endsection

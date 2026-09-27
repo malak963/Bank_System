@@ -1,5 +1,23 @@
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('branches.index') }}">{{ __('Branches') }}</a></li>
+    <li class="breadcrumb-item active">{{ $branch->name }}</li>
+@endsection
+
 <x-app-layout>
-    <x-slot name="header"><div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><div><p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Branch Operations') }}</p><h2 class="mt-1 font-mono text-2xl font-semibold text-slate-950">{{ $branch->code }}</h2></div><a href="{{ route('branches.index') }}" class="text-sm font-semibold text-slate-600 hover:text-emerald-700">{{ __('Back to Branches') }}</a></div></x-slot>
+    <x-slot name="header">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Branch Operations') }}</p>
+                <h2 class="mt-1 font-mono text-2xl font-semibold text-slate-950">{{ $branch->code }} - {{ $branch->name }}</h2>
+            </div>
+            <a href="{{ route('branches.index') }}" class="btn btn-secondary">
+                <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                <span>{{ __('Back to Branches') }}</span>
+            </a>
+        </div>
+    </x-slot>
     @php $statusClass = match ($branch->status->value) { 'open' => 'bg-emerald-50 text-emerald-700 ring-emerald-200', default => 'bg-slate-100 text-slate-700 ring-slate-200' }; @endphp
     <div class="mx-auto max-w-5xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
         @if (session('status'))<div class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">{{ session('status') }}</div>@endif
@@ -11,11 +29,11 @@
         <section class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm"><h3 class="font-semibold text-slate-950">{{ __('Branch Details') }}</h3><dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"><div><dt class="text-xs uppercase text-slate-500">{{ __('Phone') }}</dt><dd class="mt-1 font-medium text-slate-900">{{ $branch->phone ?? __('Not set') }}</dd></div><div><dt class="text-xs uppercase text-slate-500">{{ __('Email') }}</dt><dd class="mt-1 font-medium text-slate-900">{{ $branch->email ?? __('Not set') }}</dd></div><div><dt class="text-xs uppercase text-slate-500">{{ __('Opened At') }}</dt><dd class="mt-1 font-medium text-slate-900">{{ $branch->opened_at?->format('Y-m-d H:i') ?? __('Not set') }}</dd></div><div><dt class="text-xs uppercase text-slate-500">{{ __('Closed At') }}</dt><dd class="mt-1 font-medium text-slate-900">{{ $branch->closed_at?->format('Y-m-d H:i') ?? __('Not set') }}</dd></div></dl></section>
         <section class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm"><div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"><div><h3 class="font-semibold text-slate-950">{{ __('Branch Actions') }}</h3><p class="text-sm text-slate-500">{{ __('Operational state changes are recorded on this branch.') }}</p></div><div class="flex flex-wrap gap-3">
             @if ($branch->status->value === 'open')
-                <form method="POST" action="{{ route('branches.close', $branch) }}">@csrf<button class="rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 hover:bg-red-50">{{ __('Close Branch') }}</button></form>
+                <form method="POST" action="{{ route('branches.close', $branch) }}">@csrf<button class="btn btn-outline-danger">{{ __('Close Branch') }}</button></form>
             @else
-                <form method="POST" action="{{ route('branches.open', $branch) }}">@csrf<button class="rounded-lg bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800">{{ __('Open Branch') }}</button></form>
+                <form method="POST" action="{{ route('branches.open', $branch) }}">@csrf<button class="btn btn-primary">{{ __('Open Branch') }}</button></form>
             @endif
-            <a href="{{ route('branches.edit', $branch) }}" class="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">{{ __('Edit Branch') }}</a>
+            <a href="{{ route('branches.edit', $branch) }}" class="btn btn-secondary">{{ __('Edit Branch') }}</a>
         </div></div></section>
     </div>
 </x-app-layout>

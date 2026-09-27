@@ -88,6 +88,13 @@ class BranchController extends Controller
 
     public function switchBranch(Request $request, ?Branch $branch = null): RedirectResponse
     {
+        if (! $branch || ! $branch->exists) {
+            $branchId = $request->route('branch') ?? $request->query('branch');
+            if ($branchId) {
+                $branch = Branch::find($branchId);
+            }
+        }
+
         if ($branch && $branch->exists) {
             session(['current_branch_id' => $branch->id]);
 

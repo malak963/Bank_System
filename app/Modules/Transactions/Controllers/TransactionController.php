@@ -22,16 +22,22 @@ class TransactionController extends Controller
 
     public function index(): View
     {
+        $branchId = session('current_branch_id');
         $transactions = Transaction::with(['account', 'customer', 'branch'])
+            ->when($branchId, fn ($q) => $q->where('branch_id', $branchId))
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
 
         return view('transactions::index', compact('transactions'));
     }
 
     public function create(): View
     {
-        $accounts = Account::where('status', 'open')->get();
+        $branchId = session('current_branch_id');
+        $accounts = Account::where('status', 'open')
+            ->when($branchId, fn ($q) => $q->where('branch_id', $branchId))
+            ->get();
         return view('transactions::create', compact('accounts'));
     }
 

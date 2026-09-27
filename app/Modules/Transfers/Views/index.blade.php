@@ -1,135 +1,132 @@
 @extends('layouts.app')
 
+@section('title', __('Transfers'))
+
+@section('breadcrumb')
+    <li class="breadcrumb-item active">{{ __('Transfers') }}</li>
+@endsection
+
+@section('actions')
+    <form action="{{ route('transfers.process-scheduled') }}" method="POST" class="inline">
+        @csrf
+        <button type="submit" class="btn btn-secondary">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>{{ __('Process Scheduled') }}</span>
+        </button>
+    </form>
+    <a href="{{ route('transfers.create') }}" class="btn btn-primary">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+        </svg>
+        <span>{{ __('New Transfer') }}</span>
+    </a>
+@endsection
+
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">{{ __('Transfers') }}</h1>
-        <div class="flex gap-3">
-            <form action="{{ route('transfers.process-scheduled') }}" method="POST" class="inline">
-                @csrf
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    Process Scheduled
-                </button>
-            </form>
-            <a href="{{ route('transfers.create') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                </svg>
-                New Transfer
-            </a>
-        </div>
-    </div>
-
-    @if(session('success'))
-        <div class="bg-emerald-100 border border-emerald-400 text-emerald-700 px-4 py-3 rounded mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {{ session('error') }}
-        </div>
-    @endif
-
+<div class="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
     <!-- Statistics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div class="bg-white rounded-lg shadow p-4">
-            <p class="text-sm text-gray-500">{{ __('Total Transfers') }}</p>
-            <p class="text-2xl font-bold text-gray-900">{{ $statistics['total'] }}</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bank-card p-4">
+            <p class="text-xs font-semibold uppercase text-slate-500">{{ __('Total Transfers') }}</p>
+            <p class="text-2xl font-bold text-slate-950 mt-1 font-mono" dir="ltr">{{ $statistics['total'] }}</p>
         </div>
-        <div class="bg-white rounded-lg shadow p-4">
-            <p class="text-sm text-gray-500">{{ __('Pending') }}</p>
-            <p class="text-2xl font-bold text-yellow-600">{{ $statistics['pending'] }}</p>
+        <div class="bank-card p-4">
+            <p class="text-xs font-semibold uppercase text-amber-700">{{ __('Pending') }}</p>
+            <p class="text-2xl font-bold text-amber-800 mt-1 font-mono" dir="ltr">{{ $statistics['pending'] }}</p>
         </div>
-        <div class="bg-white rounded-lg shadow p-4">
-            <p class="text-sm text-gray-500">{{ __('Completed') }}</p>
-            <p class="text-2xl font-bold text-emerald-600">{{ $statistics['completed'] }}</p>
+        <div class="bank-card p-4">
+            <p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Completed') }}</p>
+            <p class="text-2xl font-bold text-emerald-800 mt-1 font-mono" dir="ltr">{{ $statistics['completed'] }}</p>
         </div>
-        <div class="bg-white rounded-lg shadow p-4">
-            <p class="text-sm text-gray-500">Total Amount</p>
-            <p class="text-2xl font-bold text-blue-600">${{ number_format($statistics['total_amount'], 2) }}</p>
+        <div class="bank-card p-4">
+            <p class="text-xs font-semibold uppercase text-slate-500">{{ __('Total Volume') }}</p>
+            <p class="text-2xl font-bold text-slate-900 mt-1 font-mono" dir="ltr">${{ number_format($statistics['total_amount'], 2) }}</p>
         </div>
     </div>
 
     <!-- Transfers Table -->
-    <div class="bg-white rounded-lg shadow overflow-hidden">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Reference') }}</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Type') }}</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('From Account') }}</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('To Account') }}</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Amount') }}</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Status') }}</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Customer') }}</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Actions') }}</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                @forelse($transfers as $transfer)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {{ $transfer->transfer_reference }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ $transfer->transfer_type->label() }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ $transfer->fromAccount?->account_number ?? 'N/A' }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ $transfer->toAccount?->account_number ?? $transfer->recipient_account ?? 'N/A' }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            ${{ number_format($transfer->amount, 2) }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            @switch($transfer->status->value)
-                                @case('pending')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{{ __('Pending') }}</span>
-                                    @break
-                                @case('processing')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{{ __('Processing') }}</span>
-                                    @break
-                                @case('completed')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">{{ __('Completed') }}</span>
-                                    @break
-                                @case('failed')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ __('Failed') }}</span>
-                                    @break
-                                @case('cancelled')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ __('Cancelled') }}</span>
-                                    @break
-                                @case('on_hold')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">{{ __('On Hold') }}</span>
-                                    @break
-                            @endswitch
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ $transfer->customer?->full_name ?? 'N/A' }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {{ $transfer->created_at->format('M d, Y H:i') }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="{{ route('transfers.show', $transfer) }}" class="text-emerald-600 hover:text-emerald-900">{{ __('View') }}</a>
-                        </td>
-                    </tr>
-                @empty
+    <div class="bank-card">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-slate-200">
+                <thead class="bg-slate-50">
                     <tr>
-                        <td colspan="10" class="px-6 py-4 text-center text-gray-500">{{ __('No transfers found') }}</td>
+                        <th class="px-5 py-3.5 text-start text-xs font-semibold uppercase tracking-wider text-slate-500">{{ __('Reference') }}</th>
+                        <th class="px-5 py-3.5 text-start text-xs font-semibold uppercase tracking-wider text-slate-500">{{ __('Type') }}</th>
+                        <th class="px-5 py-3.5 text-start text-xs font-semibold uppercase tracking-wider text-slate-500">{{ __('From Account') }}</th>
+                        <th class="px-5 py-3.5 text-start text-xs font-semibold uppercase tracking-wider text-slate-500">{{ __('To Account') }}</th>
+                        <th class="px-5 py-3.5 text-start text-xs font-semibold uppercase tracking-wider text-slate-500">{{ __('Amount') }}</th>
+                        <th class="px-5 py-3.5 text-start text-xs font-semibold uppercase tracking-wider text-slate-500">{{ __('Status') }}</th>
+                        <th class="px-5 py-3.5 text-start text-xs font-semibold uppercase tracking-wider text-slate-500">{{ __('Customer') }}</th>
+                        <th class="px-5 py-3.5 text-end text-xs font-semibold uppercase tracking-wider text-slate-500">{{ __('Actions') }}</th>
                     </tr>
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="divide-y divide-slate-100 bg-white">
+                    @forelse($transfers as $transfer)
+                        <tr class="transition hover:bg-slate-50">
+                            <td class="px-5 py-4 whitespace-nowrap text-sm font-semibold text-slate-900 font-mono" dir="ltr">
+                                {{ $transfer->transfer_reference }}
+                            </td>
+                            <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600">
+                                {{ $transfer->transfer_type->label() }}
+                            </td>
+                            <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600 font-mono" dir="ltr">
+                                {{ $transfer->fromAccount?->account_number ?? __('N/A') }}
+                            </td>
+                            <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600 font-mono" dir="ltr">
+                                {{ $transfer->toAccount?->account_number ?? $transfer->beneficiary_account_number ?? __('N/A') }}
+                            </td>
+                            <td class="px-5 py-4 whitespace-nowrap text-sm font-semibold text-slate-900 font-mono" dir="ltr">
+                                {{ number_format($transfer->amount, 2) }} {{ $transfer->currency }}
+                            </td>
+                            <td class="px-5 py-4 whitespace-nowrap text-sm">
+                                @switch($transfer->status->value)
+                                    @case('pending')
+                                        <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset bg-amber-50 text-amber-700 ring-amber-200">{{ __('Pending') }}</span>
+                                        @break
+                                    @case('processing')
+                                        <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset bg-blue-50 text-blue-700 ring-blue-200">{{ __('Processing') }}</span>
+                                        @break
+                                    @case('completed')
+                                        <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset bg-emerald-50 text-emerald-700 ring-emerald-200">{{ __('Completed') }}</span>
+                                        @break
+                                    @case('failed')
+                                        <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset bg-rose-50 text-rose-700 ring-rose-200">{{ __('Failed') }}</span>
+                                        @break
+                                    @case('cancelled')
+                                        <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset bg-slate-100 text-slate-700 ring-slate-200">{{ __('Cancelled') }}</span>
+                                        @break
+                                    @default
+                                        <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset bg-slate-100 text-slate-700 ring-slate-200">{{ $transfer->status->label() }}</span>
+                                @endswitch
+                            </td>
+                            <td class="px-5 py-4 whitespace-nowrap text-sm text-slate-600">
+                                {{ $transfer->customer?->full_name ?? __('N/A') }}
+                            </td>
+                            <td class="px-5 py-4 whitespace-nowrap text-end text-sm">
+                                <a href="{{ route('transfers.show', $transfer) }}" class="btn btn-sm btn-secondary">
+                                    {{ __('View') }}
+                                </a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="px-6 py-12 text-center text-slate-500">
+                                <p class="text-sm font-semibold text-slate-700">{{ __('No transfers found.') }}</p>
+                                <p class="mt-1 text-xs text-slate-400">{{ __('Create a new internal, external, or international transfer.') }}</p>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    {{ $transfers->links() }}
+    @if (method_exists($transfers, 'hasPages') && $transfers->hasPages())
+        <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
+            {{ $transfers->links() }}
+        </div>
+    @endif
 </div>
 @endsection

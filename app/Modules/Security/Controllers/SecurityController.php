@@ -20,12 +20,20 @@ class SecurityController extends Controller
 
     public function index(): View
     {
+        $branchId = session('current_branch_id');
         $events = SecurityEvent::with(['user', 'customer', 'resolver'])
+            ->when($branchId, function ($q) use ($branchId) {
+                $q->where(function ($sub) use ($branchId) {
+                    $sub->whereHas('customer', fn ($cq) => $cq->where('branch_id', $branchId))
+                        ->orWhereHas('user', fn ($uq) => $uq->where('branch_id', $branchId));
+                });
+            })
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
 
-        $criticalEvents = $this->securityService->getCriticalEvents();
-        $fraudAlerts = $this->securityService->getFraudAlerts();
+        $criticalEvents = $this->securityService->getCriticalEvents($branchId);
+        $fraudAlerts = $this->securityService->getFraudAlerts($branchId);
 
         return view('security::index', compact('events', 'criticalEvents', 'fraudAlerts'));
     }

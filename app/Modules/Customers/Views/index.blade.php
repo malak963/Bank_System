@@ -1,3 +1,7 @@
+@section('breadcrumb')
+    <li class="breadcrumb-item active">{{ __('Customers') }}</li>
+@endsection
+
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -7,11 +11,11 @@
                     {{ __('Customer Identity Verification') }}
                 </h2>
             </div>
-            <a href="{{ route('customers.create') }}" class="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-slate-900/20 transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+            <a href="{{ route('customers.create') }}" class="btn btn-primary">
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14" />
                 </svg>
-                {{ __('New Customer') }}
+                <span>{{ __('New Customer') }}</span>
             </a>
         </div>
     </x-slot>

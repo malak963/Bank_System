@@ -10,9 +10,14 @@ use Illuminate\Support\Facades\Storage;
 
 class StatementService
 {
-    public function getAllStatements(array $filters = []): Collection
+    public function getAllStatements(array $filters = []): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         $query = Statement::with(['account', 'customer']);
+
+        $branchId = !empty($filters['branch_id']) ? $filters['branch_id'] : session('current_branch_id');
+        if (!empty($branchId)) {
+            $query->whereHas('account', fn($q) => $q->where('branch_id', $branchId));
+        }
 
         if (isset($filters['account_id'])) {
             $query->where('account_id', $filters['account_id']);
@@ -26,7 +31,7 @@ class StatementService
             $query->where('status', $filters['status']);
         }
 
-        return $query->orderBy('period_end', 'desc')->get();
+        return $query->orderBy('period_end', 'desc')->paginate(20)->withQueryString();
     }
 
     public function getStatement(int $id): Statement

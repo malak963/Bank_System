@@ -1,222 +1,157 @@
 @extends('layouts.app')
 
+@section('title', __('Ticket Details'))
+
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('customerService.index') }}">{{ __('Customer Service Tickets') }}</a></li>
+    <li class="breadcrumb-item active font-mono" dir="ltr">{{ $ticket->ticket_number }}</li>
+@endsection
+
+@section('actions')
+    <a href="{{ route('customerService.index') }}" class="btn btn-secondary">
+        {{ __('Back to Tickets') }}
+    </a>
+@endsection
+
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">{{ __('Ticket Details') }}</h1>
-        <a href="{{ route('customerService.index') }}" class="text-gray-600 hover:text-gray-900">{{ __('Back to Tickets') }}</a>
-    </div>
-
-    @if(session('success'))
-        <div class="bg-emerald-100 border border-emerald-400 text-emerald-700 px-4 py-3 rounded mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {{ session('error') }}
-        </div>
-    @endif
-
+<div class="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div class="lg:col-span-2">
-            <div class="bg-white rounded-lg shadow p-6 mb-6">
-                <div class="flex justify-between items-start mb-6">
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Ticket Info Card -->
+            <div class="bank-card">
+                <div class="bank-card-header flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
-                        <h2 class="text-xl font-semibold text-gray-900">{{ $ticket->ticket_number }}</h2>
-                        <p class="text-sm text-gray-500">{{ $ticket->subject }}</p>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">{{ $ticket->category->label() }}</span>
+                        <h2 class="text-xl font-bold text-slate-900 mt-0.5">{{ $ticket->subject }}</h2>
+                        <p class="text-xs text-slate-400 font-mono mt-0.5" dir="ltr">{{ $ticket->ticket_number }}</p>
                     </div>
-                    @switch($ticket->status->value)
-                        @case('open')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{{ __('Open') }}</span>
-                            @break
-                        @case('in_progress')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{{ __('In Progress') }}</span>
-                            @break
-                        @case('pending_customer')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">{{ __('Pending Customer') }}</span>
-                            @break
-                        @case('resolved')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">{{ __('Resolved') }}</span>
-                            @break
-                        @case('closed')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ __('Closed') }}</span>
-                            @break
-                        @case('escalated')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ __('Escalated') }}</span>
-                            @break
-                    @endswitch
+                    <div class="flex items-center gap-2">
+                        <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset {{ $ticket->priority->badgeColor() }}">
+                            {{ $ticket->priority->label() }}
+                        </span>
+                        <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset {{ $ticket->status->badgeColor() }}">
+                            {{ $ticket->status->label() }}
+                        </span>
+                    </div>
                 </div>
 
-                <div class="border-t pt-4">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Ticket Information') }}</h3>
-                    <dl class="grid grid-cols-1 gap-4">
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">{{ __('Category') }}</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $ticket->category->label() }}</dd>
+                <div class="bank-card-body">
+                    <div class="prose max-w-none text-sm text-slate-800 bg-slate-50 p-4 rounded-lg border border-slate-100 mb-6">
+                        {{ $ticket->description }}
+                    </div>
+
+                    <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-xs border-t border-slate-100 pt-4">
+                        <div class="flex justify-between py-1 border-b border-slate-50">
+                            <dt class="text-slate-500">{{ __('Customer') }}</dt>
+                            <dd class="font-medium text-slate-900">{{ $ticket->customer?->full_name ?? $ticket->customer_name ?? __('Guest') }}</dd>
                         </div>
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">{{ __('Priority') }}</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $ticket->priority->label() }}</dd>
+                        <div class="flex justify-between py-1 border-b border-slate-50">
+                            <dt class="text-slate-500">{{ __('Account') }}</dt>
+                            <dd class="font-medium text-slate-900 font-mono" dir="ltr">{{ $ticket->account?->account_number ?? __('N/A') }}</dd>
                         </div>
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">{{ __('Customer') }}</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $ticket->customer?->full_name ?? __('N/A') }}</dd>
+                        <div class="flex justify-between py-1 border-b border-slate-50">
+                            <dt class="text-slate-500">{{ __('Created At') }}</dt>
+                            <dd class="font-medium text-slate-900 font-mono" dir="ltr">{{ $ticket->created_at->format('Y-m-d H:i') }}</dd>
                         </div>
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">{{ __('Branch') }}</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $ticket->branch?->name ?? __('N/A') }}</dd>
+                        <div class="flex justify-between py-1 border-b border-slate-50">
+                            <dt class="text-slate-500">{{ __('Assigned To') }}</dt>
+                            <dd class="font-medium text-slate-900">{{ $ticket->assignedTo?->name ?? __('Unassigned') }}</dd>
                         </div>
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">{{ __('Assigned To') }}</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $ticket->assignedTo?->name ?? __('Unassigned') }}</dd>
-                        </div>
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">{{ __('Created') }}</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $ticket->created_at->format('M d, Y H:i:s') }}</dd>
-                        </div>
-                        @if($ticket->first_response_at)
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-500">{{ __('First Response') }}</dt>
-                                <dd class="text-sm font-medium text-gray-900">{{ $ticket->first_response_at->format('M d, Y H:i:s') }}</dd>
-                            </div>
-                        @endif
-                        @if($ticket->resolved_at)
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-500">{{ __('Resolved') }}</dt>
-                                <dd class="text-sm font-medium text-gray-900">{{ $ticket->resolved_at->format('M d, Y H:i:s') }}</dd>
-                            </div>
-                        @endif
-                        @if($ticket->customer_satisfaction)
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-500">{{ __('Customer Satisfaction') }}</dt>
-                                <dd class="text-sm font-medium text-gray-900">{{ $ticket->customer_satisfaction }}/5</dd>
-                            </div>
-                        @endif
                     </dl>
                 </div>
-
-                @if($ticket->description)
-                    <div class="mt-4 bg-gray-50 border border-gray-200 rounded-lg p-4">
-                        <h3 class="text-sm font-semibold text-gray-800 mb-2">{{ __('Description') }}</h3>
-                        <p class="text-sm text-gray-700">{{ $ticket->description }}</p>
-                    </div>
-                @endif
-
-                @if($ticket->resolution)
-                    <div class="mt-4 bg-emerald-50 border border-emerald-200 rounded-lg p-4">
-                        <h3 class="text-sm font-semibold text-emerald-800 mb-2">{{ __('Resolution') }}</h3>
-                        <p class="text-sm text-emerald-700">{{ $ticket->resolution }}</p>
-                        <p class="text-xs text-emerald-600 mt-1">{{ __('Resolved by: :name', ['name' => $ticket->resolvedBy?->name ?? __('N/A')]) }}</p>
-                    </div>
-                @endif
             </div>
 
-            <!-- Responses Section -->
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Responses') }} ({{ $ticket->responses->count() }})</h3>
-                @if($ticket->responses->count() > 0)
-                    <div class="space-y-4">
-                        @foreach($ticket->responses as $response)
-                            <div class="border rounded-lg p-4 {{ $response->is_internal ? 'bg-yellow-50 border-yellow-200' : 'bg-gray-50 border-gray-200' }}">
-                                <div class="flex justify-between items-start mb-2">
-                                    <div>
-                                        <span class="font-medium text-gray-900">
-                                            {{ $response->user?->name ?? $response->customer?->full_name ?? __('System') }}
-                                        </span>
-                                        @if($response->is_internal)
-                                            <span class="ml-2 px-2 py-1 text-xs bg-yellow-200 text-yellow-800 rounded">{{ __('Internal') }}</span>
-                                        @endif
-                                    </div>
-                                    <span class="text-xs text-gray-500">{{ $response->created_at->format('M d, Y H:i') }}</span>
+            <!-- Responses Card -->
+            <div class="bank-card">
+                <div class="bank-card-header">
+                    <h3 class="text-sm font-semibold text-slate-900">{{ __('Conversation History') }}</h3>
+                </div>
+                <div class="bank-card-body space-y-4">
+                    @forelse($ticket->responses as $response)
+                        <div class="p-4 rounded-lg {{ $response->is_internal ? 'bg-amber-50 border border-amber-200' : 'bg-slate-50 border border-slate-100' }}">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-semibold text-xs text-slate-900">{{ $response->user?->name ?? __('System') }}</span>
+                                    @if($response->is_internal)
+                                        <span class="inline-flex rounded bg-amber-200 text-amber-900 px-1.5 py-0.5 text-[10px] font-bold">{{ __('Internal Note') }}</span>
+                                    @endif
                                 </div>
-                                <p class="text-sm text-gray-700">{{ $response->message }}</p>
+                                <span class="text-[11px] text-slate-400 font-mono" dir="ltr">{{ $response->created_at->format('Y-m-d H:i') }}</span>
                             </div>
-                        @endforeach
-                    </div>
-                @else
-                    <p class="text-sm text-gray-500">{{ __('No responses yet') }}</p>
-                @endif
+                            <p class="text-xs text-slate-700 leading-relaxed">{{ $response->message }}</p>
+                        </div>
+                    @empty
+                        <p class="text-xs text-slate-400 text-center py-4">{{ __('No responses yet.') }}</p>
+                    @endforelse
+
+                    <!-- Add Response Form -->
+                    <form action="{{ route('customerService.add-response', $ticket) }}" method="POST" class="pt-4 border-t border-slate-100 space-y-3">
+                        @csrf
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">{{ __('Add Reply / Note') }}</label>
+                            <textarea name="message" rows="3" required class="w-full rounded-lg border-slate-300 text-xs shadow-xs focus:border-emerald-500 focus:ring-emerald-500" placeholder="{{ __('Type your response or internal note...') }}"></textarea>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <label class="flex items-center gap-2 text-xs text-slate-600">
+                                <input type="checkbox" name="is_internal" value="1" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                                <span>{{ __('Internal note (hidden from customer)') }}</span>
+                            </label>
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                {{ __('Send Reply') }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
-        <div>
-            <div class="bg-white rounded-lg shadow p-6 mb-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Actions') }}</h3>
-                <div class="space-y-3">
-                    @if($ticket->isActive())
-                        <form action="{{ route('customerService.assign', $ticket) }}" method="POST">
-                            @csrf
-                            <div class="mb-3">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('Assign To') }}</label>
-                                <select name="assigned_to" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                                    <option value="">{{ __('Select User') }}</option>
-                                    @foreach(\App\Models\User::all() as $user)
-                                        <option value="{{ $user->id }}" {{ $ticket->assigned_to === $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm">{{ __('Assign Ticket') }}</button>
-                        </form>
-                    @endif
-
-                    @if($ticket->isActive() && !$ticket->resolution)
-                        <form action="{{ route('customerService.resolve', $ticket) }}" method="POST">
-                            @csrf
-                            <div class="mb-3">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('Resolution') }}</label>
-                                <textarea name="resolution" required rows="2" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="{{ __('Enter resolution...') }}"></textarea>
-                            </div>
-                            <button type="submit" class="w-full bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 text-sm">{{ __('Resolve Ticket') }}</button>
-                        </form>
-                    @endif
-
-                    @if($ticket->status === \App\Modules\CustomerService\Enums\TicketStatus::Resolved)
-                        <form action="{{ route('customerService.close', $ticket) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="w-full bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 text-sm">{{ __('Close Ticket') }}</button>
-                        </form>
-                    @endif
-
-                    @if($ticket->status === \App\Modules\CustomerService\Enums\TicketStatus::Closed)
-                        <form action="{{ route('customerService.reopen', $ticket) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="w-full bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 text-sm">{{ __('Reopen Ticket') }}</button>
-                        </form>
-                    @endif
+        <div class="space-y-6">
+            <!-- Ticket Status Control Card -->
+            <div class="bank-card">
+                <div class="bank-card-header">
+                    <h3 class="text-sm font-semibold text-slate-900">{{ __('Update Status') }}</h3>
+                </div>
+                <div class="bank-card-body">
+                    <form action="{{ route('customerService.update-status', $ticket) }}" method="POST" class="space-y-3">
+                        @csrf
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">{{ __('Change Status') }}</label>
+                            <select name="status" class="w-full rounded-lg border-slate-300 text-xs shadow-xs focus:border-emerald-500 focus:ring-emerald-500">
+                                @foreach($statuses as $status)
+                                    <option value="{{ $status->value }}" @selected($ticket->status === $status)>{{ $status->label() }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full btn btn-primary text-xs">
+                            {{ __('Update Status') }}
+                        </button>
+                    </form>
                 </div>
             </div>
 
-            <div class="bg-white rounded-lg shadow p-6 mb-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Add Response') }}</h3>
-                <form action="{{ route('customerService.add-response', $ticket) }}" method="POST">
-                    @csrf
-                    <div class="space-y-3">
-                        <div>
-                            <label class="flex items-center">
-                                <input type="checkbox" name="is_internal" value="1" class="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500">
-                                <span class="ml-2 text-sm text-gray-700">{{ __('Internal Note') }}</span>
-                            </label>
-                        </div>
-                        <div>
-                            <textarea name="message" required rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="{{ __('Enter your response...') }}"></textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 text-sm">{{ __('Add Response') }}</button>
-                    </div>
-                </form>
-            </div>
-
-            @if($ticket->tags)
-                <div class="bg-white rounded-lg shadow p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Tags') }}</h3>
-                    <div class="flex flex-wrap gap-2">
-                        @foreach($ticket->tags as $tag)
-                            <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-sm">{{ $tag }}</span>
-                        @endforeach
-                    </div>
+            <!-- Assignment Card -->
+            <div class="bank-card">
+                <div class="bank-card-header">
+                    <h3 class="text-sm font-semibold text-slate-900">{{ __('Assign Ticket') }}</h3>
                 </div>
-            @endif
+                <div class="bank-card-body">
+                    <form action="{{ route('customerService.assign', $ticket) }}" method="POST" class="space-y-3">
+                        @csrf
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">{{ __('Assign To Staff') }}</label>
+                            <select name="assigned_to" class="w-full rounded-lg border-slate-300 text-xs shadow-xs focus:border-emerald-500 focus:ring-emerald-500">
+                                <option value="">{{ __('Unassigned') }}</option>
+                                @foreach($agents as $agent)
+                                    <option value="{{ $agent->id }}" @selected($ticket->assigned_to == $agent->id)>{{ $agent->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full btn btn-secondary text-xs">
+                            {{ __('Save Assignment') }}
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -22,16 +22,25 @@ class CardController extends Controller
 
     public function index(): View
     {
+        $branchId = session('current_branch_id');
         $cards = Card::with(['account', 'customer'])
+            ->when($branchId, function ($q) use ($branchId) {
+                $q->whereHas('account', fn ($aq) => $aq->where('branch_id', $branchId))
+                  ->orWhereHas('customer', fn ($cq) => $cq->where('branch_id', $branchId));
+            })
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
 
         return view('cards::index', compact('cards'));
     }
 
     public function create(): View
     {
-        $accounts = Account::where('status', 'open')->get();
+        $branchId = session('current_branch_id');
+        $accounts = Account::where('status', 'open')
+            ->when($branchId, fn ($q) => $q->where('branch_id', $branchId))
+            ->get();
         return view('cards::create', compact('accounts'));
     }
 

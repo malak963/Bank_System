@@ -1,78 +1,99 @@
 @extends('layouts.app')
 
-@section('title', 'Generate Statement')
+@section('title', __('Generate Statement'))
+
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('statements.index') }}">{{ __('Account Statements') }}</a></li>
+    <li class="breadcrumb-item active">{{ __('Generate Statement') }}</li>
+@endsection
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="max-w-2xl mx-auto">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-3xl font-bold text-slate-800">{{ __('Generate Statement') }}</h1>
-            <a href="{{ route('statements.index') }}" 
-               class="text-slate-600 hover:text-slate-900">Back</a>
+<div class="mx-auto max-w-4xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
+    <div class="bank-card">
+        <div class="bank-card-header">
+            <h2 class="text-base font-semibold text-slate-950">{{ __('Statement Period & Parameters') }}</h2>
+            <p class="text-xs text-slate-500 mt-0.5">{{ __('Select target account, statement period, and opening balance.') }}</p>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
-            <form action="{{ route('statements.store') }}" method="POST">
-                @csrf
-                
-                <div class="grid grid-cols-1 gap-6">
+        <form action="{{ route('statements.store') }}" method="POST">
+            @csrf
+            
+            <div class="bank-card-body space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Account') }}</label>
-                        <select name="account_id" required class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
-                            <option value="">Select Account</option>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">{{ __('Account') }} <span class="text-rose-500">*</span></label>
+                        <select name="account_id" required class="w-full rounded-lg border-slate-300 text-sm shadow-xs focus:border-emerald-500 focus:ring-emerald-500">
+                            <option value="">{{ __('Select Account') }}</option>
                             @foreach(\App\Modules\Accounts\Models\Account::all() as $account)
-                            <option value="{{ $account->id }}">{{ $account->account_number }} - {{ $account->customer->first_name }} {{ $account->customer->last_name }}</option>
+                                <option value="{{ $account->id }}" @selected(old('account_id') == $account->id)>
+                                    {{ $account->account_number }} - {{ $account->customer->full_name ?? '' }}
+                                </option>
                             @endforeach
                         </select>
+                        @error('account_id')
+                            <p class="text-rose-600 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Customer') }}</label>
-                        <select name="customer_id" required class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
-                            <option value="">Select Customer</option>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">{{ __('Customer') }} <span class="text-rose-500">*</span></label>
+                        <select name="customer_id" required class="w-full rounded-lg border-slate-300 text-sm shadow-xs focus:border-emerald-500 focus:ring-emerald-500">
+                            <option value="">{{ __('Select Customer') }}</option>
                             @foreach(\App\Modules\Customers\Models\Customer::all() as $customer)
-                            <option value="{{ $customer->id }}">{{ $customer->first_name }} {{ $customer->last_name }}</option>
+                                <option value="{{ $customer->id }}" @selected(old('customer_id') == $customer->id)>
+                                    {{ $customer->first_name }} {{ $customer->last_name }}
+                                </option>
                             @endforeach
                         </select>
+                        @error('customer_id')
+                            <p class="text-rose-600 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Period Start') }}</label>
-                        <input type="date" name="period_start" required 
-                               class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">{{ __('Period Start') }} <span class="text-rose-500">*</span></label>
+                        <input type="date" name="period_start" value="{{ old('period_start', now()->startOfMonth()->format('Y-m-d')) }}" required class="w-full rounded-lg border-slate-300 text-sm shadow-xs focus:border-emerald-500 focus:ring-emerald-500">
+                        @error('period_start')
+                            <p class="text-rose-600 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Period End') }}</label>
-                        <input type="date" name="period_end" required 
-                               class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">{{ __('Period End') }} <span class="text-rose-500">*</span></label>
+                        <input type="date" name="period_end" value="{{ old('period_end', now()->format('Y-m-d')) }}" required class="w-full rounded-lg border-slate-300 text-sm shadow-xs focus:border-emerald-500 focus:ring-emerald-500">
+                        @error('period_end')
+                            <p class="text-rose-600 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Opening Balance') }}</label>
-                        <input type="number" name="opening_balance" step="0.01" value="0" required 
-                               class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">{{ __('Opening Balance') }} <span class="text-rose-500">*</span></label>
+                        <input type="number" name="opening_balance" step="0.01" value="{{ old('opening_balance', '0.00') }}" required class="w-full rounded-lg border-slate-300 text-sm shadow-xs focus:border-emerald-500 focus:ring-emerald-500">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">{{ __('Currency') }}</label>
-                        <input type="text" name="currency" value="SYP" required 
-                               class="w-full border-slate-300 rounded-lg shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
-                    </div>
-
-                    <div class="flex justify-end space-x-4">
-                        <a href="{{ route('statements.index') }}" 
-                           class="px-4 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50">
-                            Cancel
-                        </a>
-                        <button type="submit" 
-                                class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700">
-                            Generate Statement
-                        </button>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">{{ __('Currency') }} <span class="text-rose-500">*</span></label>
+                        <select name="currency" class="w-full rounded-lg border-slate-300 text-sm shadow-xs focus:border-emerald-500 focus:ring-emerald-500">
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="GBP">GBP</option>
+                            <option value="SAR">SAR</option>
+                            <option value="AED">AED</option>
+                            <option value="SYP">SYP</option>
+                        </select>
                     </div>
                 </div>
-            </form>
-        </div>
+            </div>
+
+            <div class="bank-card-footer flex items-center justify-end gap-3">
+                <a href="{{ route('statements.index') }}" class="btn btn-secondary">
+                    {{ __('Cancel') }}
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    {{ __('Generate Statement') }}
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 @endsection

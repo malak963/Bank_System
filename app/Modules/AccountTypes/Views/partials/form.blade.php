@@ -35,6 +35,6 @@
 </div>
 
 <div class="mt-6 flex items-center justify-end gap-3">
-    <a href="{{ route('account-types.index') }}" class="rounded-lg px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100">{{ __('Cancel') }}</a>
-    <button type="submit" class="inline-flex items-center rounded-lg bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">{{ $submitLabel }}</button>
+    <a href="{{ route('account-types.index') }}" class="btn btn-secondary">{{ __('Cancel') }}</a>
+    <button type="submit" class="btn btn-primary">{{ $submitLabel }}</button>
 </div>

@@ -20,20 +20,32 @@ class TransferController extends Controller
 
     public function index(): View
     {
+        $branchId = session('current_branch_id');
         $transfers = Transfer::with(['fromAccount', 'toAccount', 'customer'])
+            ->when($branchId, function ($q) use ($branchId) {
+                $q->whereHas('fromAccount', fn ($aq) => $aq->where('branch_id', $branchId))
+                  ->orWhereHas('toAccount', fn ($aq) => $aq->where('branch_id', $branchId))
+                  ->orWhereHas('customer', fn ($cq) => $cq->where('branch_id', $branchId));
+            })
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
 
-        $statistics = $this->transferService->getTransferStatistics();
+        $statistics = $this->transferService->getTransferStatistics($branchId);
 
         return view('transfers::index', compact('transfers', 'statistics'));
     }
 
     public function create(): View
     {
+        $branchId = session('current_branch_id');
         $transferTypes = \App\Modules\Transfers\Enums\TransferType::cases();
-        $accounts = \App\Modules\Accounts\Models\Account::where('status', 'open')->get();
-        $customers = \App\Modules\Customers\Models\Customer::all();
+        $accounts = \App\Modules\Accounts\Models\Account::where('status', 'open')
+            ->when($branchId, fn ($q) => $q->where('branch_id', $branchId))
+            ->get();
+        $customers = \App\Modules\Customers\Models\Customer::query()
+            ->when($branchId, fn ($q) => $q->where('branch_id', $branchId))
+            ->get();
 
         return view('transfers::create', compact('transferTypes', 'accounts', 'customers'));
     }

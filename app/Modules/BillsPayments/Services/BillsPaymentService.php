@@ -14,9 +14,17 @@ class BillsPaymentService
         private TransactionService $transactionService
     ) {}
 
-    public function getAllBills(array $filters = []): Collection
+    public function getAllBills(array $filters = []): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         $query = Bill::with(['customer', 'account', 'transaction']);
+
+        $branchId = !empty($filters['branch_id']) ? $filters['branch_id'] : session('current_branch_id');
+        if (!empty($branchId)) {
+            $query->where(function ($q) use ($branchId) {
+                $q->whereHas('account', fn($acc) => $acc->where('branch_id', $branchId))
+                  ->orWhereHas('customer', fn($c) => $c->where('branch_id', $branchId));
+            });
+        }
 
         if (isset($filters['customer_id'])) {
             $query->where('customer_id', $filters['customer_id']);
@@ -38,7 +46,7 @@ class BillsPaymentService
             $query->overdue();
         }
 
-        return $query->orderBy('due_date', 'asc')->get();
+        return $query->orderBy('due_date', 'asc')->paginate(20)->withQueryString();
     }
 
     public function getBill(int $id): Bill

@@ -1,3 +1,7 @@
+@section('breadcrumb')
+    <li class="breadcrumb-item active">{{ __('Loan Types') }}</li>
+@endsection
+
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -5,7 +9,7 @@
                 <p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Loan Configuration') }}</p>
                 <h2 class="mt-1 text-2xl font-semibold text-slate-950">{{ __('Loan Types') }}</h2>
             </div>
-            <a href="{{ route('loan-types.create') }}" class="inline-flex items-center gap-2 rounded-lg bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800 transition">
+            <a href="{{ route('loan-types.create') }}" class="btn btn-primary">
                 <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14" /></svg>
                 <span>{{ __('New Loan Type') }}</span>
             </a>

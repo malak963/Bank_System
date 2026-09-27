@@ -1,3 +1,9 @@
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('branches.index') }}">{{ __('Branches') }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('branches.show', $branch) }}">{{ $branch->name }}</a></li>
+    <li class="breadcrumb-item active">{{ __('Edit') }}</li>
+@endsection
+
 <x-app-layout>
     <x-slot name="header"><div><p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Branch Operations') }}</p><h2 class="mt-1 text-2xl font-semibold text-slate-950">{{ __('Edit Branch') }}</h2></div></x-slot>
     <div class="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
@@ -14,7 +20,7 @@
                 <div><x-input-label for="email" :value="__('Email')" /><x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $branch->email)" /><x-input-error :messages="$errors->get('email')" class="mt-2" /></div>
             </div>
             <div><x-input-label for="manager_id" :value="__('Manager')" /><select id="manager_id" name="manager_id" class="mt-1 block w-full rounded-lg border-slate-300 bg-white shadow-sm focus:border-emerald-500 focus:ring-emerald-500"><option value="">{{ __('Select manager (optional)') }}</option>@foreach ($managers as $manager)<option value="{{ $manager->id }}" @selected(old('manager_id', $branch->manager_id) == $manager->id)>{{ $manager->name }} ({{ $manager->email }})</option>@endforeach</select><x-input-error :messages="$errors->get('manager_id')" class="mt-2" /></div>
-            <div class="flex items-center justify-end gap-3"><a href="{{ route('branches.show', $branch) }}" class="rounded-lg px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100">{{ __('Cancel') }}</a><button type="submit" class="rounded-lg bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">{{ __('Update Branch') }}</button></div>
+            <div class="flex items-center justify-end gap-3"><a href="{{ route('branches.show', $branch) }}" class="btn btn-secondary">{{ __('Cancel') }}</a><button type="submit" class="btn btn-primary">{{ __('Update Branch') }}</button></div>
         </form>
     </div>
 </x-app-layout>

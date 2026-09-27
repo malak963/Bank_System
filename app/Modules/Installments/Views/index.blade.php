@@ -1,3 +1,7 @@
+@section('breadcrumb')
+    <li class="breadcrumb-item active">{{ __('Installments') }}</li>
+@endsection
+
 <x-app-layout>
     <x-slot name="header">
         <div>

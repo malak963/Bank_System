@@ -1,3 +1,8 @@
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('loans.index') }}">{{ __('Loans') }}</a></li>
+    <li class="breadcrumb-item active">{{ __('New Loan Application') }}</li>
+@endsection
+
 <x-app-layout>
     <x-slot name="header"><div><p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Credit Operations') }}</p><h2 class="mt-1 text-2xl font-semibold text-slate-950">{{ __('New Loan Application') }}</h2></div></x-slot>
     <div class="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
@@ -11,7 +16,7 @@
                 <div><x-input-label for="loan_type_id" :value="__('Loan Type')" /><select id="loan_type_id" name="loan_type_id" class="mt-1 block w-full rounded-lg border-slate-300 bg-white shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required><option value="">{{ __('Select loan type') }}</option>@foreach ($loanTypes as $loanType)<option value="{{ $loanType->id }}" @selected(old('loan_type_id') == $loanType->id)>{{ $loanType->name }} - {{ $loanType->annual_interest_rate }}% {{ $loanType->interest_method->label() }} ({{ $loanType->currency }})</option>@endforeach</select><x-input-error :messages="$errors->get('loan_type_id')" class="mt-2" /></div>
                 <div class="grid grid-cols-1 gap-5 sm:grid-cols-2"><div><x-input-label for="requested_amount" :value="__('Requested Amount')" /><x-text-input id="requested_amount" name="requested_amount" type="number" min="0.01" step="0.01" class="mt-1 block w-full" :value="old('requested_amount')" required /><x-input-error :messages="$errors->get('requested_amount')" class="mt-2" /></div><div><x-input-label for="term_months" :value="__('Term (months)')" /><x-text-input id="term_months" name="term_months" type="number" min="1" max="600" class="mt-1 block w-full" :value="old('term_months')" required /><x-input-error :messages="$errors->get('term_months')" class="mt-2" /></div></div>
                 <div><x-input-label for="purpose" :value="__('Purpose')" /><textarea id="purpose" name="purpose" rows="4" class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500">{{ old('purpose') }}</textarea><x-input-error :messages="$errors->get('purpose')" class="mt-2" /></div>
-                <div class="flex items-center justify-end gap-3"><a href="{{ route('loans.index') }}" class="rounded-lg px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100">{{ __('Cancel') }}</a><button type="submit" class="rounded-lg bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">{{ __('Submit Application') }}</button></div>
+                <div class="flex items-center justify-end gap-3"><a href="{{ route('loans.index') }}" class="btn btn-secondary">{{ __('Cancel') }}</a><button type="submit" class="btn btn-primary">{{ __('Submit Application') }}</button></div>
             </form>
         @endif
     </div>

@@ -62,6 +62,14 @@ class AccountRepository implements AccountRepositoryContract
             });
         }
 
+        $activeBranchId = $filters['branch_id'] ?? session('current_branch_id');
+        if (! empty($activeBranchId)) {
+            $query->where(function (Builder $q) use ($activeBranchId): void {
+                $q->where('branch_id', $activeBranchId)
+                  ->orWhereHas('customer', fn (Builder $cq) => $cq->where('branch_id', $activeBranchId));
+            });
+        }
+
         foreach (['status', 'account_type_id'] as $field) {
             if (! empty($filters[$field])) {
                 $query->where($field, $filters[$field]);

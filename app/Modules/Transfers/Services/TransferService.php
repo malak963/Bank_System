@@ -230,6 +230,15 @@ class TransferService
     {
         $query = Transfer::query();
 
+        $branchId = !empty($filters['branch_id']) ? $filters['branch_id'] : session('current_branch_id');
+        if (!empty($branchId)) {
+            $query->where(function ($q) use ($branchId) {
+                $q->whereHas('fromAccount', fn ($aq) => $aq->where('branch_id', $branchId))
+                  ->orWhereHas('toAccount', fn ($aq) => $aq->where('branch_id', $branchId))
+                  ->orWhereHas('customer', fn ($cq) => $cq->where('branch_id', $branchId));
+            });
+        }
+
         if (isset($filters['customer_id'])) {
             $query->byCustomer($filters['customer_id']);
         }
@@ -255,19 +264,26 @@ class TransferService
             ->get();
     }
 
-    public function getTransferStatistics(): array
+    public function getTransferStatistics(?int $branchId = null): array
     {
-        $total = Transfer::count();
-        $pending = Transfer::pending()->count();
-        $processing = Transfer::where('status', TransferStatus::Processing)->count();
-        $completed = Transfer::completed()->count();
-        $failed = Transfer::where('status', TransferStatus::Failed)->count();
-        $cancelled = Transfer::where('status', TransferStatus::Cancelled)->count();
+        $branchId = $branchId ?? session('current_branch_id');
+        $base = Transfer::query()->when($branchId, function ($q) use ($branchId) {
+            $q->whereHas('fromAccount', fn ($aq) => $aq->where('branch_id', $branchId))
+              ->orWhereHas('toAccount', fn ($aq) => $aq->where('branch_id', $branchId))
+              ->orWhereHas('customer', fn ($cq) => $cq->where('branch_id', $branchId));
+        });
 
-        $totalAmount = Transfer::completed()->sum('amount');
-        $totalFees = Transfer::completed()->sum('fees');
+        $total = (clone $base)->count();
+        $pending = (clone $base)->pending()->count();
+        $processing = (clone $base)->where('status', TransferStatus::Processing)->count();
+        $completed = (clone $base)->completed()->count();
+        $failed = (clone $base)->where('status', TransferStatus::Failed)->count();
+        $cancelled = (clone $base)->where('status', TransferStatus::Cancelled)->count();
 
-        $byType = Transfer::selectRaw('transfer_type, COUNT(*) as count, SUM(amount) as total_amount')
+        $totalAmount = (clone $base)->completed()->sum('amount');
+        $totalFees = (clone $base)->completed()->sum('fees');
+
+        $byType = (clone $base)->selectRaw('transfer_type, COUNT(*) as count, SUM(amount) as total_amount')
             ->groupBy('transfer_type')
             ->get()
             ->mapWithKeys(function ($item) {

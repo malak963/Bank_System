@@ -1,219 +1,129 @@
 @extends('layouts.app')
 
+@section('title', __('Transfer Details'))
+
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('transfers.index') }}">{{ __('Transfers') }}</a></li>
+    <li class="breadcrumb-item active font-mono" dir="ltr">{{ $transfer->transfer_reference }}</li>
+@endsection
+
+@section('actions')
+    <a href="{{ route('transfers.index') }}" class="btn btn-secondary">
+        {{ __('Back to Transfers') }}
+    </a>
+@endsection
+
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">{{ __('Transfer Details') }}</h1>
-        <a href="{{ route('transfers.index') }}" class="text-gray-600 hover:text-gray-900">{{ __('Back to Transfers') }}</a>
-    </div>
-
-    @if(session('success'))
-        <div class="bg-emerald-100 border border-emerald-400 text-emerald-700 px-4 py-3 rounded mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {{ session('error') }}
-        </div>
-    @endif
-
+<div class="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div class="lg:col-span-2">
-            <div class="bg-white rounded-lg shadow p-6 mb-6">
-                <div class="flex justify-between items-start mb-6">
+        <div class="lg:col-span-2 space-y-6">
+            <div class="bank-card">
+                <div class="bank-card-header flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
-                        <h2 class="text-xl font-semibold text-gray-900">{{ $transfer->transfer_reference }}</h2>
-                        <p class="text-sm text-gray-500">{{ $transfer->transfer_type->label() }}</p>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">{{ $transfer->transfer_type->label() }}</span>
+                        <h2 class="text-xl font-bold text-slate-900 font-mono mt-0.5" dir="ltr">{{ $transfer->transfer_reference }}</h2>
                     </div>
                     @switch($transfer->status->value)
                         @case('pending')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">{{ __('Pending') }}</span>
+                            <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset bg-amber-50 text-amber-700 ring-amber-200">{{ __('Pending') }}</span>
                             @break
                         @case('processing')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">{{ __('Processing') }}</span>
+                            <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset bg-blue-50 text-blue-700 ring-blue-200">{{ __('Processing') }}</span>
                             @break
                         @case('completed')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800">{{ __('Completed') }}</span>
+                            <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset bg-emerald-50 text-emerald-700 ring-emerald-200">{{ __('Completed') }}</span>
                             @break
                         @case('failed')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800">{{ __('Failed') }}</span>
+                            <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset bg-rose-50 text-rose-700 ring-rose-200">{{ __('Failed') }}</span>
                             @break
                         @case('cancelled')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ __('Cancelled') }}</span>
+                            <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset bg-slate-100 text-slate-700 ring-slate-200">{{ __('Cancelled') }}</span>
                             @break
-                        @case('on_hold')
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">{{ __('On Hold') }}</span>
-                            @break
+                        @default
+                            <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset bg-slate-100 text-slate-700 ring-slate-200">{{ $transfer->status->label() }}</span>
                     @endswitch
                 </div>
 
-                <div class="border-t pt-4">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Transfer Information') }}</h3>
-                    <dl class="grid grid-cols-1 gap-4">
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">Customer</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $transfer->customer?->full_name ?? 'N/A' }}</dd>
+                <div class="bank-card-body">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-6 border-b border-slate-100">
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">{{ __('Amount') }}</p>
+                            <p class="text-3xl font-bold mt-1 font-mono text-slate-900" dir="ltr">
+                                {{ number_format($transfer->amount, 2) }} {{ $transfer->currency }}
+                            </p>
                         </div>
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">From Account</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $transfer->fromAccount?->account_number ?? 'N/A' }}</dd>
+                        <div>
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">{{ __('Initiated At') }}</p>
+                            <p class="text-sm font-semibold text-slate-900 mt-1 font-mono" dir="ltr">{{ $transfer->created_at->format('Y-m-d H:i') }}</p>
                         </div>
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">To Account</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $transfer->toAccount?->account_number ?? $transfer->recipient_account ?? 'N/A' }}</dd>
+                    </div>
+
+                    <div class="pt-6">
+                        <h3 class="text-sm font-semibold text-slate-900 mb-4">{{ __('Transfer Details') }}</h3>
+                        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm">
+                            <div class="flex justify-between border-b border-slate-50 pb-2">
+                                <dt class="text-slate-500">{{ __('Customer') }}</dt>
+                                <dd class="font-medium text-slate-900">{{ $transfer->customer?->full_name ?? __('N/A') }}</dd>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-50 pb-2">
+                                <dt class="text-slate-500">{{ __('From Account') }}</dt>
+                                <dd class="font-medium text-slate-900 font-mono" dir="ltr">{{ $transfer->fromAccount?->account_number ?? __('N/A') }}</dd>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-50 pb-2">
+                                <dt class="text-slate-500">{{ __('To Account') }}</dt>
+                                <dd class="font-medium text-slate-900 font-mono" dir="ltr">{{ $transfer->toAccount?->account_number ?? $transfer->beneficiary_account_number ?? __('N/A') }}</dd>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-50 pb-2">
+                                <dt class="text-slate-500">{{ __('Beneficiary Name') }}</dt>
+                                <dd class="font-medium text-slate-900">{{ $transfer->beneficiary_name ?? __('N/A') }}</dd>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-50 pb-2">
+                                <dt class="text-slate-500">{{ __('Transfer Fee') }}</dt>
+                                <dd class="font-medium text-slate-900 font-mono" dir="ltr">{{ number_format($transfer->fee_amount, 2) }} {{ $transfer->currency }}</dd>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-50 pb-2">
+                                <dt class="text-slate-500">{{ __('Exchange Rate') }}</dt>
+                                <dd class="font-medium text-slate-900 font-mono" dir="ltr">{{ $transfer->exchange_rate ?? '1.0000' }}</dd>
+                            </div>
+                        </dl>
+                    </div>
+
+                    @if($transfer->description)
+                        <div class="border-t border-slate-100 pt-4 mt-6">
+                            <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">{{ __('Description / Memo') }}</h3>
+                            <p class="text-sm text-slate-800 bg-slate-50 p-3 rounded-lg">{{ $transfer->description }}</p>
                         </div>
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">Amount</dt>
-                            <dd class="text-sm font-medium text-gray-900">${{ number_format($transfer->amount, 2) }}</dd>
-                        </div>
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">Currency</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $transfer->currency }}</dd>
-                        </div>
-                        @if($transfer->exchange_rate)
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-500">Exchange Rate</dt>
-                                <dd class="text-sm font-medium text-gray-900">{{ number_format($transfer->exchange_rate, 6) }}</dd>
-                            </div>
-                        @endif
-                        @if($transfer->converted_amount)
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-500">Converted Amount</dt>
-                                <dd class="text-sm font-medium text-gray-900">${{ number_format($transfer->converted_amount, 2) }}</dd>
-                            </div>
-                        @endif
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">Fees</dt>
-                            <dd class="text-sm font-medium text-gray-900">${{ number_format($transfer->fees, 2) }}</dd>
-                        </div>
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">Total Deducted</dt>
-                            <dd class="text-sm font-medium text-gray-900">${{ number_format($transfer->total_deducted, 2) }}</dd>
-                        </div>
-                        @if($transfer->recipient_name)
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-500">Recipient Name</dt>
-                                <dd class="text-sm font-medium text-gray-900">{{ $transfer->recipient_name }}</dd>
-                            </div>
-                        @endif
-                        @if($transfer->recipient_bank)
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-500">Recipient Bank</dt>
-                                <dd class="text-sm font-medium text-gray-900">{{ $transfer->recipient_bank }}</dd>
-                            </div>
-                        @endif
-                        @if($transfer->reference)
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-500">Reference</dt>
-                                <dd class="text-sm font-medium text-gray-900">{{ $transfer->reference }}</dd>
-                            </div>
-                        @endif
-                        <div class="flex justify-between">
-                            <dt class="text-sm text-gray-500">Created</dt>
-                            <dd class="text-sm font-medium text-gray-900">{{ $transfer->created_at->format('M d, Y H:i:s') }}</dd>
-                        </div>
-                        @if($transfer->scheduled_for)
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-500">Scheduled For</dt>
-                                <dd class="text-sm font-medium text-gray-900">{{ $transfer->scheduled_for->format('M d, Y H:i:s') }}</dd>
-                            </div>
-                        @endif
-                        @if($transfer->processed_at)
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-500">Processed</dt>
-                                <dd class="text-sm font-medium text-gray-900">{{ $transfer->processed_at->format('M d, Y H:i:s') }}</dd>
-                            </div>
-                        @endif
-                        @if($transfer->completed_at)
-                            <div class="flex justify-between">
-                                <dt class="text-sm text-gray-500">Completed</dt>
-                                <dd class="text-sm font-medium text-gray-900">{{ $transfer->completed_at->format('M d, Y H:i:s') }}</dd>
-                            </div>
-                        @endif
-                    </dl>
+                    @endif
                 </div>
-
-                @if($transfer->description)
-                    <div class="mt-4 bg-gray-50 border border-gray-200 rounded-lg p-4">
-                        <h3 class="text-sm font-semibold text-gray-800 mb-2">{{ __('Description') }}</h3>
-                        <p class="text-sm text-gray-700">{{ $transfer->description }}</p>
-                    </div>
-                @endif
-
-                @if($transfer->failure_reason)
-                    <div class="mt-4 bg-red-50 border border-red-200 rounded-lg p-4">
-                        <h3 class="text-sm font-semibold text-red-800 mb-2">{{ __('Failure Reason') }}</h3>
-                        <p class="text-sm text-red-700">{{ $transfer->failure_reason }}</p>
-                    </div>
-                @endif
-
-                @if($transfer->cancellation_reason)
-                    <div class="mt-4 bg-gray-50 border border-gray-200 rounded-lg p-4">
-                        <h3 class="text-sm font-semibold text-gray-800 mb-2">Cancellation Reason</h3>
-                        <p class="text-sm text-gray-700">{{ $transfer->cancellation_reason }}</p>
-                    </div>
-                @endif
-            </div>
-
-            <!-- Transactions Section -->
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Related Transactions') }}</h3>
-                @if($transfer->transactions->count() > 0)
-                    <div class="space-y-2">
-                        @foreach($transfer->transactions as $transaction)
-                            <div class="border rounded-lg p-3 bg-gray-50">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-sm font-medium text-gray-900">{{ $transaction->transaction_reference }}</span>
-                                    <span class="text-xs text-gray-500">{{ $transaction->created_at->format('M d, Y H:i') }}</span>
-                                </div>
-                                <p class="text-sm text-gray-600 mt-1">{{ $transaction->transaction_type->label() }} - ${{ number_format($transaction->amount, 2) }}</p>
-                            </div>
-                        @endforeach
-                    </div>
-                @else
-                    <p class="text-sm text-gray-500">{{ __('No transactions yet') }}</p>
-                @endif
             </div>
         </div>
 
-        <div>
-            <div class="bg-white rounded-lg shadow p-6 mb-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ __('Actions') }}</h3>
-                <div class="space-y-3">
-                    @if($transfer->status->canBeCancelled())
+        <div class="space-y-6">
+            @if($transfer->status === \App\Modules\Transfers\Enums\TransferStatus::Pending)
+                <div class="bank-card">
+                    <div class="bank-card-header">
+                        <h3 class="text-sm font-semibold text-rose-700">{{ __('Cancel Transfer') }}</h3>
+                    </div>
+                    <div class="bank-card-body">
                         <form action="{{ route('transfers.cancel', $transfer) }}" method="POST">
                             @csrf
-                            <div class="mb-3">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Cancellation Reason</label>
-                                <textarea name="reason" required rows="2" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" placeholder="{{ __('Enter reason...') }}"></textarea>
-                            </div>
-                            <button type="submit" class="w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 text-sm">Cancel Transfer</button>
+                            <p class="text-xs text-slate-500 mb-3">{{ __('You can cancel this transfer while it is still pending execution.') }}</p>
+                            <button type="submit" class="w-full btn btn-danger" onclick="return confirm('{{ __('Are you sure you want to cancel this transfer?') }}')">
+                                {{ __('Cancel Transfer') }}
+                            </button>
                         </form>
-                    @endif
-
-                    @if($transfer->status->canBeRetried())
-                        <form action="{{ route('transfers.retry', $transfer) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm">{{ __('Retry Transfer') }}</button>
-                        </form>
-                    @endif
-
-                    @if($transfer->isScheduled())
-                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                            <p class="text-sm text-yellow-800">
-                                <strong>Scheduled:</strong> This transfer is scheduled for {{ $transfer->scheduled_for->format('M d, Y H:i') }}
-                            </p>
-                        </div>
-                    @endif
+                    </div>
                 </div>
-            </div>
+            @endif
 
             @if($transfer->metadata)
-                <div class="bg-white rounded-lg shadow p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Metadata</h3>
-                    <pre class="text-xs text-gray-600 bg-gray-50 p-3 rounded overflow-auto">{{ json_encode($transfer->metadata, JSON_PRETTY_PRINT) }}</pre>
+                <div class="bank-card">
+                    <div class="bank-card-header">
+                        <h3 class="text-sm font-semibold text-slate-900">{{ __('Technical Metadata') }}</h3>
+                    </div>
+                    <div class="bank-card-body">
+                        <pre class="text-xs text-slate-600 bg-slate-50 p-3 rounded-lg overflow-auto font-mono" dir="ltr">{{ json_encode($transfer->metadata, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
+                    </div>
                 </div>
             @endif
         </div>

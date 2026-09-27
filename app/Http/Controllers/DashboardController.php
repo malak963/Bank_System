@@ -33,22 +33,48 @@ class DashboardController extends Controller
             }
 
             $now = now();
+            $branchId = session('current_branch_id');
             $openStatuses = [LoanStatus::Disbursed->value, LoanStatus::Active->value];
             $unpaidStatuses = [InstallmentStatus::Pending->value, InstallmentStatus::PartiallyPaid->value];
 
             $metrics = [
-                'customers' => Customer::query()->count(),
-                'open_accounts' => Account::query()->where('status', AccountStatus::Open->value)->count(),
-                'available_balance' => (float) Account::query()->where('status', AccountStatus::Open->value)->sum('balance'),
-                'pending_loans' => Loan::query()->whereIn('status', [LoanStatus::Pending->value, LoanStatus::UnderReview->value])->count(),
-                'active_loans' => Loan::query()->whereIn('status', $openStatuses)->count(),
-                'outstanding_principal' => (float) Loan::query()->whereIn('status', $openStatuses)->sum('outstanding_principal'),
-                'due_this_month' => (float) Installment::query()->whereIn('status', $unpaidStatuses)->whereBetween('due_date', [$now->copy()->startOfMonth(), $now->copy()->endOfMonth()])->sum('amount_due'),
-                'collected_this_month' => (float) LoanPayment::query()->whereBetween('paid_at', [$now->copy()->startOfMonth(), $now->copy()->endOfMonth()])->sum('amount'),
+                'customers' => Customer::query()
+                    ->when($branchId, fn($q) => $q->where('branch_id', $branchId))
+                    ->count(),
+                'open_accounts' => Account::query()
+                    ->where('status', AccountStatus::Open->value)
+                    ->when($branchId, fn($q) => $q->where(fn($sub) => $sub->where('branch_id', $branchId)->orWhereHas('customer', fn($c) => $c->where('branch_id', $branchId))))
+                    ->count(),
+                'available_balance' => (float) Account::query()
+                    ->where('status', AccountStatus::Open->value)
+                    ->when($branchId, fn($q) => $q->where(fn($sub) => $sub->where('branch_id', $branchId)->orWhereHas('customer', fn($c) => $c->where('branch_id', $branchId))))
+                    ->sum('balance'),
+                'pending_loans' => Loan::query()
+                    ->whereIn('status', [LoanStatus::Pending->value, LoanStatus::UnderReview->value])
+                    ->when($branchId, fn($q) => $q->where(fn($sub) => $sub->where('branch_id', $branchId)->orWhereHas('customer', fn($c) => $c->where('branch_id', $branchId))))
+                    ->count(),
+                'active_loans' => Loan::query()
+                    ->whereIn('status', $openStatuses)
+                    ->when($branchId, fn($q) => $q->where(fn($sub) => $sub->where('branch_id', $branchId)->orWhereHas('customer', fn($c) => $c->where('branch_id', $branchId))))
+                    ->count(),
+                'outstanding_principal' => (float) Loan::query()
+                    ->whereIn('status', $openStatuses)
+                    ->when($branchId, fn($q) => $q->where(fn($sub) => $sub->where('branch_id', $branchId)->orWhereHas('customer', fn($c) => $c->where('branch_id', $branchId))))
+                    ->sum('outstanding_principal'),
+                'due_this_month' => (float) Installment::query()
+                    ->whereIn('status', $unpaidStatuses)
+                    ->whereBetween('due_date', [$now->copy()->startOfMonth(), $now->copy()->endOfMonth()])
+                    ->when($branchId, fn($q) => $q->whereHas('loan', fn($l) => $l->where('branch_id', $branchId)->orWhereHas('customer', fn($c) => $c->where('branch_id', $branchId))))
+                    ->sum('amount_due'),
+                'collected_this_month' => (float) LoanPayment::query()
+                    ->whereBetween('paid_at', [$now->copy()->startOfMonth(), $now->copy()->endOfMonth()])
+                    ->when($branchId, fn($q) => $q->whereHas('loan', fn($l) => $l->where('branch_id', $branchId)->orWhereHas('customer', fn($c) => $c->where('branch_id', $branchId))))
+                    ->sum('amount'),
             ];
 
             $recentLoans = Loan::query()
                 ->with(['customer', 'loanType'])
+                ->when($branchId, fn($q) => $q->where(fn($sub) => $sub->where('branch_id', $branchId)->orWhereHas('customer', fn($c) => $c->where('branch_id', $branchId))))
                 ->latest('created_at')
                 ->limit(6)
                 ->get();
@@ -56,15 +82,16 @@ class DashboardController extends Controller
             $upcomingInstallments = Installment::query()
                 ->with(['loan.customer', 'loan.loanType'])
                 ->whereIn('status', $unpaidStatuses)
+                ->when($branchId, fn($q) => $q->whereHas('loan', fn($l) => $l->where('branch_id', $branchId)->orWhereHas('customer', fn($c) => $c->where('branch_id', $branchId))))
                 ->orderBy('due_date')
                 ->limit(6)
                 ->get();
 
             $portfolio = [
-                'active' => Loan::query()->whereIn('status', $openStatuses)->count(),
-                'pending' => Loan::query()->whereIn('status', [LoanStatus::Pending->value, LoanStatus::UnderReview->value])->count(),
-                'paid_off' => Loan::query()->where('status', LoanStatus::PaidOff->value)->count(),
-                'rejected' => Loan::query()->where('status', LoanStatus::Rejected->value)->count(),
+                'active' => Loan::query()->whereIn('status', $openStatuses)->when($branchId, fn($q) => $q->where(fn($sub) => $sub->where('branch_id', $branchId)->orWhereHas('customer', fn($c) => $c->where('branch_id', $branchId))))->count(),
+                'pending' => Loan::query()->whereIn('status', [LoanStatus::Pending->value, LoanStatus::UnderReview->value])->when($branchId, fn($q) => $q->where(fn($sub) => $sub->where('branch_id', $branchId)->orWhereHas('customer', fn($c) => $c->where('branch_id', $branchId))))->count(),
+                'paid_off' => Loan::query()->where('status', LoanStatus::PaidOff->value)->when($branchId, fn($q) => $q->where(fn($sub) => $sub->where('branch_id', $branchId)->orWhereHas('customer', fn($c) => $c->where('branch_id', $branchId))))->count(),
+                'rejected' => Loan::query()->where('status', LoanStatus::Rejected->value)->when($branchId, fn($q) => $q->where(fn($sub) => $sub->where('branch_id', $branchId)->orWhereHas('customer', fn($c) => $c->where('branch_id', $branchId))))->count(),
             ];
 
             return view('dashboard', [

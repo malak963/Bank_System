@@ -82,8 +82,9 @@ class ReportService
             $query->where('created_at', '<=', $parameters['end_date']);
         }
 
-        if (isset($parameters['branch_id'])) {
-            $query->where('branch_id', $parameters['branch_id']);
+        $branchId = !empty($parameters['branch_id']) ? $parameters['branch_id'] : session('current_branch_id');
+        if (!empty($branchId)) {
+            $query->where('branch_id', $branchId);
         }
 
         if (isset($parameters['customer_id'])) {
@@ -126,8 +127,12 @@ class ReportService
     {
         $query = \App\Modules\Accounts\Models\Account::query();
 
-        if (isset($parameters['branch_id'])) {
-            $query->where('branch_id', $parameters['branch_id']);
+        $branchId = !empty($parameters['branch_id']) ? $parameters['branch_id'] : session('current_branch_id');
+        if (!empty($branchId)) {
+            $query->where(function ($q) use ($branchId) {
+                $q->where('branch_id', $branchId)
+                  ->orWhereHas('customer', fn ($cq) => $cq->where('branch_id', $branchId));
+            });
         }
 
         if (isset($parameters['customer_id'])) {
@@ -167,14 +172,23 @@ class ReportService
     {
         $startDate = $parameters['start_date'] ?? now()->startOfMonth();
         $endDate = $parameters['end_date'] ?? now();
+        $branchId = !empty($parameters['branch_id']) ? $parameters['branch_id'] : session('current_branch_id');
 
-        $transactions = \App\Modules\Transactions\Models\Transaction::whereBetween('created_at', [$startDate, $endDate])
-            ->where('status', 'completed')
-            ->get();
+        $transactionsQuery = \App\Modules\Transactions\Models\Transaction::whereBetween('created_at', [$startDate, $endDate])
+            ->where('status', 'completed');
+        $loansQuery = \App\Modules\Loans\Models\Loan::whereBetween('created_at', [$startDate, $endDate]);
 
+        if (!empty($branchId)) {
+            $transactionsQuery->where('branch_id', $branchId);
+            $loansQuery->where(function ($q) use ($branchId) {
+                $q->where('branch_id', $branchId)
+                  ->orWhereHas('customer', fn ($cq) => $cq->where('branch_id', $branchId));
+            });
+        }
+
+        $transactions = $transactionsQuery->get();
         $fees = $transactions->sum('fees');
-        $interest = \App\Modules\Loans\Models\Loan::whereBetween('created_at', [$startDate, $endDate])
-            ->sum('total_interest');
+        $interest = $loansQuery->sum('total_interest');
 
         return [
             'summary' => [

@@ -1,3 +1,9 @@
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('customers.index') }}">{{ __('Customers') }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('customers.show', $customer) }}">{{ $customer->full_name }}</a></li>
+    <li class="breadcrumb-item active">{{ __('Edit') }}</li>
+@endsection
+
 <x-app-layout>
     <x-slot name="header">
         <div>

@@ -225,19 +225,29 @@ class SecurityService
             ->get();
     }
 
-    public function getCriticalEvents(): \Illuminate\Database\Eloquent\Collection
+    public function getCriticalEvents(?int $branchId = null): \Illuminate\Database\Eloquent\Collection
     {
+        $branchId = $branchId ?? session('current_branch_id');
         return SecurityEvent::critical()
             ->unresolved()
+            ->when($branchId, fn ($q) => $q->where(function ($sub) use ($branchId) {
+                $sub->whereHas('customer', fn ($cq) => $cq->where('branch_id', $branchId))
+                    ->orWhereHas('user', fn ($uq) => $uq->where('branch_id', $branchId));
+            }))
             ->with(['user', 'customer'])
             ->orderBy('created_at', 'desc')
             ->get();
     }
 
-    public function getFraudAlerts(): \Illuminate\Database\Eloquent\Collection
+    public function getFraudAlerts(?int $branchId = null): \Illuminate\Database\Eloquent\Collection
     {
+        $branchId = $branchId ?? session('current_branch_id');
         return SecurityEvent::byType(SecurityEventType::FraudAlert)
             ->unresolved()
+            ->when($branchId, fn ($q) => $q->where(function ($sub) use ($branchId) {
+                $sub->whereHas('customer', fn ($cq) => $cq->where('branch_id', $branchId))
+                    ->orWhereHas('user', fn ($uq) => $uq->where('branch_id', $branchId));
+            }))
             ->with(['user', 'customer'])
             ->orderBy('created_at', 'desc')
             ->get();

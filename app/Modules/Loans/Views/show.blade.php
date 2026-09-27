@@ -1,5 +1,23 @@
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('loans.index') }}">{{ __('Loans') }}</a></li>
+    <li class="breadcrumb-item active" dir="ltr">{{ $loan->loan_reference }}</li>
+@endsection
+
 <x-app-layout>
-    <x-slot name="header"><div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><div><p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Credit Operations') }}</p><h2 class="mt-1 font-mono text-2xl font-semibold text-slate-950">{{ $loan->loan_reference }}</h2></div><a href="{{ route('loans.index') }}" class="text-sm font-semibold text-slate-600 hover:text-emerald-700">{{ __('Back to Loans') }}</a></div></x-slot>
+    <x-slot name="header">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Credit Operations') }}</p>
+                <h2 class="mt-1 font-mono text-2xl font-semibold text-slate-950" dir="ltr">{{ $loan->loan_reference }}</h2>
+            </div>
+            <a href="{{ route('loans.index') }}" class="btn btn-secondary">
+                <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                <span>{{ __('Back to Loans') }}</span>
+            </a>
+        </div>
+    </x-slot>
     @php $statusClass = match ($loan->status->value) { 'active', 'disbursed' => 'bg-sky-50 text-sky-700 ring-sky-200', 'approved' => 'bg-emerald-50 text-emerald-700 ring-emerald-200', 'rejected', 'defaulted' => 'bg-red-50 text-red-700 ring-red-200', 'paid_off' => 'bg-green-50 text-green-700 ring-green-200', default => 'bg-amber-50 text-amber-700 ring-amber-200' }; @endphp
     <div class="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
         @if (session('status'))<div class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">{{ session('status') }}</div>@endif
