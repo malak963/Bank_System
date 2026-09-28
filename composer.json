@@ -12,7 +12,8 @@
         "laravel/tinker": "^3.0",
         "mallardduck/blade-lucide-icons": "^2.0",
         "mcamara/laravel-localization": "*",
-        "melbedran/role-permession": "1.2.0"
+        "melbedran/role-permession": "1.2.0",
+        "stichoza/google-translate-php": "^5.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

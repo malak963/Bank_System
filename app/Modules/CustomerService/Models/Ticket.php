@@ -7,6 +7,7 @@ use App\Modules\Customers\Models\Customer;
 use App\Modules\CustomerService\Enums\TicketCategory;
 use App\Modules\CustomerService\Enums\TicketPriority;
 use App\Modules\CustomerService\Enums\TicketStatus;
+use App\Traits\HasAutoTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,9 +15,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Ticket extends Model
 {
-    use HasFactory;
+    use HasFactory, HasAutoTranslations;
 
     protected $table = 'tickets';
+
+    protected array $translatable = ['subject', 'description'];
 
     protected $fillable = [
         'ticket_number',

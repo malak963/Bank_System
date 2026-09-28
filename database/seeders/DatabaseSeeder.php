@@ -160,5 +160,29 @@ class DatabaseSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
+
+        // 2. Call all Module Seeders in sequential dependency order
+        $this->call([
+            BranchSeeder::class,
+            AccountTypeSeeder::class,
+            LoanTypeSeeder::class,
+            CustomerSeeder::class,
+            AccountSeeder::class,
+            CardSeeder::class,
+            TransactionSeeder::class,
+            TransferSeeder::class,
+            LoanSeeder::class,
+            BillSeeder::class,
+            CashOperationSeeder::class,
+            AppointmentSeeder::class,
+            QueueSeeder::class,
+            CustomerServiceSeeder::class,
+            ProductSeeder::class,
+            NotificationSeeder::class,
+            ReportSeeder::class,
+            SecurityEventSeeder::class,
+            StatementSeeder::class,
+        ]);
     }
 }
+

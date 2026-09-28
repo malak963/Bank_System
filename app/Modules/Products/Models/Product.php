@@ -7,6 +7,7 @@ use App\Modules\Branches\Models\Branch;
 use App\Modules\Customers\Models\Customer;
 use App\Modules\Products\Enums\ProductStatus;
 use App\Modules\Products\Enums\ProductType;
+use App\Traits\HasAutoTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,9 +15,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, HasAutoTranslations;
 
     protected $table = 'products';
+
+    protected array $translatable = ['name', 'notes'];
 
     protected $fillable = [
         'product_number',

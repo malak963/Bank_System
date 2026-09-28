@@ -13,6 +13,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="{{ asset('js/auto-translator.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased text-slate-900 bg-[#f4f7f8]">
         <div x-data="{ sidebarOpen: false }" class="min-h-screen">

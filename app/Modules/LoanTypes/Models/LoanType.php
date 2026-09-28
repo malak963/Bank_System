@@ -6,15 +6,18 @@ use App\Modules\LoanTypes\Enums\LoanTypeStatus;
 use App\Modules\Loans\Models\Loan;
 use App\Modules\Loans\Enums\InterestMethod;
 use App\Modules\Loans\Enums\RepaymentFrequency;
+use App\Traits\HasAutoTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class LoanType extends Model
 {
-    use HasFactory;
+    use HasFactory, HasAutoTranslations;
 
     protected $table = 'loan_types';
+
+    protected array $translatable = ['name', 'description'];
 
     protected $fillable = [
         'code',

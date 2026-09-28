@@ -287,7 +287,11 @@ class TransferService
             ->groupBy('transfer_type')
             ->get()
             ->mapWithKeys(function ($item) {
-                return [$item->transfer_type => [
+                $typeKey = $item->transfer_type instanceof TransferType
+                    ? $item->transfer_type->value
+                    : (string) $item->transfer_type;
+
+                return [$typeKey => [
                     'count' => $item->count,
                     'total_amount' => $item->total_amount,
                 ]];

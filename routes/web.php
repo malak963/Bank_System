@@ -84,6 +84,10 @@ Route::get('/user/two-factor-challenge', function () {
     return redirect()->route('two-factor.login');
 });
 
+// Field level auto-translation web endpoints (Google Translate AR <-> EN)
+Route::post('/translate/field', [\App\Http\Controllers\Api\FieldTranslationController::class, 'translateField'])->name('web.translate.field');
+Route::post('/translate/batch', [\App\Http\Controllers\Api\FieldTranslationController::class, 'translateBatch'])->name('web.translate.batch');
+
 // Graceful redirect for trailing locale URLs (e.g. /bills-payments/ar -> /ar/bills-payments)
 Route::get('{path}/{locale}', function (string $path, string $locale) {
     if ($locale === 'ar') {

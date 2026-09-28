@@ -15,6 +15,7 @@ use App\Modules\Customers\Enums\CustomerStatus;
 use App\Modules\Customers\Enums\IdentityDocumentType;
 use App\Modules\Customers\Enums\KycStatus;
 use App\Modules\Customers\Enums\RiskLevel;
+use App\Traits\HasAutoTranslations;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,9 +26,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Customer extends Model
 {
     /** @use HasFactory<CustomerFactory> */
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasAutoTranslations;
 
     protected $table = 'customers';
+
+    protected array $translatable = ['first_name', 'last_name', 'address'];
 
     protected $fillable = [
         'user_id',

@@ -100,6 +100,11 @@
 - **Solution**: Added `$table->dateTime('operation_date')->nullable();` to `create_cash_operations_table.php`.
 - **File**: `app/Modules/CashManagement/Migrations/2026_09_16_000001_create_cash_operations_table.php`
 
+### 8. TransferType Enum Key in TransferService
+- **Problem**: `TransferService::getTransferStatistics()` was using enum object `$item->transfer_type` directly as array key in `mapWithKeys`, causing `TypeError: Cannot access offset of type App\Modules\Transfers\Enums\TransferType on array`.
+- **Solution**: Converted the enum instance to string via `->value` (`$item->transfer_type instanceof TransferType ? $item->transfer_type->value : (string) $item->transfer_type`).
+- **File**: `app/Modules/Transfers/Services/TransferService.php`
+
 ## New Professional Banking Modules Added
 
 ### 1. Transactions Module (2024-09-17)

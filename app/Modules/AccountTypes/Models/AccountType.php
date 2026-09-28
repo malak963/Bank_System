@@ -4,15 +4,18 @@ namespace App\Modules\AccountTypes\Models;
 
 use App\Modules\AccountTypes\Enums\AccountTypeStatus;
 use App\Modules\Accounts\Models\Account;
+use App\Traits\HasAutoTranslations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class AccountType extends Model
 {
-    use HasFactory;
+    use HasFactory, HasAutoTranslations;
 
     protected $table = 'account_types';
+
+    protected array $translatable = ['name', 'description'];
 
     protected $fillable = [
         'code',
