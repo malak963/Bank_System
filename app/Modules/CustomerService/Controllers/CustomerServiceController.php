@@ -76,7 +76,9 @@ class CustomerServiceController extends Controller
     public function show(Ticket $ticket): View
     {
         $ticket->load(['customer', 'branch', 'assignedTo', 'resolvedBy', 'escalatedTo', 'responses.user', 'responses.customer']);
-        return view('customerService::show', compact('ticket'));
+        $statuses = \App\Modules\CustomerService\Enums\TicketStatus::cases();
+        $agents   = \App\Models\User::orderBy('name')->get();
+        return view('customerService::show', compact('ticket', 'statuses', 'agents'));
     }
 
     public function assign(Request $request, Ticket $ticket)
@@ -132,6 +134,22 @@ class CustomerServiceController extends Controller
                 ->with('success', __('Ticket reopened successfully'));
         } catch (\Exception $e) {
             return back()->with('error', __('Reopen failed: :message', ['message' => $e->getMessage()]));
+        }
+    }
+
+    public function updateStatus(Request $request, Ticket $ticket)
+    {
+        $validated = $request->validate([
+            'status' => 'required|string',
+        ]);
+
+        try {
+            $ticket->update(['status' => $validated['status']]);
+            return redirect()
+                ->route('customerService.show', $ticket)
+                ->with('success', __('Ticket status updated successfully'));
+        } catch (\Exception $e) {
+            return back()->with('error', __('Status update failed: :message', ['message' => $e->getMessage()]));
         }
     }
 

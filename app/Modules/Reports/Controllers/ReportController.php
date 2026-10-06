@@ -72,6 +72,16 @@ class ReportController extends Controller
         return back()->with('success', __('Report regeneration initiated.'));
     }
 
+    public function destroy(Report $report): RedirectResponse
+    {
+        if ($report->file_path && Storage::exists($report->file_path)) {
+            Storage::delete($report->file_path);
+        }
+        $report->delete();
+
+        return redirect()->route('reports.index')->with('success', __('Report deleted successfully.'));
+    }
+
     public function processScheduled(): JsonResponse
     {
         $count = $this->reportService->processScheduledReports();

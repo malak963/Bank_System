@@ -93,6 +93,11 @@ class Customer extends Model
         return $this->hasMany(Loan::class);
     }
 
+    public function cards(): HasMany
+    {
+        return $this->hasMany(\App\Modules\Cards\Models\Card::class);
+    }
+
     public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class);

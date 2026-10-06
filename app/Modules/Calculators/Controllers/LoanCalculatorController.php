@@ -16,9 +16,25 @@ class LoanCalculatorController extends Controller
         return view('calculators::index');
     }
 
-    public function loan()
+    public function loan(Request $request)
     {
-        return view('calculators::loan');
+        $result = null;
+        if ($request->filled(['amount', 'interest_rate', 'term_months'])) {
+            try {
+                $validated = $request->validate([
+                    'amount' => 'required|numeric|min:1000|max:10000000',
+                    'interest_rate' => 'required|numeric|min:0.1|max:30',
+                    'term_months' => 'required|integer|min:1|max:360',
+                    'method' => 'nullable|in:reducing_balance,flat_rate',
+                    'frequency' => 'nullable|in:monthly,quarterly',
+                ]);
+                $result = $this->calculator->calculateLoan($validated);
+            } catch (\Throwable $e) {
+                // Ignore validation exception for optional GET query params
+            }
+        }
+
+        return view('calculators::loan', compact('result'));
     }
 
     public function calculateLoan(Request $request): JsonResponse

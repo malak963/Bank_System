@@ -46,5 +46,10 @@ Route::group([
         Route::post('/security/2fa/enable', [TwoFactorController::class, 'enable'])->name('2fa.enable');
         Route::delete('/security/2fa/disable', [TwoFactorController::class, 'disable'])->name('2fa.disable');
         Route::post('/security/2fa/recovery-codes', [TwoFactorController::class, 'regenerateRecoveryCodes'])->name('2fa.recovery-codes');
+
+        // Customer Dedicated Profile
+        Route::get('/profile', [\App\Modules\CustomerPortal\Controllers\CustomerProfileController::class, 'show'])->name('profile');
+        Route::put('/profile', [\App\Modules\CustomerPortal\Controllers\CustomerProfileController::class, 'update'])->name('profile.update');
+        Route::put('/profile/password', [\App\Modules\CustomerPortal\Controllers\CustomerProfileController::class, 'updatePassword'])->name('profile.password');
     });
 });

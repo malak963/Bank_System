@@ -18,6 +18,7 @@ Route::group([
     Route::post('/{ticket}/resolve', [CustomerServiceController::class, 'resolve'])->name('resolve');
     Route::post('/{ticket}/close', [CustomerServiceController::class, 'close'])->name('close');
     Route::post('/{ticket}/reopen', [CustomerServiceController::class, 'reopen'])->name('reopen');
+    Route::post('/{ticket}/update-status', [CustomerServiceController::class, 'updateStatus'])->name('update-status');
     Route::post('/{ticket}/response', [CustomerServiceController::class, 'addResponse'])->name('add-response');
 });
 });

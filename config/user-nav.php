@@ -47,7 +47,7 @@ return [
     'profile_menu' => [
         [
             'title' => 'Profile',
-            'route' => 'profile.edit',
+            'route' => 'portal.profile',
         ],
         [
             'title' => 'Two-Factor Authentication',
