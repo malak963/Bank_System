@@ -6,7 +6,6 @@
 <x-app-layout>
     <x-slot name="header"><div><p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Branch Operations') }}</p><h2 class="mt-1 text-2xl font-semibold text-slate-950">{{ __('Create New Branch') }}</h2></div></x-slot>
     <div class="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
-        @if ($errors->any())<div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">{{ $errors->first() }}</div>@endif
         <form method="POST" action="{{ route('branches.store') }}" class="space-y-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
             @csrf
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">

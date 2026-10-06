@@ -28,13 +28,6 @@
     @endphp
 
     <div class="mx-auto max-w-5xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
-        @if (session('status'))
-            <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">{{ session('status') }}</div>
-        @endif
-        @if ($errors->any())
-            <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">{{ $errors->first() }}</div>
-        @endif
-
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
             <section class="rounded-xl bg-slate-950 p-6 text-white shadow-sm lg:col-span-2">
                 <div class="flex items-start justify-between gap-4">

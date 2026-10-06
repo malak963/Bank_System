@@ -105,6 +105,16 @@
 - **Solution**: Converted the enum instance to string via `->value` (`$item->transfer_type instanceof TransferType ? $item->transfer_type->value : (string) $item->transfer_type`).
 - **File**: `app/Modules/Transfers/Services/TransferService.php`
 
+### 9. Undefined `orWhereKey` Method in CustomerController
+- **Problem**: In `CustomerController::formData()`, `$query->orWhereKey($customer->user_id)` was called on Eloquent's `Builder`, which does not have an `orWhereKey()` method (only `whereKey()` and `whereKeyNot()` exist), throwing `BadMethodCallException: Call to undefined method Illuminate\Database\Eloquent\Builder::orWhereKey()`.
+- **Solution**: Changed to check `$customer !== null && $customer->user_id !== null` and call `$query->orWhere($query->getModel()->getQualifiedKeyName(), $customer->user_id)`.
+- **File**: `app/Modules/Customers/Controllers/CustomerController.php`
+
+### 10. Duplicate Flash Messages in Views
+- **Problem**: Confirmation messages (e.g., `'Customer updated.'`, `session('status')`, `session('success')`) and error alerts were being rendered twice: once centrally by `<x-flash-message />` in the master layout `layouts/app.blade.php`, and a second time by hardcoded `@if (session('status'))` blocks inside individual module views.
+- **Solution**: Removed the redundant alert blocks from individual module views, allowing `<x-flash-message />` in the master layout to handle all flash and validation messages consistently across the application.
+- **Files**: `app/Modules/Customers/Views/show.blade.php`, `app/Modules/Customers/Views/index.blade.php`, `app/Modules/Accounts/Views/*`, `app/Modules/Branches/Views/*`, `app/Modules/Loans/Views/*`, `app/Modules/Users/Views/*`, `resources/views/premium-dashboard.blade.php`
+
 ## New Professional Banking Modules Added
 
 ### 1. Transactions Module (2024-09-17)

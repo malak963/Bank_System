@@ -32,12 +32,6 @@
 
     <div class="py-8">
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            @if (session('status'))
-                <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">
-                    {{ session('status') }}
-                </div>
-            @endif
-
             @php
                 $statusClass = match ($customer->status->value) {
                     'active' => 'bg-emerald-50 text-emerald-700 ring-emerald-200',
@@ -170,6 +164,106 @@
                     </div>
                 @endif
             </div>
+
+            {{-- Accounts & Cards Section --}}
+            @if ($customer->accounts->isNotEmpty())
+                <div class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+                    <div class="border-b border-slate-200 px-6 py-5 flex items-center justify-between">
+                        <div>
+                            <h3 class="text-base font-semibold text-slate-950">{{ __('Accounts & Cards') }}</h3>
+                            <p class="mt-1 text-sm text-slate-500">{{ __('All accounts and associated cards for this customer.') }}</p>
+                        </div>
+                        <span class="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-inset ring-emerald-200">
+                            {{ $customer->accounts->count() }} {{ __('account(s)') }}
+                        </span>
+                    </div>
+
+                    <div class="divide-y divide-slate-100">
+                        @foreach ($customer->accounts as $account)
+                            <div class="p-6">
+                                {{-- Account Header --}}
+                                <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-100">
+                                            <svg class="h-5 w-5 text-emerald-700" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-semibold uppercase text-slate-500">{{ __('Account Number') }}</p>
+                                            <p class="font-mono text-base font-semibold text-slate-900 tracking-wider" dir="ltr">{{ $account->account_number }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        @php
+                                            $acctStatusClass = match ($account->status->value) {
+                                                'open'   => 'bg-emerald-50 text-emerald-700 ring-emerald-200',
+                                                'closed' => 'bg-slate-100 text-slate-700 ring-slate-200',
+                                                'frozen' => 'bg-blue-50 text-blue-700 ring-blue-200',
+                                                default  => 'bg-amber-50 text-amber-700 ring-amber-200',
+                                            };
+                                        @endphp
+                                        <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset {{ $acctStatusClass }}">
+                                            {{ $account->status->label() }}
+                                        </span>
+                                        <a href="{{ route('accounts.show', $account) }}"
+                                           class="inline-flex items-center gap-1 rounded-md border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm hover:bg-slate-50 transition">
+                                            {{ __('View') }}
+                                            <svg class="h-3.5 w-3.5 rtl:rotate-180" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                {{-- Cards under this account --}}
+                                @if ($account->cards->isNotEmpty())
+                                    <div class="mt-3 rounded-lg border border-slate-100 bg-slate-50 p-4">
+                                        <p class="mb-3 text-xs font-semibold uppercase text-slate-500">
+                                            {{ __('Cards') }} ({{ $account->cards->count() }})
+                                        </p>
+                                        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                                            @foreach ($account->cards as $card)
+                                                @php
+                                                    $cardStatusClass = match ($card->status->value) {
+                                                        'active'   => 'bg-emerald-50 text-emerald-700 ring-emerald-200',
+                                                        'blocked'  => 'bg-red-50 text-red-700 ring-red-200',
+                                                        'expired'  => 'bg-slate-100 text-slate-600 ring-slate-200',
+                                                        default    => 'bg-amber-50 text-amber-700 ring-amber-200',
+                                                    };
+                                                @endphp
+                                                <div class="flex items-start gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm">
+                                                    <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-slate-900">
+                                                        <svg class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+                                                        </svg>
+                                                    </div>
+                                                    <div class="min-w-0 flex-1">
+                                                        <p class="font-mono text-sm font-semibold text-slate-900 tracking-widest" dir="ltr">
+                                                            **** **** **** {{ substr($card->card_number, -4) }}
+                                                        </p>
+                                                        <p class="mt-0.5 text-xs text-slate-500">
+                                                            {{ $card->card_brand->label() }} &middot; {{ $card->card_type->label() }}
+                                                        </p>
+                                                        <div class="mt-1.5">
+                                                            <span class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold ring-1 ring-inset {{ $cardStatusClass }}">
+                                                                {{ $card->status->label() }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @else
+                                    <p class="mt-2 text-sm italic text-slate-400">{{ __('No cards linked to this account.') }}</p>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
         </div>
     </div>
 </x-app-layout>

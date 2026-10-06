@@ -9,7 +9,6 @@ use App\Modules\Transfers\Enums\TransferType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Transfer extends Model
 {
@@ -83,9 +82,9 @@ class Transfer extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function transactions(): HasMany
+    public function transactions(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
-        return $this->hasMany(\App\Modules\Transactions\Models\Transaction::class);
+        return $this->morphMany(\App\Modules\Transactions\Models\Transaction::class, 'transactable');
     }
 
     public function isCompleted(): bool

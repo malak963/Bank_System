@@ -32,12 +32,6 @@
 
     <div class="py-8">
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            @if (session('status'))
-                <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">
-                    {{ session('status') }}
-                </div>
-            @endif
-
             @php
                 $roleClass = match ($user->role?->value) {
                     'admin' => 'bg-slate-950 text-white ring-slate-950',

@@ -6,7 +6,6 @@
 <x-app-layout>
     <x-slot name="header"><div><p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Credit Operations') }}</p><h2 class="mt-1 text-2xl font-semibold text-slate-950">{{ __('New Loan Application') }}</h2></div></x-slot>
     <div class="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
-        @if ($errors->any())<div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">{{ $errors->first() }}</div>@endif
         @if ($loanTypes->isEmpty())<div class="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">{{ __('Create an active loan type before accepting applications.') }} <a href="{{ route('loan-types.create') }}" class="font-semibold underline">{{ __('Create loan type') }}</a></div>
         @elseif ($customers->isEmpty())<div class="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">{{ __('A customer with an open account is required before creating a loan application.') }} <a href="{{ route('accounts.create') }}" class="font-semibold underline">{{ __('Open an account') }}</a></div>
         @else

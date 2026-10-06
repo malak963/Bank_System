@@ -22,12 +22,6 @@
 
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            @if (session('status'))
-                <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">
-                    {{ session('status') }}
-                </div>
-            @endif
-
             <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
                 <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
                     <p class="text-xs font-semibold uppercase text-slate-500">{{ __('Total Users') }}</p>

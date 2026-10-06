@@ -21,13 +21,6 @@
     @php $filterValue = fn (string $key): string => (string) ($filters[$key] ?? ''); @endphp
 
     <div class="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
-        @if (session('status'))
-            <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800">{{ session('status') }}</div>
-        @endif
-        @if ($errors->any())
-            <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">{{ $errors->first() }}</div>
-        @endif
-
         <div class="grid grid-cols-2 gap-4 lg:grid-cols-3">
             <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"><p class="text-xs font-semibold uppercase text-slate-500">{{ __('Total Branches') }}</p><p class="mt-2 text-3xl font-semibold text-slate-950">{{ number_format($summary['total']) }}</p></div>
             <div class="rounded-lg border border-emerald-200 bg-emerald-50 p-5 shadow-sm"><p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Open') }}</p><p class="mt-2 text-3xl font-semibold text-emerald-950">{{ number_format($summary['open']) }}</p></div>

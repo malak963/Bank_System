@@ -62,7 +62,7 @@ class CustomerController extends Controller
 
     public function show(Customer $customer): View
     {
-        $customer->load(['user', 'kycReviewer', 'branch']);
+        $customer->load(['user', 'kycReviewer', 'branch', 'accounts.cards']);
 
         return view('customers::show', [
             'customer' => $customer,
@@ -107,8 +107,8 @@ class CustomerController extends Controller
                         $query->withTrashed();
                     });
 
-                    if ($customer !== null) {
-                        $query->orWhereKey($customer->user_id);
+                    if ($customer !== null && $customer->user_id !== null) {
+                        $query->orWhere($query->getModel()->getQualifiedKeyName(), $customer->user_id);
                     }
                 })
                 ->orderBy('name')

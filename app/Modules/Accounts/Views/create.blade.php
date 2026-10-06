@@ -6,7 +6,6 @@
 <x-app-layout>
     <x-slot name="header"><div><p class="text-xs font-semibold uppercase text-emerald-700">{{ __('Account Operations') }}</p><h2 class="mt-1 text-2xl font-semibold text-slate-950">{{ __('Open New Account') }}</h2></div></x-slot>
     <div class="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
-        @if ($errors->any())<div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">{{ $errors->first() }}</div>@endif
         @if ($accountTypes->isEmpty())
             <div class="rounded-lg border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">{{ __('Create an active account type before opening an account.') }} <a href="{{ route('account-types.create') }}" class="font-semibold underline">{{ __('Create account type') }}</a></div>
         @else

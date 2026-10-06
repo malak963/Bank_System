@@ -164,4 +164,31 @@ class CustomerModuleTest extends TestCase
                 'risk_level',
             ]);
     }
+
+    public function test_authenticated_user_can_view_edit_customer(): void
+    {
+        $actor = User::factory()->create(['role' => \App\Modules\Users\Enums\UserRole::Admin]);
+        $linkedUser = User::factory()->create(['name' => 'Linked Customer User']);
+        $customer = Customer::factory()->for($linkedUser)->create();
+
+        $this->actingAs($actor)
+            ->get(route('customers.edit', $customer))
+            ->assertOk()
+            ->assertSee('Linked Customer User');
+    }
+
+    public function test_customer_updated_status_is_rendered_once(): void
+    {
+        $actor = User::factory()->create(['role' => \App\Modules\Users\Enums\UserRole::Admin]);
+        $customer = Customer::factory()->create();
+
+        $response = $this->actingAs($actor)
+            ->withSession(['status' => 'Customer updated.'])
+            ->get(route('customers.show', $customer));
+
+        $response->assertOk();
+        $this->assertSame(1, substr_count($response->getContent(), 'Customer updated.'));
+    }
 }
+
+

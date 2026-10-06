@@ -333,6 +333,8 @@ class TransferService
             'description' => $transfer->description,
             'reference_number' => $transfer->transfer_reference,
             'category' => 'transfer',
+            'transactable_id' => $transfer->id,
+            'transactable_type' => \App\Modules\Transfers\Models\Transfer::class,
             'metadata' => [
                 'transfer_id' => $transfer->id,
                 'transfer_reference' => $transfer->transfer_reference,
