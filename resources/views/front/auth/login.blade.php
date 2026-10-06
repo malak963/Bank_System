@@ -1,18 +1,13 @@
 <x-guest-layout>
     <div class="mb-6">
-        <div class="flex items-center justify-between">
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
-                <svg class="h-3.5 w-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                </svg>
-                {{ __('Customer Portal') }}
-            </span>
-            <a href="{{ route('admin.login') }}" class="text-xs font-semibold text-emerald-700 hover:text-emerald-900 transition flex items-center gap-1">
-                {{ __('Admin Portal') }} &rarr;
-            </a>
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+            <svg class="h-3.5 w-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            <span>{{ __('Secure Access') }}</span>
         </div>
-        <h1 class="mt-3 text-2xl font-bold tracking-tight text-slate-950">{{ __('Customer Sign In') }}</h1>
-        <p class="mt-1 text-sm leading-6 text-slate-500">{{ __('Sign in to access your digital banking account.') }}</p>
+        <h1 class="mt-3 text-2xl font-bold tracking-tight text-slate-900">{{ __('Sign In') }}</h1>
+        <p class="mt-1 text-sm leading-6 text-slate-500">{{ __('Enter your email address and password to access your account.') }}</p>
     </div>
 
     <!-- Session Status -->
@@ -21,66 +16,61 @@
     <form method="POST" action="{{ route('login') }}" class="space-y-4">
         @csrf
 
-        <!-- Account Number or Email Address -->
+        <!-- Email Address -->
         <x-form.input
-            :label="__('Account Number or Email')"
+            :label="__('Email Address')"
             name="email"
             id="email"
-            type="text"
+            type="email"
             :value="old('email')"
-            :placeholder="__('e.g. ACC-100234 or user@bank.com')"
+            placeholder="user@bank.com"
+            class="no-auto-translate"
+            dir="ltr"
             required
             autofocus
-            autocomplete="username"
+            autocomplete="email"
         />
 
-        <!-- Password or PIN -->
+        <!-- Password -->
         <x-form.input
-            :label="__('Password or Online PIN')"
+            :label="__('Password')"
             name="password"
             id="password"
             type="password"
-            :placeholder="__('••••••••••••')"
+            placeholder="••••••••"
+            class="no-auto-translate"
+            dir="ltr"
             required
             autocomplete="current-password"
         />
 
-        <!-- Remember Me -->
+        <!-- Remember Me & Forgot Password -->
         <div class="flex items-center justify-between pt-1">
             <label for="remember_me" class="inline-flex items-center cursor-pointer">
                 <input id="remember_me" type="checkbox" class="rounded border-slate-300 text-emerald-600 shadow-sm focus:ring-emerald-500" name="remember">
-                <span class="ms-2 text-sm text-slate-600 select-none">{{ __('Remember me') }}</span>
+                <span class="ms-2 text-xs font-medium text-slate-600 select-none">{{ __('Remember me') }}</span>
             </label>
 
             @if (Route::has('password.request'))
-                <a class="text-xs font-medium text-emerald-700 hover:text-emerald-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password or PIN?') }}
+                <a class="text-xs font-medium text-emerald-700 hover:text-emerald-800 transition" href="{{ route('password.request') }}">
+                    {{ __('Forgot password?') }}
                 </a>
             @endif
         </div>
 
         <div class="pt-2">
             <x-primary-button class="w-full justify-center py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-sm transition">
-                {{ __('Sign In to Digital Banking') }}
+                {{ __('Sign In') }}
             </x-primary-button>
         </div>
 
-        <div class="pt-4 border-t border-slate-100 flex flex-col gap-2 text-center text-xs text-slate-500">
-            <div>
-                {{ __('Are you a Bank Administrator?') }}
-                <a href="{{ route('admin.login') }}" class="font-semibold text-emerald-700 hover:text-emerald-900 ms-1">
-                    {{ __('Sign in through Admin Portal') }} &rarr;
+        @if (Route::has('register'))
+            <div class="pt-4 border-t border-slate-100 text-center text-xs text-slate-500">
+                <span>{{ __("Don't have an account?") }}</span>
+                <a href="{{ route('register') }}" class="font-semibold text-emerald-700 hover:text-emerald-800 ms-1">
+                    {{ __('Register here') }}
                 </a>
             </div>
-
-            @if (Route::has('register'))
-                <div>
-                    {{ __("Don't have an account?") }}
-                    <a href="{{ route('register') }}" class="font-medium text-emerald-700 hover:text-emerald-900 ms-1">
-                        {{ __('Register here') }}
-                    </a>
-                </div>
-            @endif
-        </div>
+        @endif
     </form>
 </x-guest-layout>

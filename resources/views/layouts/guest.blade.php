@@ -13,7 +13,6 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <script src="{{ asset('js/auto-translator.js') }}" defer></script>
     </head>
     <body class="font-sans text-slate-900 antialiased">
         <div class="guest-shell flex min-h-screen flex-col justify-center px-4 py-8 sm:px-6 lg:px-8">
