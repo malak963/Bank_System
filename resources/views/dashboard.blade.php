@@ -6,7 +6,7 @@
                     $hour = now()->hour;
                     $greeting = $hour < 12 ? __('Good morning') : ($hour < 17 ? __('Good afternoon') : __('Good evening'));
                 @endphp
-                <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{{ $greeting }}, {{ Auth::user()->name }}</h1>
+                <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{{ $greeting }}، {{ Auth::user()->name }}</h1>
                 <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ __('Executive overview of bank liquidity, clients, and loan operations.') }}</p>
             </div>
             <div class="flex items-center gap-3">
@@ -14,9 +14,9 @@
                     <svg class="h-3.5 w-3.5 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    <span>{{ now()->translatedFormat('l, j F Y') }}</span>
+                    <span>{{ now()->locale(app()->getLocale())->translatedFormat('l، j F Y') }}</span>
                 </span>
-                <a href="{{ route('loans.create') }}" class="btn btn-primary text-xs shadow-xs">
+                <a href="{{ route('loans.create') }}" class="btn btn-primary text-xs shadow-xs font-semibold">
                     <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
@@ -39,9 +39,9 @@
             </div>
         @endif
 
-        {{-- 1. Unified 4 KPI Cards --}}
+        {{-- 1. بطاقات المؤشرات الرئيسية الأربعة --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {{-- Customers --}}
+            {{-- قاعدة العملاء --}}
             <div class="bank-card p-5 hover:border-emerald-300 transition">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">{{ __('Customer Base') }}</span>
@@ -59,7 +59,7 @@
                 </div>
             </div>
 
-            {{-- Available Liquidity --}}
+            {{-- السيولة النقدية المتاحة --}}
             <div class="bank-card p-5 hover:border-emerald-300 transition">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">{{ __('Total Liquidity') }}</span>
@@ -74,12 +74,12 @@
                         {{ number_format($metrics['available_balance'], 2) }}
                     </div>
                     <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                        {{ __(config('bank.currency', 'USD')) }} &bull; {{ number_format($metrics['open_accounts']) }} {{ __('accounts') }}
+                        {{ __(config('bank.currency', 'USD')) }} &bull; {{ number_format($metrics['open_accounts']) }} {{ __('open accounts') }}
                     </p>
                 </div>
             </div>
 
-            {{-- Credit Portfolio --}}
+            {{-- محفظة القروض والائتمان --}}
             <div class="bank-card p-5 hover:border-emerald-300 transition">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">{{ __('Loan Exposure') }}</span>
@@ -99,7 +99,7 @@
                 </div>
             </div>
 
-            {{-- Monthly Collections --}}
+            {{-- التحصيلات الشهرية --}}
             <div class="bank-card p-5 hover:border-emerald-300 transition">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">{{ __('Monthly Collections') }}</span>
@@ -120,9 +120,9 @@
             </div>
         </div>
 
-        {{-- 2. Balanced 2-Column Main Section --}}
+        {{-- 2. القسم الوسطي: جدول القروض ومتابعة التحصيلات --}}
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {{-- Left (2 Cols): Recent Loan Applications --}}
+            {{-- العمود الأيسر: أحدث طلبات القروض --}}
             <div class="lg:col-span-2 bank-card">
                 <div class="bank-card-header flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
                     <div>
@@ -160,14 +160,16 @@
                                         <a href="{{ route('loans.show', $loan) }}" class="text-emerald-700 dark:text-emerald-400 hover:underline" dir="ltr">
                                             {{ $loan->loan_reference }}
                                         </a>
-                                        <span class="block text-[11px] text-slate-400">{{ $loan->created_at?->diffForHumans() }}</span>
+                                        <span class="block text-[11px] text-slate-400">
+                                            {{ $loan->created_at?->locale(app()->getLocale())->diffForHumans() }}
+                                        </span>
                                     </td>
                                     <td class="px-4 py-3">
                                         <span class="font-medium text-slate-900 dark:text-white block">{{ $loan->customer?->full_name }}</span>
                                         <span class="text-[11px] text-slate-400">{{ $loan->loanType?->name }}</span>
                                     </td>
                                     <td class="px-4 py-3 text-end font-mono font-bold text-slate-900 dark:text-white" dir="ltr">
-                                        {{ number_format((float) ($loan->approved_amount ?? $loan->requested_amount), 2) }}
+                                        {{ number_format((float) ($loan->approved_amount ?? $loan->requested_amount), 2) }} {{ __(config('bank.currency', 'USD')) }}
                                     </td>
                                     <td class="px-4 py-3 text-end">
                                         <span class="px-2 py-0.5 rounded text-[11px] font-semibold border {{ $loanStatusClass }}">
@@ -187,7 +189,7 @@
                 </div>
             </div>
 
-            {{-- Right (1 Col): Upcoming Collections --}}
+            {{-- العمود الأيمن: متابعة الأقساط القادمة --}}
             <div class="bank-card">
                 <div class="bank-card-header flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
                     <div>
@@ -208,12 +210,12 @@
                                     {{ $installment->loan?->customer?->full_name }}
                                 </a>
                                 <span class="text-[11px] text-slate-400 font-mono" dir="ltr">
-                                    {{ $installment->loan?->loan_reference }} #{{ $installment->installment_number }}
+                                    {{ $installment->loan?->loan_reference }} · {{ __('Installment #') }}{{ $installment->installment_number }}
                                 </span>
                             </div>
                             <div class="text-end shrink-0">
                                 <span class="font-mono font-bold text-slate-900 dark:text-white block" dir="ltr">
-                                    {{ number_format((float) $installment->remainingAmount(), 2) }}
+                                    {{ number_format((float) $installment->remainingAmount(), 2) }} {{ __(config('bank.currency', 'USD')) }}
                                 </span>
                                 <span class="text-[11px] {{ $isOverdue ? 'text-rose-600 font-semibold' : 'text-slate-400' }}">
                                     {{ $isOverdue ? __('Overdue') : $installment->due_date?->format('Y-m-d') }}
@@ -229,9 +231,9 @@
             </div>
         </div>
 
-        {{-- 3. Bottom Row: Portfolio Breakdown & Quick Shortcuts --}}
+        {{-- 3. الصف السفلي: توزيع المحفظة والعمليات المباشرة --}}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {{-- Portfolio Status Breakdown --}}
+            {{-- توزيع محفظة القروض --}}
             <div class="bank-card p-5">
                 <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4">
                     {{ __('Loan Portfolio Breakdown') }}
@@ -260,7 +262,7 @@
                 </div>
             </div>
 
-            {{-- Quick Direct Shortcuts --}}
+            {{-- العمليات المصرفية المباشرة --}}
             <div class="bank-card p-5">
                 <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4">
                     {{ __('Direct Operations') }}
